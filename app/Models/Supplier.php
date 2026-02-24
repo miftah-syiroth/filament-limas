@@ -2,25 +2,25 @@
 
 namespace App\Models;
 
-use App\Enums\CategoryType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Supplier extends Model
 {
     use HasUuids, SoftDeletes;
 
     protected $fillable = [
         'name',
-        'type',
+        'address',
+        'address2',
+        'city',
+        'state',
+        'country',
+        'zip',
+        'phone',
+        'email',
+        'url',
         'notes',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'type' => CategoryType::class,
-        ];
-    }
 }

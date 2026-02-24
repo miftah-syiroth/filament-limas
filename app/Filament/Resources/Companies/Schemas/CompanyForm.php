@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Categories\Schemas;
+namespace App\Filament\Resources\Companies\Schemas;
 
-use App\Enums\CategoryType;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
 
-class CategoryForm
+class CompanyForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -16,9 +14,11 @@ class CategoryForm
             ->components([
                 TextInput::make('name')
                     ->required(),
-                Select::make('type')
-                    ->options(CategoryType::class)
-                    ->required(),
+                TextInput::make('email')
+                    ->label('Email address')
+                    ->email(),
+                TextInput::make('phone')
+                    ->tel(),
                 Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
