@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('manufactures', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('url')->nullable();
+            $table->string('support_url')->nullable();
+            $table->string('support_phone')->nullable();
+            $table->string('support_email')->nullable();
+            $table->string('warranty_lookup_url')->nullable();
             $table->text('notes')->nullable();
-            $table->timestamps();
             $table->timestamps();
             $table->softDeletes();
         });
