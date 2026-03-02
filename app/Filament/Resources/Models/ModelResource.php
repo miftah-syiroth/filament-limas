@@ -11,6 +11,7 @@ use App\Filament\Resources\Models\Schemas\ModelInfolist;
 use App\Filament\Resources\Models\Tables\ModelsTable;
 use App\Models\Model;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -22,9 +23,13 @@ class ModelResource extends Resource
 {
     protected static ?string $model = Model::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Cube;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

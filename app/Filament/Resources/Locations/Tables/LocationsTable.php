@@ -19,23 +19,26 @@ class LocationsTable
         return $table
             ->columns([
                 TextColumn::make('id')
+                    ->hidden()
                     ->label('ID'),
-                TextColumn::make('company.name')
-                    ->searchable(),
                 TextColumn::make('name')
+                        ->searchable(),
+                TextColumn::make('company.name')
                     ->searchable(),
                 TextColumn::make('address')
                     ->searchable(),
                 TextColumn::make('address2')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('city')
+                TextColumn::make('relationCity.name')
+                    ->label('City')
+                    ->searchable(),
+                TextColumn::make('relationProvince.name')
+                    ->label('Province')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('state')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('country')
+                TextColumn::make('relationCountry.name')
+                    ->label('Country')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('zip')

@@ -11,7 +11,7 @@ enum DeprecationType: string implements HasLabel
     case Amount = 'amount';
     case Percentage = 'percentage';
 
-    public function getLabel(): string | Htmlable | null
+    public function getLabel(): string|Htmlable|null
     {
         return $this->name;
     }

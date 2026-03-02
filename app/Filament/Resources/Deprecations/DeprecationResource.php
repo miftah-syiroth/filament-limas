@@ -11,6 +11,7 @@ use App\Filament\Resources\Deprecations\Schemas\DeprecationInfolist;
 use App\Filament\Resources\Deprecations\Tables\DeprecationsTable;
 use App\Models\Deprecation;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -22,9 +23,13 @@ class DeprecationResource extends Resource
 {
     protected static ?string $model = Deprecation::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+
+    protected static ?int $navigationSort = 8;
 
     public static function form(Schema $schema): Schema
     {

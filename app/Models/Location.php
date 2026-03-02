@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Location extends Model
 {
@@ -18,7 +18,7 @@ class Location extends Model
         'address',
         'address2',
         'city',
-        'state',
+        'province',
         'country',
         'zip',
         'phone',
@@ -34,5 +34,20 @@ class Location extends Model
     public function departments(): HasMany
     {
         return $this->hasMany(Department::class);
+    }
+
+    public function relationCountry(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country', 'code');
+    }
+
+    public function relationProvince(): BelongsTo
+    {
+        return $this->belongsTo(Province::class, 'province', 'code');
+    }
+
+    public function relationCity(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city', 'code');
     }
 }

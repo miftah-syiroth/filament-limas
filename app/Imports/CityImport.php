@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CityImport implements ToModel, SkipsEmptyRows, WithHeadingRow
+class CityImport implements SkipsEmptyRows, ToModel, WithHeadingRow
 {
     use Importable;
 

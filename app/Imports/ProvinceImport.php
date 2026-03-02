@@ -3,12 +3,12 @@
 namespace App\Imports;
 
 use App\Models\Province;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProvinceImport implements ToModel, SkipsEmptyRows, WithHeadingRow
+class ProvinceImport implements SkipsEmptyRows, ToModel, WithHeadingRow
 {
     use Importable;
 

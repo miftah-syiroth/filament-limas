@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\Categories\Schemas;
 
 use App\Enums\CategoryType;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class CategoryForm

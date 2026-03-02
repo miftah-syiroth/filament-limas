@@ -11,6 +11,7 @@ use App\Filament\Resources\Manufactures\Schemas\ManufactureInfolist;
 use App\Filament\Resources\Manufactures\Tables\ManufacturesTable;
 use App\Models\Manufacture;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -22,10 +23,14 @@ class ManufactureResource extends Resource
 {
     protected static ?string $model = Manufacture::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CpuChip;
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+
+    protected static ?int $navigationSort = 3;
+    
     public static function form(Schema $schema): Schema
     {
         return ManufactureForm::configure($schema);
