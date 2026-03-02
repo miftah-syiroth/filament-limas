@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Locations\Schemas;
 
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class LocationForm
@@ -14,15 +14,27 @@ class LocationForm
         return $schema
             ->components([
                 Select::make('company_id')
-                    ->relationship('company', 'name'),
+                    ->relationship('company', 'name')
+                    ->required()
+                    ->native(false),
                 TextInput::make('name')
+                    ->required()
+                    ->maxLength(50),
+                TextInput::make('address')
                     ->required(),
-                TextInput::make('address'),
                 TextInput::make('address2'),
-                TextInput::make('city'),
+                Select::make('country')
+                    ->options(function () {
+                        $json = file_get_contents(resource_path('data/countries.json'));
+
+                        return json_decode($json, true);
+                    })
+                    ->searchable()
+                    ->native(false),
                 TextInput::make('state'),
-                TextInput::make('country'),
-                TextInput::make('zip'),
+                TextInput::make('city'),
+                TextInput::make('zip')
+                    ->numeric(),
                 TextInput::make('phone')
                     ->tel(),
                 Textarea::make('notes')

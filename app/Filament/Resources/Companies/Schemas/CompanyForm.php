@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Companies\Schemas;
 
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class CompanyForm
@@ -13,14 +13,20 @@ class CompanyForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->string(),
                 TextInput::make('email')
                     ->label('Email address')
+                    ->nullable()
                     ->email(),
                 TextInput::make('phone')
-                    ->tel(),
+                    ->nullable()
+                    ->tel()
+                    ->maxLength(15),
                 Textarea::make('notes')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->nullable()
+                    ->maxLength(255),
             ]);
     }
 }

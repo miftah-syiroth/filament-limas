@@ -27,7 +27,8 @@ class DepartmentsTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('phone')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
