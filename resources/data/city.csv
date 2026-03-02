@@ -1,0 +1,523 @@
+city_name,city_code,province_code
+Aceh Barat,ID1107,ID11
+Aceh Barat Daya,ID1112,ID11
+Aceh Besar,ID1108,ID11
+Aceh Jaya,ID1116,ID11
+Aceh Selatan,ID1103,ID11
+Aceh Singkil,ID1102,ID11
+Aceh Tamiang,ID1114,ID11
+Aceh Tengah,ID1106,ID11
+Aceh Tenggara,ID1104,ID11
+Aceh Timur,ID1105,ID11
+Aceh Utara,ID1111,ID11
+Agam,ID1307,ID13
+Alor,ID5307,ID53
+Asahan,ID1208,ID12
+Asmat,ID9415,ID94
+Badung,ID5103,ID51
+Balangan,ID6311,ID63
+Bandung,ID3204,ID32
+Bandung Barat,ID3217,ID32
+Banggai,ID7202,ID72
+Banggai Kepulauan,ID7201,ID72
+Banggai Laut,ID7211,ID72
+Bangka,ID1901,ID19
+Bangka Barat,ID1903,ID19
+Bangka Selatan,ID1905,ID19
+Bangka Tengah,ID1904,ID19
+Bangkalan,ID3526,ID35
+Bangli,ID5106,ID51
+Banjar,ID6303,ID63
+Banjarnegara,ID3304,ID33
+Bantaeng,ID7303,ID73
+Bantul,ID3402,ID34
+Banyu Asin,ID1607,ID16
+Banyumas,ID3302,ID33
+Banyuwangi,ID3510,ID35
+Barito Kuala,ID6304,ID63
+Barito Selatan,ID6204,ID62
+Barito Timur,ID6212,ID62
+Barito Utara,ID6205,ID62
+Barru,ID7310,ID73
+Batang,ID3325,ID33
+Batang Hari,ID1504,ID15
+Batu Bara,ID1219,ID12
+Bekasi,ID3216,ID32
+Belitung,ID1902,ID19
+Belitung Timur,ID1906,ID19
+Belu,ID5306,ID53
+Bener Meriah,ID1117,ID11
+Bengkalis,ID1408,ID14
+Bengkayang,ID6102,ID61
+Bengkulu Selatan,ID1701,ID17
+Bengkulu Tengah,ID1709,ID17
+Bengkulu Utara,ID1703,ID17
+Berau,ID6405,ID64
+Biak Numfor,ID9409,ID94
+Bima,ID5206,ID52
+Bintan,ID2102,ID21
+Bireuen,ID1110,ID11
+Blitar,ID3505,ID35
+Blora,ID3316,ID33
+Boalemo,ID7501,ID75
+Bogor,ID3201,ID32
+Bojonegoro,ID3522,ID35
+Bolaang Mongondow,ID7101,ID71
+Bolaang Mongondow Selatan,ID7110,ID71
+Bolaang Mongondow Timur,ID7111,ID71
+Bolaang Mongondow Utara,ID7107,ID71
+Bombana,ID7406,ID74
+Bondowoso,ID3511,ID35
+Bone,ID7311,ID73
+Bone Bolango,ID7504,ID75
+Boven Digoel,ID9413,ID94
+Boyolali,ID3309,ID33
+Brebes,ID3329,ID33
+Buleleng,ID5108,ID51
+Bulukumba,ID7302,ID73
+Bulungan,ID6502,ID65
+Bungo,ID1509,ID15
+Buol,ID7207,ID72
+Buru,ID8104,ID81
+Buru Selatan,ID8109,ID81
+Buton,ID7401,ID74
+Buton Selatan,ID7415,ID74
+Buton Tengah,ID7414,ID74
+Buton Utara,ID7409,ID74
+Ciamis,ID3207,ID32
+Cianjur,ID3203,ID32
+Cilacap,ID3301,ID33
+Cirebon,ID3209,ID32
+Dairi,ID1210,ID12
+Danau,ID1388,ID13
+Danau,ID1688,ID16
+Danau,ID1888,ID18
+Danau,ID7188,ID71
+Danau Toba,ID1288,ID12
+Deiyai,ID9436,ID94
+Deli Serdang,ID1212,ID12
+Demak,ID3321,ID33
+Dharmasraya,ID1311,ID13
+Dogiyai,ID9434,ID94
+Dompu,ID5205,ID52
+Donggala,ID7205,ID72
+Empat Lawang,ID1611,ID16
+Ende,ID5311,ID53
+Enrekang,ID7316,ID73
+Fakfak,ID9101,ID91
+Flores Timur,ID5309,ID53
+Garut,ID3205,ID32
+Gayo Lues,ID1113,ID11
+Gianyar,ID5104,ID51
+Gorontalo,ID7502,ID75
+Gorontalo Utara,ID7505,ID75
+Gowa,ID7306,ID73
+Gresik,ID3525,ID35
+Grobogan,ID3315,ID33
+Gunung Kidul,ID3403,ID34
+Gunung Mas,ID6211,ID62
+Halmahera Barat,ID8201,ID82
+Halmahera Selatan,ID8204,ID82
+Halmahera Tengah,ID8202,ID82
+Halmahera Timur,ID8206,ID82
+Halmahera Utara,ID8205,ID82
+Hulu Sungai Selatan,ID6306,ID63
+Hulu Sungai Tengah,ID6307,ID63
+Hulu Sungai Utara,ID6308,ID63
+Humbang Hasundutan,ID1215,ID12
+Hutan,ID3399,ID33
+Indragiri Hilir,ID1403,ID14
+Indragiri Hulu,ID1402,ID14
+Indramayu,ID3212,ID32
+Intan Jaya,ID9435,ID94
+Jayapura,ID9403,ID94
+Jayawijaya,ID9402,ID94
+Jember,ID3509,ID35
+Jembrana,ID5101,ID51
+Jeneponto,ID7304,ID73
+Jepara,ID3320,ID33
+Jombang,ID3517,ID35
+Kaimana,ID9102,ID91
+Kampar,ID1406,ID14
+Kapuas,ID6203,ID62
+Kapuas Hulu,ID6108,ID61
+Karang Asem,ID5107,ID51
+Karanganyar,ID3313,ID33
+Karawang,ID3215,ID32
+Karimun,ID2101,ID21
+Karo,ID1211,ID12
+Katingan,ID6209,ID62
+Kaur,ID1704,ID17
+Kayong Utara,ID6111,ID61
+Kebumen,ID3305,ID33
+Kediri,ID3506,ID35
+Keerom,ID9420,ID94
+Kendal,ID3324,ID33
+Kepahiang,ID1708,ID17
+Kepulauan Anambas,ID2105,ID21
+Kepulauan Aru,ID8105,ID81
+Kepulauan Mentawai,ID1301,ID13
+Kepulauan Meranti,ID1410,ID14
+Kepulauan Sangihe,ID7103,ID71
+Kepulauan Selayar,ID7301,ID73
+Kepulauan Seribu,ID3101,ID31
+Kepulauan Sula,ID8203,ID82
+Kepulauan Talaud,ID7104,ID71
+Kepulauan Yapen,ID9408,ID94
+Kerinci,ID1501,ID15
+Ketapang,ID6106,ID61
+Klaten,ID3310,ID33
+Klungkung,ID5105,ID51
+Kolaka,ID7404,ID74
+Kolaka Timur,ID7411,ID74
+Kolaka Utara,ID7408,ID74
+Konawe,ID7403,ID74
+Konawe Kepulauan,ID7412,ID74
+Konawe Selatan,ID7405,ID74
+Konawe Utara,ID7410,ID74
+Kota Ambon,ID8171,ID81
+Kota Balikpapan,ID6471,ID64
+Kota Banda Aceh,ID1171,ID11
+Kota Bandar Lampung,ID1871,ID18
+Kota Bandung,ID3273,ID32
+Kota Banjar,ID3279,ID32
+Kota Banjar Baru,ID6372,ID63
+Kota Banjarmasin,ID6371,ID63
+Kota Baru,ID6302,ID63
+Kota Batam,ID2171,ID21
+Kota Batu,ID3579,ID35
+Kota Baubau,ID7472,ID74
+Kota Bekasi,ID3275,ID32
+Kota Bengkulu,ID1771,ID17
+Kota Bima,ID5272,ID52
+Kota Binjai,ID1276,ID12
+Kota Bitung,ID7172,ID71
+Kota Blitar,ID3572,ID35
+Kota Bogor,ID3271,ID32
+Kota Bontang,ID6474,ID64
+Kota Bukittinggi,ID1375,ID13
+Kota Cilegon,ID3672,ID36
+Kota Cimahi,ID3277,ID32
+Kota Cirebon,ID3274,ID32
+Kota Denpasar,ID5171,ID51
+Kota Depok,ID3276,ID32
+Kota Dumai,ID1473,ID14
+Kota Gorontalo,ID7571,ID75
+Kota Gunungsitoli,ID1278,ID12
+Kota Jakarta Barat,ID3174,ID31
+Kota Jakarta Pusat,ID3173,ID31
+Kota Jakarta Selatan,ID3171,ID31
+Kota Jakarta Timur,ID3172,ID31
+Kota Jakarta Utara,ID3175,ID31
+Kota Jambi,ID1571,ID15
+Kota Jayapura,ID9471,ID94
+Kota Kediri,ID3571,ID35
+Kota Kendari,ID7471,ID74
+Kota Kotamobagu,ID7174,ID71
+Kota Kupang,ID5371,ID53
+Kota Langsa,ID1173,ID11
+Kota Lhokseumawe,ID1174,ID11
+Kota Lubuklinggau,ID1674,ID16
+Kota Madiun,ID3577,ID35
+Kota Magelang,ID3371,ID33
+Kota Makassar,ID7371,ID73
+Kota Malang,ID3573,ID35
+Kota Manado,ID7171,ID71
+Kota Mataram,ID5271,ID52
+Kota Medan,ID1275,ID12
+Kota Metro,ID1872,ID18
+Kota Mojokerto,ID3576,ID35
+Kota Padang,ID1371,ID13
+Kota Padang Panjang,ID1374,ID13
+Kota Padangsidimpuan,ID1277,ID12
+Kota Pagar Alam,ID1673,ID16
+Kota Palangka Raya,ID6271,ID62
+Kota Palembang,ID1671,ID16
+Kota Palopo,ID7373,ID73
+Kota Palu,ID7271,ID72
+Kota Pangkal Pinang,ID1971,ID19
+Kota Parepare,ID7372,ID73
+Kota Pariaman,ID1377,ID13
+Kota Pasuruan,ID3575,ID35
+Kota Payakumbuh,ID1376,ID13
+Kota Pekalongan,ID3375,ID33
+Kota Pekanbaru,ID1471,ID14
+Kota Pematang Siantar,ID1273,ID12
+Kota Pontianak,ID6171,ID61
+Kota Prabumulih,ID1672,ID16
+Kota Probolinggo,ID3574,ID35
+Kota Sabang,ID1172,ID11
+Kota Salatiga,ID3373,ID33
+Kota Samarinda,ID6472,ID64
+Kota Sawah Lunto,ID1373,ID13
+Kota Semarang,ID3374,ID33
+Kota Serang,ID3673,ID36
+Kota Sibolga,ID1271,ID12
+Kota Singkawang,ID6172,ID61
+Kota Solok,ID1372,ID13
+Kota Sorong,ID9171,ID91
+Kota Subulussalam,ID1175,ID11
+Kota Sukabumi,ID3272,ID32
+Kota Sungai Penuh,ID1572,ID15
+Kota Surabaya,ID3578,ID35
+Kota Surakarta,ID3372,ID33
+Kota Tangerang,ID3671,ID36
+Kota Tangerang Selatan,ID3674,ID36
+Kota Tanjung Balai,ID1272,ID12
+Kota Tanjung Pinang,ID2172,ID21
+Kota Tarakan,ID6571,ID65
+Kota Tasikmalaya,ID3278,ID32
+Kota Tebing Tinggi,ID1274,ID12
+Kota Tegal,ID3376,ID33
+Kota Ternate,ID8271,ID82
+Kota Tidore Kepulauan,ID8272,ID82
+Kota Tomohon,ID7173,ID71
+Kota Tual,ID8172,ID81
+Kota Yogyakarta,ID3471,ID34
+Kotawaringin Barat,ID6201,ID62
+Kotawaringin Timur,ID6202,ID62
+Kuantan Singingi,ID1401,ID14
+Kubu Raya,ID6112,ID61
+Kudus,ID3319,ID33
+Kulon Progo,ID3401,ID34
+Kuningan,ID3208,ID32
+Kupang,ID5303,ID53
+Kutai Barat,ID6402,ID64
+Kutai Kartanegara,ID6403,ID64
+Kutai Timur,ID6404,ID64
+Labuhan Batu,ID1207,ID12
+Labuhan Batu Selatan,ID1222,ID12
+Labuhan Batu Utara,ID1223,ID12
+Lahat,ID1604,ID16
+Lamandau,ID6207,ID62
+Lamongan,ID3524,ID35
+Lampung Barat,ID1801,ID18
+Lampung Selatan,ID1803,ID18
+Lampung Tengah,ID1805,ID18
+Lampung Timur,ID1804,ID18
+Lampung Utara,ID1806,ID18
+Landak,ID6103,ID61
+Langkat,ID1213,ID12
+Lanny Jaya,ID9430,ID94
+Lebak,ID3602,ID36
+Lebong,ID1707,ID17
+Lembata,ID5308,ID53
+Lima Puluh Kota,ID1308,ID13
+Lingga,ID2104,ID21
+Lombok Barat,ID5201,ID52
+Lombok Tengah,ID5202,ID52
+Lombok Timur,ID5203,ID52
+Lombok Utara,ID5208,ID52
+Lumajang,ID3508,ID35
+Luwu,ID7317,ID73
+Luwu Timur,ID7325,ID73
+Luwu Utara,ID7322,ID73
+Madiun,ID3519,ID35
+Magelang,ID3308,ID33
+Magetan,ID3520,ID35
+Mahakam Hulu,ID6411,ID64
+Majalengka,ID3210,ID32
+Majene,ID7601,ID76
+Malaka,ID5321,ID53
+Malang,ID3507,ID35
+Malinau,ID6501,ID65
+Maluku Barat Daya,ID8108,ID81
+Maluku Tengah,ID8103,ID81
+Maluku Tenggara,ID8102,ID81
+Maluku Tenggara Barat,ID8101,ID81
+Mamasa,ID7603,ID76
+Mamberamo Raya,ID9428,ID94
+Mamberamo Tengah,ID9431,ID94
+Mamuju,ID7604,ID76
+Mamuju Tengah,ID7606,ID76
+Mamuju Utara,ID7605,ID76
+Mandailing Natal,ID1202,ID12
+Manggarai,ID5313,ID53
+Manggarai Barat,ID5315,ID53
+Manggarai Timur,ID5319,ID53
+Manokwari,ID9105,ID91
+Manokwari Selatan,ID9111,ID91
+Mappi,ID9414,ID94
+Maros,ID7308,ID73
+Maybrat,ID9110,ID91
+Melawi,ID6110,ID61
+Mempawah,ID6104,ID61
+Merangin,ID1502,ID15
+Merauke,ID9401,ID94
+Mesuji,ID1811,ID18
+Mimika,ID9412,ID94
+Minahasa,ID7102,ID71
+Minahasa Selatan,ID7105,ID71
+Minahasa Tenggara,ID7109,ID71
+Minahasa Utara,ID7106,ID71
+Mojokerto,ID3516,ID35
+Morowali,ID7203,ID72
+Morowali Utara,ID7212,ID72
+Muara Enim,ID1603,ID16
+Muaro Jambi,ID1505,ID15
+Mukomuko,ID1706,ID17
+Muna,ID7402,ID74
+Muna Barat,ID7413,ID74
+Murung Raya,ID6213,ID62
+Musi Banyuasin,ID1606,ID16
+Musi Rawas,ID1605,ID16
+Musi Rawas Utara,ID1613,ID16
+Nabire,ID9404,ID94
+Nagan Raya,ID1115,ID11
+Nagekeo,ID5318,ID53
+Natuna,ID2103,ID21
+Nduga,ID9429,ID94
+Ngada,ID5312,ID53
+Nganjuk,ID3518,ID35
+Ngawi,ID3521,ID35
+Nias,ID1201,ID12
+Nias Barat,ID1225,ID12
+Nias Selatan,ID1214,ID12
+Nias Utara,ID1224,ID12
+Nunukan,ID6504,ID65
+Ogan Ilir,ID1610,ID16
+Ogan Komering Ilir,ID1602,ID16
+Ogan Komering Ulu,ID1601,ID16
+Ogan Komering Ulu Selatan,ID1608,ID16
+Ogan Komering Ulu Timur,ID1609,ID16
+Pacitan,ID3501,ID35
+Padang Lawas,ID1221,ID12
+Padang Lawas Utara,ID1220,ID12
+Padang Pariaman,ID1306,ID13
+Pakpak Bharat,ID1216,ID12
+Pamekasan,ID3528,ID35
+Pandeglang,ID3601,ID36
+Pangandaran,ID3218,ID32
+Pangkajene Dan Kepulauan,ID7309,ID73
+Paniai,ID9410,ID94
+Parigi Moutong,ID7208,ID72
+Pasaman,ID1309,ID13
+Pasaman Barat,ID1312,ID13
+Paser,ID6401,ID64
+Pasuruan,ID3514,ID35
+Pati,ID3318,ID33
+Pegunungan Arfak,ID9112,ID91
+Pegunungan Bintang,ID9417,ID94
+Pekalongan,ID3326,ID33
+Pelalawan,ID1404,ID14
+Pemalang,ID3327,ID33
+Penajam Paser Utara,ID6409,ID64
+Penukal Abab Lematang Ilir,ID1612,ID16
+Pesawaran,ID1809,ID18
+Pesisir Barat,ID1813,ID18
+Pesisir Selatan,ID1302,ID13
+Pidie,ID1109,ID11
+Pidie Jaya,ID1118,ID11
+Pinrang,ID7315,ID73
+Pohuwato,ID7503,ID75
+Polewali Mandar,ID7602,ID76
+Ponorogo,ID3502,ID35
+Poso,ID7204,ID72
+Pringsewu,ID1810,ID18
+Probolinggo,ID3513,ID35
+Pulang Pisau,ID6210,ID62
+Pulau Morotai,ID8207,ID82
+Pulau Taliabu,ID8208,ID82
+Puncak,ID9433,ID94
+Puncak Jaya,ID9411,ID94
+Purbalingga,ID3303,ID33
+Purwakarta,ID3214,ID32
+Purworejo,ID3306,ID33
+Raja Ampat,ID9108,ID91
+Rejang Lebong,ID1702,ID17
+Rembang,ID3317,ID33
+Rokan Hilir,ID1409,ID14
+Rokan Hulu,ID1407,ID14
+Rote Ndao,ID5314,ID53
+Sabu Raijua,ID5320,ID53
+Sambas,ID6101,ID61
+Samosir,ID1217,ID12
+Sampang,ID3527,ID35
+Sanggau,ID6105,ID61
+Sarmi,ID9419,ID94
+Sarolangun,ID1503,ID15
+Sekadau,ID6109,ID61
+Seluma,ID1705,ID17
+Semarang,ID3322,ID33
+Seram Bagian Barat,ID8106,ID81
+Seram Bagian Timur,ID8107,ID81
+Serang,ID3604,ID36
+Serdang Bedagai,ID1218,ID12
+Seruyan,ID6208,ID62
+Siak,ID1405,ID14
+Siau Tagulandang Biaro,ID7108,ID71
+Sidenreng Rappang,ID7314,ID73
+Sidoarjo,ID3515,ID35
+Sigi,ID7210,ID72
+Sijunjung,ID1304,ID13
+Sikka,ID5310,ID53
+Simalungun,ID1209,ID12
+Simeulue,ID1101,ID11
+Sinjai,ID7307,ID73
+Sintang,ID6107,ID61
+Situbondo,ID3512,ID35
+Sleman,ID3404,ID34
+Solok,ID1303,ID13
+Solok Selatan,ID1310,ID13
+Soppeng,ID7312,ID73
+Sorong,ID9107,ID91
+Sorong Selatan,ID9106,ID91
+Sragen,ID3314,ID33
+Subang,ID3213,ID32
+Sukabumi,ID3202,ID32
+Sukamara,ID6206,ID62
+Sukoharjo,ID3311,ID33
+Sumba Barat,ID5301,ID53
+Sumba Barat Daya,ID5317,ID53
+Sumba Tengah,ID5316,ID53
+Sumba Timur,ID5302,ID53
+Sumbawa,ID5204,ID52
+Sumbawa Barat,ID5207,ID52
+Sumedang,ID3211,ID32
+Sumenep,ID3529,ID35
+Supiori,ID9427,ID94
+Tabalong,ID6309,ID63
+Tabanan,ID5102,ID51
+Takalar,ID7305,ID73
+Tambrauw,ID9109,ID91
+Tana Tidung,ID6503,ID65
+Tana Toraja,ID7318,ID73
+Tanah Bumbu,ID6310,ID63
+Tanah Datar,ID1305,ID13
+Tanah Laut,ID6301,ID63
+Tangerang,ID3603,ID36
+Tanggamus,ID1802,ID18
+Tanjung Jabung Barat,ID1507,ID15
+Tanjung Jabung Timur,ID1506,ID15
+Tapanuli Selatan,ID1203,ID12
+Tapanuli Tengah,ID1204,ID12
+Tapanuli Utara,ID1205,ID12
+Tapin,ID6305,ID63
+Tasikmalaya,ID3206,ID32
+Tebo,ID1508,ID15
+Tegal,ID3328,ID33
+Teluk Bintuni,ID9104,ID91
+Teluk Wondama,ID9103,ID91
+Temanggung,ID3323,ID33
+Timor Tengah Selatan,ID5304,ID53
+Timor Tengah Utara,ID5305,ID53
+Toba Samosir,ID1206,ID12
+Tojo Una-Una,ID7209,ID72
+Toli-Toli,ID7206,ID72
+Tolikara,ID9418,ID94
+Toraja Utara,ID7326,ID73
+Trenggalek,ID3503,ID35
+Tuban,ID3523,ID35
+Tulang Bawang Barat,ID1812,ID18
+Tulangbawang,ID1808,ID18
+Tulungagung,ID3504,ID35
+Waduk Cirata,ID3288,ID32
+Wadung Kedungombo,ID3388,ID33
+Wajo,ID7313,ID73
+Wakatobi,ID7407,ID74
+Waropen,ID9426,ID94
+Way Kanan,ID1807,ID18
+Wonogiri,ID3312,ID33
+Wonosobo,ID3307,ID33
+Yahukimo,ID9416,ID94
+Yalimo,ID9432,ID94

@@ -244,7 +244,7 @@ return [
         | Drivers: memory|illuminate|batch
         |
         */
-        'driver' => 'memory',
+        'driver' => env('EXCEL_CACHE_DRIVER', 'illuminate'),
 
         /*
         |--------------------------------------------------------------------------
@@ -257,7 +257,7 @@ return [
         |
         */
         'batch' => [
-            'memory_limit' => 60000,
+            'memory_limit' => (int) env('EXCEL_CACHE_BATCH_MEMORY_LIMIT', 60000),
         ],
 
         /*
