@@ -19,7 +19,8 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->hidden(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('type')

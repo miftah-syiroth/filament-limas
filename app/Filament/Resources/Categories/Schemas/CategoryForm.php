@@ -18,6 +18,7 @@ class CategoryForm
                     ->required(),
                 Select::make('type')
                     ->options(CategoryType::class)
+                    ->native(false)
                     ->required(),
                 Textarea::make('notes')
                     ->columnSpanFull(),

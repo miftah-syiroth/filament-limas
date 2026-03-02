@@ -20,9 +20,12 @@ class ModelsTable
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->hidden(),
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('manufacture.name'),
+                TextColumn::make('category.name'),
                 TextColumn::make('model_number')
                     ->searchable(),
                 TextColumn::make('min_amount')
@@ -32,10 +35,10 @@ class ModelsTable
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('require_serial_number')
-                    ->boolean(),
-                TextColumn::make('manufacture_id'),
-                TextColumn::make('category_id'),
-                TextColumn::make('deprecation_id'),
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deprecation_id')
+                    ->hidden(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
