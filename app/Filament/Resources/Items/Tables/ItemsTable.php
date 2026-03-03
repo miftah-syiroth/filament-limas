@@ -12,75 +12,39 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ItemsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('assignable'))
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID'),
-                TextColumn::make('model.name')
-                    ->searchable(),
-                TextColumn::make('location.name')
-                    ->searchable(),
-                TextColumn::make('department.name')
-                    ->searchable(),
-                TextColumn::make('supplier.name')
-                    ->searchable(),
-                TextColumn::make('assignable_id'),
-                TextColumn::make('assignable_type')
+                    ->label('ID')
+                    ->hidden(),
+                TextColumn::make('serial_number')
                     ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('sku')
-                    ->label('SKU')
+                TextColumn::make('model.name')
                     ->searchable(),
-                TextColumn::make('serial_number')
-                    ->searchable(),
-                TextColumn::make('order_quantity')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('purchase_date')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('purchase_price')
-                    ->money()
-                    ->sortable(),
-                TextColumn::make('eol_date')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('warranty_months')
-                    ->numeric()
-                    ->sortable(),
-                IconColumn::make('is_individual_tracking')
-                    ->boolean(),
+                TextColumn::make('model.category.name'),
                 TextColumn::make('status')
-                    ->badge()
-                    ->searchable(),
-                TextColumn::make('status_updated_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->badge(),
+                TextColumn::make('department.name'),
+                TextColumn::make('assignable.name')
+                    ->label('Pengguna')
+                    ->placeholder('—'),
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->label(''),
+                EditAction::make()->label(''),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
