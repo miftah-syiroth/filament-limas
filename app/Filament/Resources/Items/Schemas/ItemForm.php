@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Items\Schemas;
 
 use App\Enums\ItemStatus;
+use App\Models\Category;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
@@ -33,8 +34,25 @@ class ItemForm
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
+                        Select::make('category_id')
+                            ->label('Category')
+                            ->options(Category::query()->pluck('name', 'id'))
+                            ->live()
+                            ->afterStateUpdated(fn (Set $set) => $set('model_id', null))
+                            ->required()
+                            ->native(false),
                         Select::make('model_id')
-                            ->relationship('model', 'name')
+                            ->relationship(
+                                name: 'model',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query, Get $get): Builder => $query
+                                    ->when(
+                                        $get('category_id'),
+                                        fn (Builder $q): Builder => $q->where('category_id', $get('category_id')),
+                                        fn (Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                    )
+                            )
+                            ->disabled(fn (Get $get): bool => blank($get('category_id')))
                             ->required()
                             ->native(false),
                         Select::make('location_id')
