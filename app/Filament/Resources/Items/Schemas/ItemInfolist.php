@@ -22,6 +22,10 @@ class ItemInfolist
                     ->schema([
                         Section::make('Informasi Umum')
                             ->columnSpan(2)
+                            ->columnOrder([
+                                'default' => 2,
+                                'lg' => 1,
+                            ])
                             ->schema([
                                 TextEntry::make('serial_number')
                                     ->inlineLabel(),
@@ -58,6 +62,10 @@ class ItemInfolist
 
                             ]),
                         Section::make('')
+                            ->columnOrder([
+                                'default' => 1,
+                                'lg' => 2,
+                            ])
                             ->schema([
                                 QrCodeEntry::make('serial_number')
                                     ->hiddenLabel(),
