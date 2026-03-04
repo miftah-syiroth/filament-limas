@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Imports\CityImport;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CitySeeder extends Seeder
@@ -13,6 +14,11 @@ class CitySeeder extends Seeder
      */
     public function run(): void
     {
+        if (DB::table('cities')->exists()) {
+            $this->command->info('Cities table is not empty, skipping seeding.');
+
+            return;
+        }
         $city_file = resource_path('data/city.csv');
         if (! file_exists($city_file)) {
             throw new \RuntimeException("File tidak ditemukan: {$city_file}");

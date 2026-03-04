@@ -8,7 +8,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -34,9 +33,6 @@ class ModelsTable
                 TextColumn::make('end_of_life')
                     ->numeric()
                     ->sortable(),
-                IconColumn::make('require_serial_number')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deprecation_id')
                     ->hidden(),
                 TextColumn::make('created_at')

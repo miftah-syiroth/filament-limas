@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Country;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CountrySeeder extends Seeder
 {
@@ -12,8 +13,13 @@ class CountrySeeder extends Seeder
      */
     public function run(): void
     {
-        $json = file_get_contents(resource_path('data/countries.json'));
+        // hanya jalankan kalau tidak ada first row
+        if (DB::table('countries')->exists()) {
+            $this->command->info('Countries table is not empty, skipping seeding.');
 
+            return;
+        }
+        $json = file_get_contents(resource_path('data/countries.json'));
         $countries = json_decode($json, true);
 
         foreach ($countries as $code => $name) {
