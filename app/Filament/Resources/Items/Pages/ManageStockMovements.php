@@ -6,6 +6,7 @@ use App\Filament\Resources\Items\ItemResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ManageStockMovements extends ManageRelatedRecords
 {
@@ -21,5 +22,10 @@ class ManageStockMovements extends ManageRelatedRecords
             ->headerActions([
                 CreateAction::make(),
             ]);
+    }
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return false;
     }
 }
