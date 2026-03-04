@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AssignableType;
 use App\Enums\ItemStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as BaseModel;
@@ -48,6 +49,7 @@ class Item extends BaseModel
             'status_updated_at' => 'datetime',
             'is_individual_tracking' => 'boolean',
             'status' => ItemStatus::class,
+            'assignable_type' => AssignableType::class,
         ];
     }
 
