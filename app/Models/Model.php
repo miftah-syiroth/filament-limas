@@ -15,7 +15,6 @@ class Model extends EloquentModel
         'model_number',
         'min_amount', // jumlah minimal yang harus ada di inventory untuk pembatasan stock, peminjaman dan alert
         'end_of_life', // int in months
-        'require_serial_number',
         'manufacture_id',
         'category_id',
         'deprecation_id',
@@ -25,7 +24,6 @@ class Model extends EloquentModel
     protected function casts(): array
     {
         return [
-            'require_serial_number' => 'boolean',
         ];
     }
 

@@ -47,6 +47,10 @@ class ItemInfolist
                                     ->label('Pelacakan Individu')
                                     ->boolean()
                                     ->inlineLabel(),
+                                TextEntry::make('quantity')
+                                    ->label('Kuantitas')
+                                    ->numeric()
+                                    ->inlineLabel(),
                                 TextEntry::make('status')
                                     ->label('Status')
                                     ->badge()

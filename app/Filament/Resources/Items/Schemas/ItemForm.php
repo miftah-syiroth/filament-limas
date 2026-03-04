@@ -10,6 +10,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
@@ -40,7 +41,7 @@ class ItemForm
                             ->relationship('location', 'name')
                             ->required()
                             ->live()
-                            ->afterStateUpdated(fn(Select $component) => $component
+                            ->afterStateUpdated(fn (Select $component) => $component
                                 ->getContainer()
                                 ->getComponent('department_id')
                                 ->state(null))
@@ -49,11 +50,11 @@ class ItemForm
                             ->relationship(
                                 name: 'department',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query
+                                modifyQueryUsing: fn (Builder $query, Get $get): Builder => $query
                                     ->when(
                                         $get('location_id'),
-                                        fn(Builder $q): Builder => $q->where('location_id', $get('location_id')),
-                                        fn(Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                        fn (Builder $q): Builder => $q->where('location_id', $get('location_id')),
+                                        fn (Builder $q): Builder => $q->whereRaw('1 = 0'),
                                     )
                             )
                             ->live()
@@ -70,14 +71,15 @@ class ItemForm
                             ->inline(false)
                             ->default(true)
                             ->live()
-                            ->afterStateUpdated(fn(Set $set, $state) => $state ? $set('quantity', 1) : null),
+                            ->afterStateUpdated(fn (Set $set, $state) => $state ? $set('quantity', 1) : null)
+                            ->disabledOn('edit'),
                         TextInput::make('quantity')
                             ->label('Kuantitas')
                             ->required()
                             ->numeric()
                             ->minValue(0)
                             ->default(1)
-                            ->disabled(fn(Get $get) => $get('is_individual_tracking') === true)
+                            ->disabled(fn (Get $get, Component $component) => $component->getContainer()?->getOperation() === 'edit' || $get('is_individual_tracking') === true)
                             ->dehydrated()
                             ->rules([
                                 function (Get $get) {
@@ -90,9 +92,10 @@ class ItemForm
                             ]),
                         Textarea::make('notes'),
                     ]),
-                Section::make('Pelacakan (Individual)')
+                Section::make('Pelacakan')
                     ->columnSpanFull()
-                    ->visible(fn(Get $get) => $get('is_individual_tracking') === true)
+                    ->visible(fn (Get $get) => $get('is_individual_tracking') === true)
+                    ->hiddenOn('edit')
                     ->schema([
                         Repeater::make('tracking_entries')
                             ->schema([
@@ -101,7 +104,7 @@ class ItemForm
                                     ->unique(table: 'items', column: 'serial_number', ignoreRecord: true)
                                     ->disabled()
                                     ->dehydrated()
-                                    ->default(fn() => self::generateSerialNumber()),
+                                    ->default(fn () => self::generateSerialNumber()),
                                 Select::make('assignable_type')
                                     ->label('Tipe Assignable')
                                     ->options([
@@ -110,10 +113,10 @@ class ItemForm
                                     ->nullable()
                                     ->native(false)
                                     ->live()
-                                    ->afterStateUpdated(fn(Set $set) => $set('assignable_id', null)),
+                                    ->afterStateUpdated(fn (Set $set) => $set('assignable_id', null)),
                                 Select::make('assignable_id')
                                     ->label('Assignable')
-                                    ->options(fn(Get $get): array => $get('assignable_type') === 'App\\Models\\User'
+                                    ->options(fn (Get $get): array => $get('assignable_type') === 'App\\Models\\User'
                                         ? User::query()->pluck('name', 'id')->toArray()
                                         : [])
                                     ->nullable()
@@ -125,16 +128,16 @@ class ItemForm
                             ->minItems(1)
                             ->addActionLabel('Tambah Serial'),
                     ]),
-                Section::make('Pelacakan (Non-Individual)')
+                Section::make('Pelacakan')
                     ->columnSpanFull()
-                    ->visible(fn(Get $get) => $get('is_individual_tracking') === false)
+                    ->visible(fn (Get $get) => $get('is_individual_tracking') === false)
                     ->schema([
                         TextInput::make('serial_number')
                             ->required()
                             ->unique(table: 'items', column: 'serial_number', ignoreRecord: true)
                             ->disabled()
                             ->dehydrated()
-                            ->default(fn() => self::generateSerialNumber()),
+                            ->default(fn () => self::generateSerialNumber()),
                     ]),
                 Section::make('Informasi Pembelian')
                     ->columnSpanFull()

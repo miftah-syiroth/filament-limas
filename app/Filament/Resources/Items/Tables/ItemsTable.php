@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -33,10 +34,19 @@ class ItemsTable
                 TextColumn::make('model.category.name'),
                 TextColumn::make('status')
                     ->badge(),
+                TextColumn::make('quantity')
+                    ->numeric()
+                    ->alignCenter(),
+                IconColumn::make('is_individual_tracking')
+                    ->label('Individu')
+                    ->alignCenter()
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('department.name'),
                 TextColumn::make('assignable.name')
                     ->label('Pengguna')
-                    ->placeholder('—'),
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 TrashedFilter::make(),
