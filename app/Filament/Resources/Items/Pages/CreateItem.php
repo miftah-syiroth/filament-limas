@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Items\Pages;
 
+use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
 use App\Filament\Resources\Items\Schemas\ItemForm;
 use App\Models\Item;
+use App\Models\StockMovement;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,10 +41,22 @@ class CreateItem extends CreateRecord
             ]));
         }
 
-        return Item::create(array_merge($baseData, [
+        $item = Item::create(array_merge($baseData, [
             'serial_number' => $data['serial_number'],
             'assignable_type' => null,
             'assignable_id' => null,
         ]));
+
+        $quantity = (int) ($data['quantity'] ?? 1);
+        if ($quantity > 0) {
+            StockMovement::create([
+                'item_id' => $item->id,
+                'type' => StockMovementType::In,
+                'quantity' => $quantity,
+                'notes' => 'Stok awal',
+            ]);
+        }
+
+        return $item;
     }
 }

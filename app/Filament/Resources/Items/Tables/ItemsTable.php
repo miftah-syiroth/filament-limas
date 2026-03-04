@@ -20,6 +20,7 @@ class ItemsTable
     {
         return $table
             ->recordUrl(null)
+            ->defaultSort('created_at', direction: 'desc')
             ->modifyQueryUsing(fn (Builder $query) => $query->with('assignable'))
             ->columns([
                 TextColumn::make('id')
