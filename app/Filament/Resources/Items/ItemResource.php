@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Items;
 use App\Filament\Resources\Items\Pages\CreateItem;
 use App\Filament\Resources\Items\Pages\EditItem;
 use App\Filament\Resources\Items\Pages\ListItems;
+use App\Filament\Resources\Items\Pages\ManageStockMovements;
 use App\Filament\Resources\Items\Pages\ViewItem;
 use App\Filament\Resources\Items\Schemas\ItemForm;
 use App\Filament\Resources\Items\Schemas\ItemInfolist;
@@ -17,6 +18,8 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\Pages\Page;
+use Filament\Pages\Enums\SubNavigationPosition;
 
 class ItemResource extends Resource
 {
@@ -26,6 +29,8 @@ class ItemResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'serial_number';
 
+    protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+    
     public static function form(Schema $schema): Schema
     {
         return ItemForm::configure($schema);
@@ -55,6 +60,7 @@ class ItemResource extends Resource
             'create' => CreateItem::route('/create'),
             'view' => ViewItem::route('/{record}'),
             'edit' => EditItem::route('/{record}/edit'),
+            'stock-movements' => ManageStockMovements::route('/{record}/stock-movements'),
         ];
     }
 
@@ -64,5 +70,14 @@ class ItemResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            ViewItem::class,
+            EditItem::class,
+            ManageStockMovements::class,
+        ]);
     }
 }

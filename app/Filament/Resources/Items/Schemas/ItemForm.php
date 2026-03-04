@@ -92,7 +92,7 @@ class ItemForm
                             ]),
                         Textarea::make('notes'),
                     ]),
-                Section::make('Pelacakan')
+                Section::make('Serial Number')
                     ->columnSpanFull()
                     ->visible(fn (Get $get) => $get('is_individual_tracking') === true)
                     ->hiddenOn('edit')
@@ -128,7 +128,7 @@ class ItemForm
                             ->minItems(1)
                             ->addActionLabel('Tambah Serial'),
                     ]),
-                Section::make('Pelacakan')
+                Section::make('Serial Number')
                     ->columnSpanFull()
                     ->visible(fn (Get $get) => $get('is_individual_tracking') === false)
                     ->schema([
