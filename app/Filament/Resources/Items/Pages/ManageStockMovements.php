@@ -4,9 +4,13 @@ namespace App\Filament\Resources\Items\Pages;
 
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
+use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -14,6 +18,7 @@ use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class ManageStockMovements extends ManageRelatedRecords
@@ -70,6 +75,7 @@ class ManageStockMovements extends ManageRelatedRecords
     public function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', direction: 'desc')
             ->columns([
                 TextColumn::make('type')
                     ->badge(),
@@ -79,8 +85,15 @@ class ManageStockMovements extends ManageRelatedRecords
                 TextColumn::make('notes')
                     ->limit(50),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('j M Y H:i')
                     ->sortable(),
+                TextColumn::make('updated_at')
+                    ->dateTime('j M Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                TrashedFilter::make(),
             ])
             ->headerActions([
                 CreateAction::make(),
@@ -88,6 +101,13 @@ class ManageStockMovements extends ManageRelatedRecords
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
+                ]),
             ]);
     }
 }
