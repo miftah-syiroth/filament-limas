@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AssignableType;
+use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as BaseModel;
@@ -78,6 +79,15 @@ class Item extends BaseModel
     public function assignable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (Item $item): void {
+            if ($item->model?->category?->type === CategoryType::Consumable && $item->is_individual_tracking) {
+                $item->is_individual_tracking = false;
+            }
+        });
     }
 
     public function stockMovements(): HasMany

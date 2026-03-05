@@ -33,6 +33,9 @@ class ItemsTable
                 TextColumn::make('model.name')
                     ->searchable(),
                 TextColumn::make('model.category.name'),
+                TextColumn::make('model.category.type')
+                    ->label('Tipe')
+                    ->badge(),
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('quantity')

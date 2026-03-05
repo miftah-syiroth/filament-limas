@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Items\Pages;
 
+use App\Enums\CategoryType;
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
 use App\Filament\Resources\Items\Schemas\ItemForm;
 use App\Models\Item;
+use App\Models\Model as ItemModel;
 use App\Models\StockMovement;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +18,9 @@ class CreateItem extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $isIndividualTracking = $data['is_individual_tracking'] ?? true;
+        $model = ItemModel::find($data['model_id'] ?? null);
+        $isConsumable = $model?->category?->type === CategoryType::Consumable;
+        $isIndividualTracking = $isConsumable ? false : ($data['is_individual_tracking'] ?? true);
 
         $baseData = collect($data)->except(['tracking_entries', 'serial_number'])->toArray();
 

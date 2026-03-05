@@ -25,16 +25,20 @@ class ModelsTable
                     ->searchable(),
                 TextColumn::make('manufacture.name'),
                 TextColumn::make('category.name'),
+                TextColumn::make('category.type')
+                    ->label('Tipe')
+                    ->badge(),
                 TextColumn::make('model_number')
-                    ->searchable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('min_amount')
+                    ->label('Jumlah minimal')
                     ->numeric()
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('end_of_life')
+                    ->label('Kadaluarsa')
                     ->numeric()
-                    ->sortable(),
-                TextColumn::make('deprecation_id')
-                    ->hidden(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

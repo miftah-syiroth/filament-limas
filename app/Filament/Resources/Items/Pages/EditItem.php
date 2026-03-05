@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Items\Pages;
 
+use App\Enums\CategoryType;
 use App\Filament\Resources\Items\ItemResource;
+use App\Models\Model as ItemModel;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
@@ -27,6 +29,8 @@ class EditItem extends EditRecord
     {
         $record = $this->getRecord();
 
+        $data['category_id'] = $record->model?->category_id;
+
         if ($record->is_individual_tracking) {
             $data['tracking_entries'] = [
                 [
@@ -43,6 +47,11 @@ class EditItem extends EditRecord
     public function mutateFormDataBeforeSave(array $data): array
     {
         $record = $this->getRecord();
+
+        $model = ItemModel::find($data['model_id'] ?? $record->model_id);
+        if ($model?->category?->type === CategoryType::Consumable) {
+            $data['is_individual_tracking'] = false;
+        }
 
         if ($record->is_individual_tracking && isset($data['tracking_entries'])) {
             $first = is_array($data['tracking_entries']) ? reset($data['tracking_entries']) : null;
