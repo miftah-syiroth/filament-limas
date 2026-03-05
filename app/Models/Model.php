@@ -17,7 +17,7 @@ class Model extends EloquentModel
         'end_of_life', // int in months
         'manufacture_id',
         'category_id',
-        // 'deprecation_id', // no use for now
+        'deprecation_id', // no use for now
         'notes',
     ];
 
@@ -31,8 +31,8 @@ class Model extends EloquentModel
         return $this->belongsTo(Manufacture::class);
     }
 
-    // public function deprecation()
-    // {
-    //     return $this->belongsTo(Deprecation::class);
-    // }
+    public function deprecation()
+    {
+        return $this->belongsTo(Deprecation::class);
+    }
 }

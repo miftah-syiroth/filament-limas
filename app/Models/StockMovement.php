@@ -16,6 +16,7 @@ class StockMovement extends Model
         'item_id',
         'type',
         'quantity',
+        'unit_name',
         'notes',
     ];
 
@@ -33,6 +34,12 @@ class StockMovement extends Model
 
     protected static function booted(): void
     {
+        static::saving(function (StockMovement $stockMovement): void {
+            $item = $stockMovement->item ?? ($stockMovement->item_id ? Item::find($stockMovement->item_id) : null);
+            if ($item) {
+                $stockMovement->unit_name = $item->unit_name;
+            }
+        });
         static::created(fn (StockMovement $stockMovement) => $stockMovement->recalculateItemQuantity());
         static::updated(fn (StockMovement $stockMovement) => $stockMovement->recalculateItemQuantity());
         static::deleted(fn (StockMovement $stockMovement) => $stockMovement->recalculateItemQuantity());

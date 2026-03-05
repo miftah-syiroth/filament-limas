@@ -82,6 +82,9 @@ class ManageStockMovements extends ManageRelatedRecords
                 TextColumn::make('quantity')
                     ->numeric()
                     ->alignCenter(),
+                TextColumn::make('unit_name')
+                    ->label('Satuan')
+                    ->alignCenter(),
                 TextColumn::make('notes')
                     ->limit(50),
                 TextColumn::make('created_at')

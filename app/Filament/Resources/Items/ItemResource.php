@@ -72,7 +72,10 @@ class ItemResource extends Resource
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        $navigationItems = [ViewItem::class];
+        $navigationItems = [
+            ViewItem::class,
+            EditItem::class,
+        ];
         $record = $page->getRecord();
 
         if ($record && ! $record->is_individual_tracking) {

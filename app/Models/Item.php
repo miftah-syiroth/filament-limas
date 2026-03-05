@@ -29,6 +29,7 @@ class Item extends BaseModel
         'sku', // mungkin tidak dipakai karena sudah ada model
         'serial_number',
         'quantity',
+        'unit_name',
 
         'order_quantity',
         'purchase_date',
@@ -86,6 +87,11 @@ class Item extends BaseModel
         static::saving(function (Item $item): void {
             if ($item->model?->category?->type === CategoryType::Consumable && $item->is_individual_tracking) {
                 $item->is_individual_tracking = false;
+            }
+        });
+        static::updated(function (Item $item): void {
+            if ($item->wasChanged('unit_name')) {
+                $item->stockMovements()->update(['unit_name' => $item->unit_name]);
             }
         });
     }
