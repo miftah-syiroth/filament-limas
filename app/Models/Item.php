@@ -92,6 +92,6 @@ class Item extends BaseModel
 
     public function stockMovements(): HasMany
     {
-        return $this->hasMany(StockMovement::class);
+        return $this->hasMany(StockMovement::class, 'item_id');
     }
 }

@@ -12,14 +12,14 @@ use App\Filament\Resources\Items\Schemas\ItemInfolist;
 use App\Filament\Resources\Items\Tables\ItemsTable;
 use App\Models\Item;
 use BackedEnum;
+use Filament\Pages\Enums\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Resources\Pages\Page;
-use Filament\Pages\Enums\SubNavigationPosition;
 
 class ItemResource extends Resource
 {
@@ -30,7 +30,7 @@ class ItemResource extends Resource
     protected static ?string $recordTitleAttribute = 'serial_number';
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
-    
+
     public static function form(Schema $schema): Schema
     {
         return ItemForm::configure($schema);
@@ -48,9 +48,7 @@ class ItemResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -74,13 +72,10 @@ class ItemResource extends Resource
 
     public static function getRecordSubNavigation(Page $page): array
     {
+        $navigationItems = [ViewItem::class];
         $record = $page->getRecord();
 
-        $navigationItems = [
-            ViewItem::class,
-        ];
-
-        if (!$record->is_individual_tracking) {
+        if ($record && ! $record->is_individual_tracking) {
             $navigationItems[] = ManageStockMovements::class;
         }
 
