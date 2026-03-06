@@ -47,19 +47,8 @@ class ItemInfolist
                                     ->label('Pelacakan Individu')
                                     ->boolean()
                                     ->inlineLabel(),
-                                TextEntry::make('quantity')
-                                    ->label('Kuantitas')
-                                    ->numeric()
-                                    ->inlineLabel(),
-                                TextEntry::make('status')
-                                    ->label('Status')
-                                    ->badge()
-                                    ->inlineLabel(),
-                                TextEntry::make('location.name')
-                                    ->label('Location')
-                                    ->inlineLabel(),
-                                TextEntry::make('department.name')
-                                    ->label('Department')
+                                TextEntry::make('unit.name')
+                                    ->label('Satuan')
                                     ->inlineLabel(),
                                 TextEntry::make('notes')
                                     ->inlineLabel(),
@@ -73,13 +62,27 @@ class ItemInfolist
                             ->schema([
                                 QrCodeEntry::make('serial_number')
                                     ->hiddenLabel(),
+                                TextEntry::make('status')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->inlineLabel(),
+                                TextEntry::make('quantity')
+                                    ->label('Kuantitas')
+                                    ->numeric()
+                                    ->inlineLabel(),
                                 TextEntry::make('assignable')
-                                    ->label('Pengguna')
+                                    ->label('PJ')
                                     ->formatStateUsing(fn ($state) => $state?->name ?? '-')
                                     ->inlineLabel(),
-                                TextEntry::make('assignable_type')
-                                    ->label('Peran')
-                                    ->formatStateUsing(fn ($state) => $state instanceof AssignableType ? $state->getLabel() : '-')
+                                // TextEntry::make('assignable_type')
+                                //     ->label('Peran')
+                                //     ->formatStateUsing(fn ($state) => $state instanceof AssignableType ? $state->getLabel() : '-')
+                                //     ->inlineLabel(),
+                                TextEntry::make('department.name')
+                                        ->label('Department')
+                                        ->inlineLabel(),
+                                TextEntry::make('location.name')
+                                    ->label('Location')
                                     ->inlineLabel(),
                             ]),
                     ]),

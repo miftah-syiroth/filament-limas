@@ -58,7 +58,6 @@ class CreateItem extends CreateRecord
                 'type' => StockMovementType::In,
                 'quantity' => $quantity,
                 'notes' => 'Stok awal',
-                'unit_name' => $data['unit_name'] ?? null,
             ]);
         }
 

@@ -21,22 +21,17 @@ class Item extends BaseModel
         'location_id',
         'department_id',
         'supplier_id',
-
         'assignable_id',
         'assignable_type',
-
+        'unit_id',
         'name',
-        'sku', // mungkin tidak dipakai karena sudah ada model
         'serial_number',
         'quantity',
-        'unit_name',
-
         'order_quantity',
         'purchase_date',
         'purchase_price',
         'eol_date',
         'warranty_months',
-
         'is_individual_tracking',
         'status',
         'notes',
@@ -90,14 +85,19 @@ class Item extends BaseModel
             }
         });
         static::updated(function (Item $item): void {
-            if ($item->wasChanged('unit_name')) {
-                $item->stockMovements()->update(['unit_name' => $item->unit_name]);
-            }
+            // if ($item->wasChanged('unit_id')) {
+            //     $item->stockMovements()->update(['unit_name' => $item->unit_name]);
+            // }
         });
     }
 
     public function stockMovements(): HasMany
     {
         return $this->hasMany(StockMovement::class, 'item_id');
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

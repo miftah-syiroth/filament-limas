@@ -16,7 +16,6 @@ class StockMovement extends Model
         'item_id',
         'type',
         'quantity',
-        'unit_name',
         'notes',
     ];
 
