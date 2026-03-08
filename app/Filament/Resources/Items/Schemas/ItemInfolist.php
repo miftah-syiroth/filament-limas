@@ -46,9 +46,6 @@ class ItemInfolist
                                     ->label('Pelacakan Individu')
                                     ->boolean()
                                     ->inlineLabel(),
-                                TextEntry::make('unit.name')
-                                    ->label('Satuan')
-                                    ->inlineLabel(),
                                 TextEntry::make('notes')
                                     ->inlineLabel(),
 
@@ -67,14 +64,16 @@ class ItemInfolist
                                     ->inlineLabel(),
                                 TextEntry::make('quantity')
                                     ->label('Kuantitas')
-                                    ->numeric()
+                                    ->formatStateUsing(fn ($state, $record): string => $record->unit?->name
+                                        ? "{$state} {$record->unit->name}"
+                                        : (string) $state)
                                     ->inlineLabel(),
                                 TextEntry::make('user.name')
                                     ->label('PJ')
                                     ->inlineLabel(),
                                 TextEntry::make('department.name')
-                                        ->label('Department')
-                                        ->inlineLabel(),
+                                    ->label('Department')
+                                    ->inlineLabel(),
                                 TextEntry::make('location.name')
                                     ->label('Location')
                                     ->inlineLabel(),

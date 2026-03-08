@@ -27,7 +27,8 @@ class ItemsTable
                 TextColumn::make('serial_number')
                     ->searchable(),
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('model.name')
                     ->searchable(),
                 TextColumn::make('model.category.name'),
