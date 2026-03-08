@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -66,8 +66,8 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public function item(): MorphOne
+    public function items(): HasMany
     {
-        return $this->morphOne(Item::class, 'assignable');
+        return $this->hasMany(Item::class);
     }
 }

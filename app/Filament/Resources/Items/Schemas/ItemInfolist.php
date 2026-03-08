@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Items\Schemas;
 
-use App\Enums\AssignableType;
 use App\Filament\Infolists\Components\QrCodeEntry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -70,14 +69,9 @@ class ItemInfolist
                                     ->label('Kuantitas')
                                     ->numeric()
                                     ->inlineLabel(),
-                                TextEntry::make('assignable')
+                                TextEntry::make('user.name')
                                     ->label('PJ')
-                                    ->formatStateUsing(fn ($state) => $state?->name ?? '-')
                                     ->inlineLabel(),
-                                // TextEntry::make('assignable_type')
-                                //     ->label('Peran')
-                                //     ->formatStateUsing(fn ($state) => $state instanceof AssignableType ? $state->getLabel() : '-')
-                                //     ->inlineLabel(),
                                 TextEntry::make('department.name')
                                         ->label('Department')
                                         ->inlineLabel(),

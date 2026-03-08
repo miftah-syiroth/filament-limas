@@ -12,7 +12,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class ItemsTable
 {
@@ -21,7 +20,6 @@ class ItemsTable
         return $table
             ->recordUrl(null)
             ->defaultSort('created_at', direction: 'desc')
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('assignable'))
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')
@@ -47,7 +45,7 @@ class ItemsTable
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('department.name'),
-                TextColumn::make('assignable.name')
+                TextColumn::make('user.name')
                     ->label('Pengguna')
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\AssignableType;
 use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends BaseModel
@@ -21,8 +19,7 @@ class Item extends BaseModel
         'location_id',
         'department_id',
         'supplier_id',
-        'assignable_id',
-        'assignable_type',
+        'user_id',
         'unit_id',
         'name',
         'serial_number',
@@ -47,7 +44,6 @@ class Item extends BaseModel
             'status_updated_at' => 'datetime',
             'is_individual_tracking' => 'boolean',
             'status' => ItemStatus::class,
-            'assignable_type' => AssignableType::class,
         ];
     }
 
@@ -72,9 +68,9 @@ class Item extends BaseModel
         return $this->belongsTo(Supplier::class);
     }
 
-    public function assignable(): MorphTo
+    public function user(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(User::class);
     }
 
     protected static function booted(): void

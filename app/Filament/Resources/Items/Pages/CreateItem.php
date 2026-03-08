@@ -31,8 +31,7 @@ class CreateItem extends CreateRecord
             foreach ($entries as $entry) {
                 $itemData = array_merge($baseData, [
                     'serial_number' => $entry['serial_number'],
-                    'assignable_type' => $entry['assignable_type'] ?? null,
-                    'assignable_id' => $entry['assignable_id'] ?? null,
+                    'user_id' => $entry['user_id'] ?? null,
                 ]);
                 $item = Item::create($itemData);
                 $first ??= $item;
@@ -40,15 +39,12 @@ class CreateItem extends CreateRecord
 
             return $first ?? Item::create(array_merge($baseData, [
                 'serial_number' => ItemForm::generateSerialNumber(),
-                'assignable_type' => null,
-                'assignable_id' => null,
+                'user_id' => null,
             ]));
         }
 
         $item = Item::create(array_merge($baseData, [
             'serial_number' => $data['serial_number'],
-            'assignable_type' => null,
-            'assignable_id' => null,
         ]));
 
         $quantity = (int) ($data['quantity'] ?? 1);

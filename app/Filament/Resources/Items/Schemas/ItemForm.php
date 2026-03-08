@@ -170,25 +170,15 @@ class ItemForm
                                     ->disabled()
                                     ->dehydrated()
                                     ->default(fn() => self::generateSerialNumber()),
-                                Select::make('assignable_type')
-                                    ->label('Tipe Assignable')
-                                    ->options([
-                                        'App\\Models\\User' => 'User',
-                                    ])
-                                    ->nullable()
-                                    ->native(false)
-                                    ->live()
-                                    ->afterStateUpdated(fn(Set $set) => $set('assignable_id', null)),
-                                Select::make('assignable_id')
-                                    ->label('Assignable')
-                                    ->options(fn(Get $get): array => $get('assignable_type') === 'App\\Models\\User'
-                                        ? User::query()->pluck('name', 'id')->toArray()
-                                        : [])
+                                Select::make('user_id')
+                                    ->label('Pengguna')
+                                    ->options(fn(): array => User::query()->pluck('name', 'id')->toArray())
                                     ->nullable()
                                     ->searchable()
+                                    ->preload()
                                     ->native(false),
                             ])
-                            ->columns(3)
+                            ->columns(2)
                             ->defaultItems(1)
                             ->minItems(1)
                             ->addActionLabel('Tambah Serial'),
@@ -203,24 +193,14 @@ class ItemForm
                             ->disabled()
                             ->dehydrated()
                             ->default(fn() => self::generateSerialNumber()),
-                        Select::make('assignable_type')
-                            ->label('Tipe Assignable')
-                            ->options([
-                                'App\\Models\\User' => 'User',
-                            ])
-                            ->nullable()
-                            ->native(false)
-                            ->live()
-                            ->afterStateUpdated(fn(Set $set) => $set('assignable_id', null)),
-                        Select::make('assignable_id')
-                            ->label('Assignable')
-                            ->options(fn(Get $get): array => $get('assignable_type') === 'App\\Models\\User'
-                                ? User::query()->pluck('name', 'id')->toArray()
-                                : [])
+                        Select::make('user_id')
+                            ->label('Pengguna')
+                            ->options(fn(): array => User::query()->pluck('name', 'id')->toArray())
                             ->nullable()
                             ->searchable()
+                            ->preload()
                             ->native(false),
-                    ])->columns(3),
+                    ])->columns(2),
                 Section::make('Informasi Pembelian')
                     ->columnSpanFull()
                     ->columns(2)
