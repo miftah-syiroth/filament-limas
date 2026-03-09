@@ -8,6 +8,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Group;
 
 class ItemInfolist
 {
@@ -38,7 +39,7 @@ class ItemInfolist
                                     ->label('Tipe')
                                     ->inlineLabel()
                                     ->badge()
-                                    ->color(fn ($state) => $state->getColor()),
+                                    ->color(fn($state) => $state->getColor()),
                                 TextEntry::make('model.category.name')
                                     ->label('Kategori')
                                     ->inlineLabel(),
@@ -64,7 +65,7 @@ class ItemInfolist
                                     ->inlineLabel(),
                                 TextEntry::make('quantity')
                                     ->label('Kuantitas')
-                                    ->formatStateUsing(fn ($state, $record): string => $record->unit?->name
+                                    ->formatStateUsing(fn($state, $record): string => $record->unit?->name
                                         ? "{$state} {$record->unit->name}"
                                         : (string) $state)
                                     ->inlineLabel(),
@@ -81,29 +82,41 @@ class ItemInfolist
                     ]),
                 Section::make('Informasi Pembelian')
                     ->columnSpanFull()
-                    ->columns(2)
                     ->schema([
-                        TextEntry::make('supplier.name')
-                            ->label('Supplier')
-                            ->inlineLabel(),
-                        TextEntry::make('purchase_date')
-                            ->dateTime()
-                            ->inlineLabel(),
-                        TextEntry::make('order_quantity')
-                            ->numeric()
-                            ->inlineLabel(),
-                        TextEntry::make('purchase_price')
-                            ->money('IDR')
-                            ->inlineLabel(),
-                        TextEntry::make('warranty_months')
-                            ->label('Garansi bulan')
-                            ->inlineLabel()
-                            ->numeric()
-                            ->suffix('bulan'),
-                        TextEntry::make('eol_date')
-                            ->label('End of Life')
-                            ->dateTime()
-                            ->inlineLabel(),
+                        Grid::make(2)
+                            ->schema([
+                                Group::make([
+                                    TextEntry::make('purchase_date')
+                                        ->date()
+                                        ->inlineLabel(),
+                                    TextEntry::make('purchase_price')
+                                        ->money('IDR')
+                                        ->inlineLabel(),
+                                    TextEntry::make('deprecated_price')
+                                        ->money('IDR')
+                                        ->inlineLabel(),
+                                    TextEntry::make('eol_date')
+                                        ->label('End of Life')
+                                        ->dateTime()
+                                        ->inlineLabel(),
+                                ]),
+                                Group::make([
+                                    TextEntry::make('supplier.name')
+                                        ->label('Supplier')
+                                        ->inlineLabel(),
+                                    TextEntry::make('order_quantity')
+                                        ->numeric()
+                                        ->inlineLabel(),
+                                    TextEntry::make('warranty_months')
+                                        ->label('Garansi bulan')
+                                        ->inlineLabel()
+                                        ->numeric()
+                                        ->suffix('bulan'),
+                                ]),
+                            ]),
+
+
+
                     ]),
             ]);
     }

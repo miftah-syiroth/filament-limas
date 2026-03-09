@@ -35,6 +35,37 @@ class Item extends BaseModel
         'status_updated_at',
     ];
 
+    // appends deprecated_price
+    public function getDeprecatedPriceAttribute(): ?float
+    {
+        if ($this->purchase_price === null || $this->purchase_date === null) {
+            return null;
+        }
+
+        if ($this->model->deprecation === null) {
+            return null;
+        }
+
+        if ($this->purchase_date->isFuture()) {
+            return (float) $this->purchase_price;
+        }
+
+        $minimum_percent = (float) $this->model->deprecation->minimum_value;
+        $deprecation_months = $this->model->deprecation->months;
+
+        $minimum_value = $this->purchase_price * ($minimum_percent / 100);
+        $months_passed = max(0, $this->purchase_date->diffInMonths(now()));
+
+        if ($months_passed >= $deprecation_months) {
+            return round($minimum_value, 2);
+        }
+
+        $monthly_depreciation = ($this->purchase_price - $minimum_value) / $deprecation_months;
+        $deprecated_price = $this->purchase_price - ($monthly_depreciation * $months_passed);
+
+        return max($minimum_value, round($deprecated_price, 2));
+    }
+
     protected function casts(): array
     {
         return [

@@ -32,7 +32,8 @@ class ModelForm
                     ->numeric(),
                 Select::make('deprecation_id')
                     ->relationship('deprecation', 'name')
-                    ->disabled()
+                    ->searchable()
+                    ->preload()
                     ->default(null),
                 Textarea::make('notes')
                     ->columnSpanFull(),

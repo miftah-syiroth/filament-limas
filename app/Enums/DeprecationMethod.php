@@ -8,8 +8,7 @@ use Illuminate\Contracts\Support\Htmlable;
 enum DeprecationMethod: string implements HasLabel
 {
     // straight line, reducing balance, sum of the years digits
-    case Amount = 'amount';
-    case Percentage = 'percentage';
+    case Amount = 'amount'; // straight line
 
     public function getLabel(): string|Htmlable|null
     {
