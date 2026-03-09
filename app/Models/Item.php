@@ -37,20 +37,20 @@ class Item extends BaseModel
     ];
 
     // appends last_audit_date
-    public function getLastAuditDateAttribute(): ?Carbon
-    {
-        $auditedAt = $this->audits()->orderBy('audited_at', 'desc')->first()?->audited_at;
+    // public function getLastAuditDateAttribute(): ?Carbon
+    // {
+    //     $auditedAt = $this->audits()->orderBy('audited_at', 'desc')->first()?->audited_at;
 
-        return $auditedAt ? Carbon::instance($auditedAt) : null;
-    }
+    //     return $auditedAt ? Carbon::instance($auditedAt) : null;
+    // }
 
-    // appends next_audit_date
-    public function getNextAuditDateAttribute(): ?Carbon
-    {
-        $nextAuditAt = $this->audits()->orderBy('next_audit_at', 'desc')->first()?->next_audit_at;
+    // // appends next_audit_date
+    // public function getNextAuditDateAttribute(): ?Carbon
+    // {
+    //     $nextAuditAt = $this->audits()->orderBy('next_audit_at', 'desc')->first()?->next_audit_at;
 
-        return $nextAuditAt ? Carbon::instance($nextAuditAt) : null;
-    }
+    //     return $nextAuditAt ? Carbon::instance($nextAuditAt) : null;
+    // }
 
     // appends deprecated_price
     public function getDeprecatedPriceAttribute(): ?float

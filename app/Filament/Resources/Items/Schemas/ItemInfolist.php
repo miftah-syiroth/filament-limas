@@ -49,18 +49,18 @@ class ItemInfolist
                                     ->inlineLabel(),
                                 TextEntry::make('notes')
                                     ->inlineLabel(),
-                                Grid::make(2)
-                                    ->columnSpanFull()
-                                    ->schema([
-                                        TextEntry::make('last_audit_date')
-                                            ->label('Audit Terakhir')
-                                            ->dateTime('j M Y')
-                                            ->inlineLabel(),
-                                        TextEntry::make('next_audit_date')
-                                            ->label('Audit Berikutnya')
-                                            ->dateTime('j M Y')
-                                            ->inlineLabel(),
-                                    ]),
+                                // Grid::make(2)
+                                //     ->columnSpanFull()
+                                //     ->schema([
+                                //         TextEntry::make('last_audit_date')
+                                //             ->label('Audit Terakhir')
+                                //             ->dateTime('j M Y')
+                                //             ->inlineLabel(),
+                                //         TextEntry::make('next_audit_date')
+                                //             ->label('Audit Berikutnya')
+                                //             ->dateTime('j M Y')
+                                //             ->inlineLabel(),
+                                //     ]),
 
                             ]),
                         Section::make('')
