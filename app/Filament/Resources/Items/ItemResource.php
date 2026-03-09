@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Items;
 use App\Filament\Resources\Items\Pages\CreateItem;
 use App\Filament\Resources\Items\Pages\EditItem;
 use App\Filament\Resources\Items\Pages\ListItems;
+use App\Filament\Resources\Items\Pages\ManageItemStateLogs;
 use App\Filament\Resources\Items\Pages\ManageStockMovements;
 use App\Filament\Resources\Items\Pages\ViewItem;
 use App\Filament\Resources\Items\Schemas\ItemForm;
@@ -59,6 +60,7 @@ class ItemResource extends Resource
             'view' => ViewItem::route('/{record}'),
             'edit' => EditItem::route('/{record}/edit'),
             'stock-movements' => ManageStockMovements::route('/{record}/stock-movements'),
+            'state-logs' => ManageItemStateLogs::route('/{record}/state-logs'),
         ];
     }
 
@@ -81,6 +83,7 @@ class ItemResource extends Resource
         if ($record && ! $record->is_individual_tracking) {
             $navigationItems[] = ManageStockMovements::class;
         }
+        $navigationItems[] = ManageItemStateLogs::class;
 
         return $page->generateNavigationItems($navigationItems);
     }

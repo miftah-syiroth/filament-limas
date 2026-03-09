@@ -96,4 +96,9 @@ class Item extends BaseModel
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function stateLogs(): HasMany
+    {
+        return $this->hasMany(ItemStateLog::class, 'item_id');
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Deprecations\Schemas;
 
-use App\Enums\DeprecationType;
+use App\Enums\DeprecationMethod;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -17,16 +17,21 @@ class DeprecationForm
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('months')
-                    ->label('Lama Depresiasi (bulan)')
+                    ->label('Lama Penggunaan (bulan)')
                     ->required()
+                    ->minValue(1)
                     ->numeric(),
-                TextInput::make('depreciation_min')
-                    ->label('Nilai Depresiasi Minimum')
+                TextInput::make('minimum_value')
+                    ->label('Nilai Minimum')
                     ->required()
-                    ->numeric(),
-                Select::make('depreciation_type')
-                    ->options(DeprecationType::class)
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(100)
+                    ->suffix('%'),
+                Select::make('method')
+                    ->options(DeprecationMethod::class)
                     ->native(false)
+                    ->default(DeprecationMethod::Amount->value)
                     ->required(),
                 Textarea::make('notes')
                     ->columnSpanFull(),

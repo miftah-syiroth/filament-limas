@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->integer('months');
-            $table->decimal('depreciation_min', 10, 2);
+            $table->decimal('depreciation_min', 10, 2); // Sudah benar untuk angka pecahan, baik amount maupun persentase (mis: 19.75%)
             $table->string('depreciation_type', 20);
             $table->timestamps();
             $table->softDeletes();

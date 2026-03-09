@@ -2,19 +2,27 @@
 
 namespace App\Models;
 
+use App\Enums\DeprecationMethod;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Deprecation extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids;
 
     protected $fillable = [
         'name',
         'months',
-        'depreciation_min',
-        'depreciation_type',
+        'minimum_value',
+        'method',
         'notes',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'minimum_value' => 'decimal:2',
+            'method' => DeprecationMethod::class,
+        ];
+    }
 }

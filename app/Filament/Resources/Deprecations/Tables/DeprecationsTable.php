@@ -9,7 +9,6 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class DeprecationsTable
@@ -18,18 +17,17 @@ class DeprecationsTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID'),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('months')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('depreciation_min')
+                TextColumn::make('minimum_value')
+                    ->label('Nilai Minimum')
                     ->numeric()
+                    ->suffix('%')
                     ->sortable(),
-                TextColumn::make('depreciation_type')
-                    ->searchable(),
+                TextColumn::make('method'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -38,13 +36,9 @@ class DeprecationsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                TrashedFilter::make(),
+                // TrashedFilter::make(),
             ])
             ->recordActions([
                 ViewAction::make(),

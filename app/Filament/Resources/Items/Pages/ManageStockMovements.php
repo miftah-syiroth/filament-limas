@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Items\Pages;
 
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
+use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -17,6 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -24,6 +26,8 @@ use Filament\Tables\Table;
 class ManageStockMovements extends ManageRelatedRecords
 {
     protected static string $resource = ItemResource::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowsRightLeft;
 
     protected static string $relationship = 'stockMovements';
 

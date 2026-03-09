@@ -5,9 +5,9 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 
-enum DeprecationType: string implements HasLabel
+enum DeprecationMethod: string implements HasLabel
 {
-    // amount, percentage
+    // straight line, reducing balance, sum of the years digits
     case Amount = 'amount';
     case Percentage = 'percentage';
 

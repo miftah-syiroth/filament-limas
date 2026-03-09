@@ -12,10 +12,10 @@ enum ItemStatus: string implements HasLabel
     case UnderRepair = 'under_repair';
     case Damaged = 'damaged';
     case Irreparable = 'irreparable';
-    case Lost = 'lost'; // hilang
-    case Stolen = 'stolen'; // dicuri
-    case Archived = 'archived'; // diarsipkan
-    case Disposed = 'disposed'; // dihapus dari secara fisik di real world
+    case Lost = 'lost';
+    case Stolen = 'stolen';
+    case Archived = 'archived';
+    case Disposed = 'disposed';
 
     public function getLabel(): string|Htmlable|null
     {

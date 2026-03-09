@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Deprecations\Schemas;
 
-use App\Models\Deprecation;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -17,18 +16,18 @@ class DeprecationInfolist
                 TextEntry::make('name'),
                 TextEntry::make('months')
                     ->numeric(),
-                TextEntry::make('depreciation_min')
+                TextEntry::make('minimum_value')
                     ->numeric(),
-                TextEntry::make('depreciation_type'),
+                TextEntry::make('method'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
                     ->dateTime()
                     ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (Deprecation $record): bool => $record->trashed()),
+                // TextEntry::make('deleted_at')
+                //     ->dateTime()
+                //     ->visible(fn (Deprecation $record): bool => $record->trashed()),
             ]);
     }
 }
