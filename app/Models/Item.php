@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -35,22 +36,6 @@ class Item extends BaseModel
         'notes',
         'status_updated_at',
     ];
-
-    // appends last_audit_date
-    // public function getLastAuditDateAttribute(): ?Carbon
-    // {
-    //     $auditedAt = $this->audits()->orderBy('audited_at', 'desc')->first()?->audited_at;
-
-    //     return $auditedAt ? Carbon::instance($auditedAt) : null;
-    // }
-
-    // // appends next_audit_date
-    // public function getNextAuditDateAttribute(): ?Carbon
-    // {
-    //     $nextAuditAt = $this->audits()->orderBy('next_audit_at', 'desc')->first()?->next_audit_at;
-
-    //     return $nextAuditAt ? Carbon::instance($nextAuditAt) : null;
-    // }
 
     // appends deprecated_price
     public function getDeprecatedPriceAttribute(): ?float
@@ -150,5 +135,10 @@ class Item extends BaseModel
     public function audits(): HasMany
     {
         return $this->hasMany(ItemAudit::class, 'item_id');
+    }
+
+    public function latestAudit(): HasOne
+    {
+        return $this->hasOne(ItemAudit::class)->latest('audited_at');
     }
 }
