@@ -18,7 +18,12 @@ class Model extends EloquentModel
         'manufacture_id',
         'category_id',
         'deprecation_id', // no use for now
+        'audit_interval', // in months
         'notes',
+    ];
+    
+    protected $casts = [
+        'audit_interval' => 'integer',
     ];
 
     public function category()

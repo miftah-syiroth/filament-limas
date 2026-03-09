@@ -16,7 +16,8 @@ class ModelForm
                 Select::make('category_id')
                     ->relationship('category', 'name')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->required(),
                 TextInput::make('name')
                     ->required(),
                 Select::make('manufacture_id')
@@ -25,16 +26,24 @@ class ModelForm
                     ->preload(),
                 TextInput::make('model_number'),
                 TextInput::make('min_amount')
+                    ->label('Minimal Stock')
                     ->numeric()
                     ->belowContent('Jumlah stock minimal yang harus ada.'),
                 TextInput::make('end_of_life')
-                    ->label('End of Life (months)')
-                    ->numeric(),
+                    ->label('Masa Pakai')
+                    ->numeric()
+                    ->minValue(1)
+                    ->suffix('bulan'),
                 Select::make('deprecation_id')
                     ->relationship('deprecation', 'name')
                     ->searchable()
                     ->preload()
                     ->default(null),
+                TextInput::make('audit_interval')
+                    ->label('Interval Audit')
+                    ->numeric()
+                    ->minValue(1)
+                    ->suffix('bulan'),
                 Textarea::make('notes')
                     ->columnSpanFull(),
             ]);

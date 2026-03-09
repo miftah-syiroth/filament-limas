@@ -33,6 +33,8 @@ class Item extends BaseModel
         'status',
         'notes',
         'status_updated_at',
+        'last_audit_date',
+        'next_audit_date',
     ];
 
     // appends deprecated_price
@@ -75,7 +77,24 @@ class Item extends BaseModel
             'status_updated_at' => 'datetime',
             'is_individual_tracking' => 'boolean',
             'status' => ItemStatus::class,
+            'last_audit_date' => 'datetime',
+            'next_audit_date' => 'datetime',
         ];
+    }
+
+
+    protected static function booted(): void
+    {
+        static::saving(function (Item $item): void {
+            if ($item->model?->category?->type === CategoryType::Consumable && $item->is_individual_tracking) {
+                $item->is_individual_tracking = false;
+            }
+        });
+        static::updated(function (Item $item): void {
+            // if ($item->wasChanged('unit_id')) {
+            //     $item->stockMovements()->update(['unit_name' => $item->unit_name]);
+            // }
+        });
     }
 
     // relationships
@@ -104,20 +123,6 @@ class Item extends BaseModel
         return $this->belongsTo(User::class);
     }
 
-    protected static function booted(): void
-    {
-        static::saving(function (Item $item): void {
-            if ($item->model?->category?->type === CategoryType::Consumable && $item->is_individual_tracking) {
-                $item->is_individual_tracking = false;
-            }
-        });
-        static::updated(function (Item $item): void {
-            // if ($item->wasChanged('unit_id')) {
-            //     $item->stockMovements()->update(['unit_name' => $item->unit_name]);
-            // }
-        });
-    }
-
     public function stockMovements(): HasMany
     {
         return $this->hasMany(StockMovement::class, 'item_id');
@@ -131,5 +136,10 @@ class Item extends BaseModel
     public function stateLogs(): HasMany
     {
         return $this->hasMany(ItemStateLog::class, 'item_id');
+    }
+
+    public function audits(): HasMany
+    {
+        return $this->hasMany(ItemAudit::class, 'item_id');
     }
 }

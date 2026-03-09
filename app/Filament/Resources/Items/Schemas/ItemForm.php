@@ -178,7 +178,6 @@ class ItemForm
                                     ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
                                     ->nullable()
                                     ->searchable()
-                                    ->preload()
                                     ->native(false),
                             ])
                             ->columns(2)
