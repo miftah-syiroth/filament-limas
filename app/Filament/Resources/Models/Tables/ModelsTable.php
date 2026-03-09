@@ -28,6 +28,10 @@ class ModelsTable
                 TextColumn::make('category.type')
                     ->label('Tipe')
                     ->badge(),
+                TextColumn::make('audit_interval')
+                    ->label('Interval Audit')
+                    ->numeric()
+                    ->suffix(' bulan'),
                 TextColumn::make('model_number')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('min_amount')

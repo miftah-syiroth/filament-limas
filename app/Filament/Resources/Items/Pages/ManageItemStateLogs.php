@@ -5,19 +5,20 @@ namespace App\Filament\Resources\Items\Pages;
 use App\Enums\ItemStateEventType;
 use App\Enums\ItemStatus;
 use App\Filament\Resources\Items\ItemResource;
-use App\Models\Item;
 use App\Models\ItemStateLog;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -168,38 +169,6 @@ class ManageItemStateLogs extends ManageRelatedRecords
         return $data;
     }
 
-    protected function syncItemFromStateLog(ItemStateLog $stateLog): void
-    {
-        $item = $stateLog->item;
-        if (! $item instanceof Item) {
-            return;
-        }
-
-        $updates = [];
-
-        if ($stateLog->event_type === ItemStateEventType::Transfer) {
-            if ($stateLog->to_location_id !== null) {
-                $updates['location_id'] = $stateLog->to_location_id;
-            }
-            if ($stateLog->to_department_id !== null) {
-                $updates['department_id'] = $stateLog->to_department_id;
-            }
-        }
-
-        if ($stateLog->event_type === ItemStateEventType::Assignment && $stateLog->to_user_id !== null) {
-            $updates['user_id'] = $stateLog->to_user_id;
-        }
-
-        if ($stateLog->event_type === ItemStateEventType::StatusChange && $stateLog->to_status !== null) {
-            $updates['status'] = $stateLog->to_status;
-            $updates['status_updated_at'] = now();
-        }
-
-        if ($updates !== []) {
-            $item->update($updates);
-        }
-    }
-
     public function table(Table $table): Table
     {
         return $table
@@ -239,6 +208,9 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->label('Status ke')
                     ->badge()
                     ->color('primary'),
+                TextColumn::make('notes')
+                    ->label('Catatan')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime('j M Y H:i')
                     ->sortable()
@@ -254,15 +226,59 @@ class ManageItemStateLogs extends ManageRelatedRecords
             ->headerActions([
                 CreateAction::make()
                     ->closeModalByClickingAway(false)
-                    ->mutateDataUsing(fn (array $data): array => $this->nullifyFromWhenToIsNull($data))
-                    ->after(function (ItemStateLog $record): void {
-                        $this->syncItemFromStateLog($record);
-                    }),
+                    ->mutateDataUsing(fn (array $data): array => $this->nullifyFromWhenToIsNull($data)),
             ])
             ->recordActions([
+                Action::make('view')
+                    ->label('')
+                    ->icon('heroicon-o-eye')
+                    ->modalHeading(fn (ItemStateLog $record): string => 'Detail Log - '.$record->event_type->getLabel())
+                    ->modalSubmitAction(false)
+                    ->schema([
+                        Section::make('Informasi Transfer & Status')
+                            ->schema([
+                                TextEntry::make('event_type')
+                                    ->label('Tipe Event')
+                                    ->badge(),
+                                TextEntry::make('fromLocation.name')
+                                    ->label('Lokasi dari')
+                                    ->placeholder('—'),
+                                TextEntry::make('toLocation.name')
+                                    ->label('Lokasi ke')
+                                    ->placeholder('—'),
+                                TextEntry::make('fromDepartment.name')
+                                    ->label('Departemen dari')
+                                    ->placeholder('—'),
+                                TextEntry::make('toDepartment.name')
+                                    ->label('Departemen ke')
+                                    ->placeholder('—'),
+                                TextEntry::make('fromUser.name')
+                                    ->label('Pengguna dari')
+                                    ->placeholder('—'),
+                                TextEntry::make('toUser.name')
+                                    ->label('Pengguna ke')
+                                    ->placeholder('—'),
+                                TextEntry::make('from_status')
+                                    ->label('Status dari')
+                                    ->badge()
+                                    ->placeholder('—'),
+                                TextEntry::make('to_status')
+                                    ->label('Status ke')
+                                    ->badge()
+                                    ->placeholder('—'),
+                                TextEntry::make('notes')
+                                    ->label('Catatan')
+                                    ->placeholder('—'),
+                                TextEntry::make('created_at')
+                                    ->label('Dibuat')
+                                    ->dateTime('j M Y H:i'),
+                            ])
+                            ->columns(2),
+                    ]),
                 // EditAction::make()
                 //     ->mutateDataUsing(fn(array $data): array => $this->nullifyFromWhenToIsNull($data)),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->hiddenLabel(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

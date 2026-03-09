@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->dateTime('last_audit_date')->nullable();
-            $table->dateTime('next_audit_date')->nullable();
+        Schema::table('item_audits', function (Blueprint $table) {
+            $table->dateTime('next_audit_at')->after('audited_at')->nullable();
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropColumn('last_audit_date');
-            $table->dropColumn('next_audit_date');
+        Schema::table('item_audits', function (Blueprint $table) {
+            $table->dropColumn('next_audit_at');
         });
     }
 };

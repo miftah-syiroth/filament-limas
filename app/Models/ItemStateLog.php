@@ -36,6 +36,45 @@ class ItemStateLog extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::created(function (ItemStateLog $stateLog): void {
+            $stateLog->syncItem();
+        });
+    }
+
+    public function syncItem(): void
+    {
+        $item = $this->item;
+        if ($item === null) {
+            return;
+        }
+
+        $updates = [];
+
+        if ($this->event_type === ItemStateEventType::Transfer) {
+            if ($this->to_location_id !== null) {
+                $updates['location_id'] = $this->to_location_id;
+            }
+            if ($this->to_department_id !== null) {
+                $updates['department_id'] = $this->to_department_id;
+            }
+        }
+
+        if ($this->event_type === ItemStateEventType::Assignment && $this->to_user_id !== null) {
+            $updates['user_id'] = $this->to_user_id;
+        }
+
+        if ($this->event_type === ItemStateEventType::StatusChange && $this->to_status !== null) {
+            $updates['status'] = $this->to_status;
+            $updates['status_updated_at'] = now();
+        }
+
+        if ($updates !== []) {
+            $item->update($updates);
+        }
+    }
+
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class, 'item_id');

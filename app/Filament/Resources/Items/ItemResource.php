@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Items;
 use App\Filament\Resources\Items\Pages\CreateItem;
 use App\Filament\Resources\Items\Pages\EditItem;
 use App\Filament\Resources\Items\Pages\ListItems;
+use App\Filament\Resources\Items\Pages\ManageItemAudits;
 use App\Filament\Resources\Items\Pages\ManageItemStateLogs;
 use App\Filament\Resources\Items\Pages\ManageStockMovements;
 use App\Filament\Resources\Items\Pages\ViewItem;
@@ -61,6 +62,7 @@ class ItemResource extends Resource
             'edit' => EditItem::route('/{record}/edit'),
             'stock-movements' => ManageStockMovements::route('/{record}/stock-movements'),
             'state-logs' => ManageItemStateLogs::route('/{record}/state-logs'),
+            'audits' => ManageItemAudits::route('/{record}/audits'),
         ];
     }
 
@@ -84,6 +86,7 @@ class ItemResource extends Resource
             $navigationItems[] = ManageStockMovements::class;
         }
         $navigationItems[] = ManageItemStateLogs::class;
+        $navigationItems[] = ManageItemAudits::class;
 
         return $page->generateNavigationItems($navigationItems);
     }

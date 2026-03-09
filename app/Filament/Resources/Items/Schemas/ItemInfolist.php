@@ -6,9 +6,9 @@ use App\Filament\Infolists\Components\QrCodeEntry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Group;
 
 class ItemInfolist
 {
@@ -49,6 +49,18 @@ class ItemInfolist
                                     ->inlineLabel(),
                                 TextEntry::make('notes')
                                     ->inlineLabel(),
+                                Grid::make(2)
+                                    ->columnSpanFull()
+                                    ->schema([
+                                        TextEntry::make('last_audit_date')
+                                            ->label('Audit Terakhir')
+                                            ->dateTime('j M Y')
+                                            ->inlineLabel(),
+                                        TextEntry::make('next_audit_date')
+                                            ->label('Audit Berikutnya')
+                                            ->dateTime('j M Y')
+                                            ->inlineLabel(),
+                                    ]),
 
                             ]),
                         Section::make('')
@@ -114,8 +126,6 @@ class ItemInfolist
                                         ->suffix('bulan'),
                                 ]),
                             ]),
-
-
 
                     ]),
             ]);
