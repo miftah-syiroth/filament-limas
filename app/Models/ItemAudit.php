@@ -33,10 +33,7 @@ class ItemAudit extends Model
 
     public function getCodeAttribute(): string
     {
-        $parts = explode('-', $this->id);
-        $uniquePart = end($parts);
-
-        return $uniquePart;
+        return substr($this->id, -8);
     }
 
     protected static function booted(): void

@@ -7,6 +7,7 @@ use App\Filament\Resources\Items\Pages\EditItem;
 use App\Filament\Resources\Items\Pages\ListItems;
 use App\Filament\Resources\Items\Pages\ManageItemAudits;
 use App\Filament\Resources\Items\Pages\ManageItemStateLogs;
+use App\Filament\Resources\Items\Pages\ManageMaintenance;
 use App\Filament\Resources\Items\Pages\ManageStockMovements;
 use App\Filament\Resources\Items\Pages\ViewItem;
 use App\Filament\Resources\Items\Schemas\ItemForm;
@@ -63,6 +64,7 @@ class ItemResource extends Resource
             'stock-movements' => ManageStockMovements::route('/{record}/stock-movements'),
             'state-logs' => ManageItemStateLogs::route('/{record}/state-logs'),
             'audits' => ManageItemAudits::route('/{record}/audits'),
+            'maintenances' => ManageMaintenance::route('/{record}/maintenances'),
         ];
     }
 
@@ -87,6 +89,7 @@ class ItemResource extends Resource
         }
         $navigationItems[] = ManageItemStateLogs::class;
         $navigationItems[] = ManageItemAudits::class;
+        $navigationItems[] = ManageMaintenance::class;
 
         return $page->generateNavigationItems($navigationItems);
     }
