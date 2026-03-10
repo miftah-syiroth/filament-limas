@@ -34,6 +34,8 @@ class ItemResource extends Resource
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Schema $schema): Schema
     {
         return ItemForm::configure($schema);
@@ -87,9 +89,9 @@ class ItemResource extends Resource
         if ($record && ! $record->is_individual_tracking) {
             $navigationItems[] = ManageStockMovements::class;
         }
-        $navigationItems[] = ManageItemStateLogs::class;
         $navigationItems[] = ManageItemAudits::class;
         $navigationItems[] = ManageMaintenance::class;
+        $navigationItems[] = ManageItemStateLogs::class;
 
         return $page->generateNavigationItems($navigationItems);
     }

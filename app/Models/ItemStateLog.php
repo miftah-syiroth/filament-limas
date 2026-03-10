@@ -15,6 +15,7 @@ class ItemStateLog extends Model
 
     protected $fillable = [
         'item_id',
+        'item_audit_id',
         'event_type',
         'from_location_id',
         'to_location_id',
@@ -78,6 +79,11 @@ class ItemStateLog extends Model
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class, 'item_id');
+    }
+
+    public function itemAudit(): BelongsTo
+    {
+        return $this->belongsTo(ItemAudit::class, 'item_audit_id');
     }
 
     public function fromLocation(): BelongsTo

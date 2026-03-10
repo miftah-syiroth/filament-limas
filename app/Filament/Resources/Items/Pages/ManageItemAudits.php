@@ -4,7 +4,10 @@ namespace App\Filament\Resources\Items\Pages;
 
 use App\Enums\ItemAuditCondition;
 use App\Enums\ItemAuditResult;
+use App\Enums\ItemStateEventType;
+use App\Enums\ItemStatus;
 use App\Filament\Resources\Items\ItemResource;
+use App\Models\ItemStateLog;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -17,8 +20,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -64,6 +69,21 @@ class ManageItemAudits extends ManageRelatedRecords
                         return Carbon::now()->addMonths($auditInterval);
                     }),
                 Textarea::make('notes'),
+                Fieldset::make('Status Item')
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        Select::make('from_status')
+                            ->label('Status dari')
+                            ->options(ItemStatus::class)
+                            ->default(fn (): ?string => $this->getOwnerRecord()?->status?->value)
+                            ->disabled()
+                            ->dehydrated(),
+                        Select::make('to_status')
+                            ->label('Status ke')
+                            ->options(ItemStatus::class)
+                            ->native(false),
+                    ]),
             ]);
     }
 
@@ -78,8 +98,10 @@ class ManageItemAudits extends ManageRelatedRecords
                     ->sortable(),
                 TextColumn::make('condition'),
                 TextColumn::make('result'),
-                TextColumn::make('location_verified')
-                    ->badge(),
+                IconColumn::make('location_verified')
+                    ->label('Lokasi Diverifikasi')
+                    ->alignCenter()
+                    ->boolean(),
                 TextColumn::make('next_audit_at')
                     ->label('Audit Berikutnya')
                     ->dateTime('j M Y')
@@ -97,7 +119,19 @@ class ManageItemAudits extends ManageRelatedRecords
                 TrashedFilter::make(),
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->after(function (array $data): void {
+                        if (filled($data['to_status'] ?? null)) {
+                            ItemStateLog::create([
+                                'item_id' => $this->getOwnerRecord()->id,
+                                'item_audit_id' => $this->getOwnerRecord()->latestAudit->id,
+                                'event_type' => ItemStateEventType::StatusChange,
+                                'from_status' => $this->getOwnerRecord()->status,
+                                'to_status' => $data['to_status'],
+                                'notes' => $data['notes'] ?? null,
+                            ]);
+                        }
+                    }),
             ])
             ->recordActions([
                 DeleteAction::make(),
