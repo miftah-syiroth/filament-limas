@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 
 class Item extends BaseModel
 {
@@ -140,5 +139,10 @@ class Item extends BaseModel
     public function latestAudit(): HasOne
     {
         return $this->hasOne(ItemAudit::class)->latest('audited_at');
+    }
+
+    public function maintenances(): HasMany
+    {
+        return $this->hasMany(Maintenance::class, 'item_id');
     }
 }

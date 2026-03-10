@@ -2,7 +2,8 @@
 
 namespace App\Filament\Resources\Items\Pages;
 
-use App\Enums\ItemStatus;
+use App\Enums\ItemAuditCondition;
+use App\Enums\ItemAuditResult;
 use App\Filament\Resources\Items\ItemResource;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -21,6 +22,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
 class ManageItemAudits extends ManageRelatedRecords
@@ -41,8 +43,12 @@ class ManageItemAudits extends ManageRelatedRecords
                     ->label('Tanggal Audit')
                     ->required()
                     ->default(now()->format('m/d/Y')),
-                Select::make('status')
-                    ->options(ItemStatus::class)
+                Select::make('condition')
+                    ->options(ItemAuditCondition::class)
+                    ->native(false)
+                    ->required(),
+                Select::make('result')
+                    ->options(ItemAuditResult::class)
                     ->native(false)
                     ->required(),
                 Toggle::make('location_verified')
@@ -70,14 +76,19 @@ class ManageItemAudits extends ManageRelatedRecords
                     ->label('Tanggal Audit')
                     ->dateTime('j M Y')
                     ->sortable(),
-                TextColumn::make('status')
-                    ->badge(),
+                TextColumn::make('condition'),
+                TextColumn::make('result'),
                 TextColumn::make('location_verified')
                     ->badge(),
                 TextColumn::make('next_audit_at')
                     ->label('Audit Berikutnya')
                     ->dateTime('j M Y')
                     ->sortable(),
+                TextColumn::make('code')
+                    ->label('Kode')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where('id', 'like', "%{$search}");
+                    }),
                 TextColumn::make('notes')
                     ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('item_id')->constrained('items');
             $table->string('type', 20)->comment('preventive, repair');
-            $table->timestamp('reported_at')->nullable();
-            $table->timestamp('started_at')->nullable();
-            $table->timestamp('completed_at')->nullable();
+            $table->dateTime('reported_at')->nullable();
+            $table->dateTime('started_at')->nullable();
+            $table->dateTime('completed_at')->nullable();
             $table->decimal('cost', 10, 2)->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
