@@ -3,6 +3,8 @@
     :entry="$entry"
 >
     <div {{ $getExtraAttributeBag() }}>
-        <img src="{{ $getState() }}" alt="{{ $getRecord()->serial_number }}" width="100" height="100" />
+        @if ($getState())
+            <img src="{{ $getQrCodeImage() }}" alt="{{ $getState() }}" width="100" height="100" />
+        @endif
     </div>
 </x-dynamic-component>

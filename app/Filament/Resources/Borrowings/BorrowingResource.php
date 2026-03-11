@@ -6,6 +6,7 @@ use App\Filament\Resources\Borrowings\Pages\CreateBorrowing;
 use App\Filament\Resources\Borrowings\Pages\EditBorrowing;
 use App\Filament\Resources\Borrowings\Pages\ListBorrowings;
 use App\Filament\Resources\Borrowings\Pages\ViewBorrowing;
+use App\Filament\Resources\Borrowings\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Borrowings\Schemas\BorrowingForm;
 use App\Filament\Resources\Borrowings\Schemas\BorrowingInfolist;
 use App\Filament\Resources\Borrowings\Tables\BorrowingsTable;
@@ -48,7 +49,7 @@ class BorrowingResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            'items' => ItemsRelationManager::class,
         ];
     }
 

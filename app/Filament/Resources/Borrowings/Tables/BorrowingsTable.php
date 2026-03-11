@@ -32,6 +32,12 @@ class BorrowingsTable
                     ->label('Tanggal Pengembalian')
                     ->date('j M Y')
                     ->sortable(),
+                // jumlah items
+                TextColumn::make('items_count')
+                    ->counts('items')
+                    ->label('Items')
+                    ->alignCenter()
+                    ->numeric(),
                 TextColumn::make('status')
                     ->badge()
                     ->searchable(),

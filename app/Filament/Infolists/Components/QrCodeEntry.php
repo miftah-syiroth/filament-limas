@@ -9,14 +9,12 @@ class QrCodeEntry extends Entry
 {
     protected string $view = 'filament.infolists.components.qr-code-entry';
 
-    public function generateQrCode(string $value): string
+    public function getQrCodeImage(): string
     {
-        $qr = DNS2DFacade::getBarcodePNG($value, 'QRCODE', 10, 10);
-        return 'data:image/png;base64,' . $qr;
-    }
+        $value = (string) $this->getState();
 
-    public function getState(): string
-    {
-        return $this->generateQrCode($this->getRecord()->serial_number);
+        return $value !== ''
+            ? 'data:image/png;base64,'.DNS2DFacade::getBarcodePNG($value, 'QRCODE', 10, 10)
+            : '';
     }
 }
