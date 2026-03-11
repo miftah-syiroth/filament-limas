@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Borrowings\Schemas;
 
 use App\Enums\ItemAuditCondition;
 use App\Models\Item;
+use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -39,15 +40,14 @@ class BorrowingForm
                             ->label('Batas Peminjaman')
                             ->required(),
                         DatePicker::make('returned_at')
-                            ->label('Tanggal Pengembalian'),
-                        Textarea::make('notes')
-                            ->columnSpanFull(),
+                            ->label('Tanggal Pengembalian')
+                            ->visibleOn('edit'),
+                        Textarea::make('notes'),
                     ]),
-                Section::make('Items')
+                Section::make('')
                     ->columnSpanFull()
                     ->schema([
                         Repeater::make('items')
-                            ->relationship()
                             ->columns(3)
                             ->schema([
                                 Select::make('item_id')
@@ -59,22 +59,23 @@ class BorrowingForm
                                         ->limit(20)
                                         ->get()
                                         ->mapWithKeys(fn (Item $item): array => [
-                                            $item->id => "{$item->serial_number} - {$item->quantity}",
+                                            $item->id => "{$item->serial_number} - {$item->model?->name}",
                                         ])
                                         ->all())
                                     ->getOptionLabelUsing(fn ($value): ?string => Item::find($value)?->serial_number
-                                        ? Item::find($value)?->serial_number.' - '.Item::find($value)?->quantity
+                                        ? Item::find($value)?->serial_number.' - '.Item::find($value)?->model?->name
                                         : null)
                                     ->required()
                                     ->live()
+                                    ->preload()
                                     ->native(false)
                                     ->afterStateUpdated(function (Set $set, $state): void {
                                         $set('quantity', null);
-                                        $set('condition_in', null);
+                                        $set('condition_out', null);
                                         if ($state) {
                                             $item = Item::with('latestAudit')->find($state);
                                             $set('quantity', $item?->quantity ?? 1);
-                                            $set('condition_in', $item?->latestAudit?->condition?->value);
+                                            $set('condition_out', $item?->latestAudit?->condition?->value);
                                         }
                                     }),
                                 TextInput::make('quantity')
@@ -85,12 +86,21 @@ class BorrowingForm
                                     ->default(1)
                                     ->live()
                                     ->maxValue(fn (Get $get): ?int => Item::find($get('item_id'))?->quantity),
-                                Select::make('condition_in')
-                                    ->label('Kondisi Masuk')
+                                Select::make('condition_out')
+                                    ->label('Kondisi Keluar')
                                     ->options(ItemAuditCondition::class)
                                     ->native(false)
                                     ->required(),
                             ])
+                            ->mutateRelationshipDataBeforeCreateUsing(function (array $data, Get $get): array {
+                                $borrowedAt = $get('borrowed_at')
+                                    ? Carbon::parse($get('borrowed_at'))->startOfDay()
+                                    : now();
+                                $data['checked_out_at'] = $borrowedAt;
+                                $data['condition_in'] = $data['condition_out'] ?? null;
+
+                                return $data;
+                            })
                             ->defaultItems(1)
                             ->minItems(1)
                             ->addActionLabel('Tambah Item'),

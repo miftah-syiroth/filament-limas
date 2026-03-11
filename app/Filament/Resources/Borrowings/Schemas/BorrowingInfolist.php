@@ -4,7 +4,10 @@ namespace App\Filament\Resources\Borrowings\Schemas;
 
 use App\Models\Borrowing;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
 
 class BorrowingInfolist
 {
@@ -12,31 +15,37 @@ class BorrowingInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label('ID'),
-                TextEntry::make('user.name')
-                    ->label('User'),
-                TextEntry::make('borrowed_at')
-                    ->dateTime(),
-                TextEntry::make('due_at')
-                    ->dateTime(),
-                TextEntry::make('returned_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('status')
-                    ->badge(),
-                TextEntry::make('notes')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (Borrowing $record): bool => $record->trashed()),
+                Section::make('Informasi Umum')
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('user.name')
+                            ->label('User'),
+                        TextEntry::make('status')
+                            ->badge(),
+                        // fieldset
+                        Fieldset::make('Tanggal')
+                            ->columnSpanFull()
+                            ->schema([
+                                Grid::make(3)
+                                    ->columnSpanFull()
+                                    ->schema([
+                                        TextEntry::make('borrowed_at')
+                                            ->label('Tanggal Peminjaman')
+                                            ->dateTime('j M Y'),
+                                        TextEntry::make('due_at')
+                                            ->label('Batas Peminjaman')
+                                            ->dateTime('j M Y'),
+                                        TextEntry::make('returned_at')
+                                            ->label('Tanggal Pengembalian')
+                                            ->dateTime()
+                                            ->placeholder('-'),
+                                    ]),
+                            ]),
+                        TextEntry::make('notes')
+                            ->placeholder('-')
+                            ->columnSpanFull(),
+                    ])
             ]);
     }
 }

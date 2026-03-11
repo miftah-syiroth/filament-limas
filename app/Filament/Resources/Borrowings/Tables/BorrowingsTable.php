@@ -18,18 +18,19 @@ class BorrowingsTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID'),
                 TextColumn::make('user.name')
                     ->searchable(),
                 TextColumn::make('borrowed_at')
-                    ->dateTime()
+                    ->label('Tanggal Peminjaman')
+                    ->date('j M Y')
                     ->sortable(),
                 TextColumn::make('due_at')
-                    ->dateTime()
+                    ->label('Batas Peminjaman')
+                    ->date('j M Y')
                     ->sortable(),
                 TextColumn::make('returned_at')
-                    ->dateTime()
+                    ->label('Tanggal Pengembalian')
+                    ->date('j M Y')
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
@@ -38,21 +39,15 @@ class BorrowingsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()
+                    ->hiddenLabel(),
+                EditAction::make()
+                    ->hiddenLabel(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
