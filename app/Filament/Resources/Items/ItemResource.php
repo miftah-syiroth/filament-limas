@@ -81,8 +81,8 @@ class ItemResource extends Resource
     }
 
     public static function getRecordSubNavigation(Page $page): array
-    {
-        $navigationItems = [
+    {       
+        return $page->generateNavigationItems([
             ViewItem::class,
             EditItem::class,
             ManageBorrowingItems::class,
@@ -90,8 +90,6 @@ class ItemResource extends Resource
             ManageItemAudits::class,
             ManageMaintenance::class,
             ManageItemStateLogs::class,
-        ];
-
-        return $page->generateNavigationItems($navigationItems);
+        ]);
     }
 }
