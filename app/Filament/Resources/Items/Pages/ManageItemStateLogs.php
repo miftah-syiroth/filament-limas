@@ -120,6 +120,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->searchable()
                     ->preload()
                     ->native(false)
+                    ->required(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value),
                 Select::make('from_status')
                     ->label('Status dari')
@@ -193,11 +194,11 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('fromUser.name')
-                    ->label('Pengguna dari')
+                    ->label('PJ dari')
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('toUser.name')
-                    ->label('Pengguna ke')
+                    ->label('PJ ke')
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('from_status')
@@ -225,6 +226,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
             ])
             ->headerActions([
                 CreateAction::make()
+                    ->label('Tambah Transfer')
                     ->closeModalByClickingAway(false)
                     ->mutateDataUsing(fn (array $data): array => $this->nullifyFromWhenToIsNull($data)),
             ])
@@ -275,8 +277,6 @@ class ManageItemStateLogs extends ManageRelatedRecords
                             ])
                             ->columns(2),
                     ]),
-                // EditAction::make()
-                //     ->mutateDataUsing(fn(array $data): array => $this->nullifyFromWhenToIsNull($data)),
                 DeleteAction::make()
                     ->hiddenLabel(),
             ])

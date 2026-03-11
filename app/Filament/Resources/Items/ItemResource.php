@@ -6,6 +6,7 @@ use App\Filament\Resources\Items\Pages\CreateItem;
 use App\Filament\Resources\Items\Pages\EditItem;
 use App\Filament\Resources\Items\Pages\ListItems;
 use App\Filament\Resources\Items\Pages\ManageItemAudits;
+use App\Filament\Resources\Items\Pages\ManageBorrowingItems;
 use App\Filament\Resources\Items\Pages\ManageItemStateLogs;
 use App\Filament\Resources\Items\Pages\ManageMaintenance;
 use App\Filament\Resources\Items\Pages\ManageStockMovements;
@@ -64,6 +65,7 @@ class ItemResource extends Resource
             'view' => ViewItem::route('/{record}'),
             'edit' => EditItem::route('/{record}/edit'),
             'stock-movements' => ManageStockMovements::route('/{record}/stock-movements'),
+            'borrowing-items' => ManageBorrowingItems::route('/{record}/borrowing-items'),
             'state-logs' => ManageItemStateLogs::route('/{record}/state-logs'),
             'audits' => ManageItemAudits::route('/{record}/audits'),
             'maintenances' => ManageMaintenance::route('/{record}/maintenances'),
@@ -83,15 +85,12 @@ class ItemResource extends Resource
         $navigationItems = [
             ViewItem::class,
             EditItem::class,
+            ManageBorrowingItems::class,
+            ManageStockMovements::class,
+            ManageItemAudits::class,
+            ManageMaintenance::class,
+            ManageItemStateLogs::class,
         ];
-        $record = $page->getRecord();
-
-        if ($record && ! $record->is_individual_tracking) {
-            $navigationItems[] = ManageStockMovements::class;
-        }
-        $navigationItems[] = ManageItemAudits::class;
-        $navigationItems[] = ManageMaintenance::class;
-        $navigationItems[] = ManageItemStateLogs::class;
 
         return $page->generateNavigationItems($navigationItems);
     }

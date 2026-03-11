@@ -23,7 +23,7 @@ class BorrowingResource extends Resource
 {
     protected static ?string $model = Borrowing::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::BookOpen;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     protected static ?string $navigationLabel = 'Peminjaman';
 

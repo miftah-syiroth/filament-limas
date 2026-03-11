@@ -27,11 +27,11 @@ class ManageStockMovements extends ManageRelatedRecords
 {
     protected static string $resource = ItemResource::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowsRightLeft;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::InboxStack;
 
     protected static string $relationship = 'stockMovements';
 
-    protected static ?string $navigationLabel = 'Stock Movements';
+    protected static ?string $navigationLabel = 'Stock';
 
     public static function canAccess(array $parameters = []): bool
     {

@@ -23,7 +23,7 @@ class ModelResource extends Resource
 {
     protected static ?string $model = Model::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::Cube;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
     protected static ?string $recordTitleAttribute = 'name';
 

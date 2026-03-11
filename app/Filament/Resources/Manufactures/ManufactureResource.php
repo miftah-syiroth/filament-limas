@@ -23,7 +23,7 @@ class ManufactureResource extends Resource
 {
     protected static ?string $model = Manufacture::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::CpuChip;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCpuChip;
 
     protected static ?string $recordTitleAttribute = 'name';
 
