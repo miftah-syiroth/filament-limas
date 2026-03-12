@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             SupplierSeeder::class,
             ModelSeeder::class,
+            UnitSeeder::class,
         ]);
     }
 }

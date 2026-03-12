@@ -146,6 +146,11 @@ class Item extends BaseModel
         return $this->hasMany(Maintenance::class, 'item_id');
     }
 
+    public function latestMaintenance(): HasOne
+    {
+        return $this->hasOne(Maintenance::class)->latest('reported_at');
+    }
+
     public function borrowingItems(): HasMany
     {
         return $this->hasMany(BorrowingItem::class, 'item_id');

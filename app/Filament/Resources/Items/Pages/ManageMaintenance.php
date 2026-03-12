@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\Items\Pages;
 
+use App\Enums\ItemStateEventType;
+use App\Enums\ItemStatus;
 use App\Enums\MaintenanceStatus;
 use App\Enums\MaintenanceType;
 use App\Filament\Resources\Items\ItemResource;
 use App\Models\ItemAudit;
+use App\Models\ItemStateLog;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -19,6 +22,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -26,6 +30,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class ManageMaintenance extends ManageRelatedRecords
 {
@@ -50,10 +56,12 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->required(),
                 DatePicker::make('started_at')
                     ->label('Tanggal Mulai')
-                    ->required(fn (Get $get): bool => MaintenanceStatus::tryFrom($get('status')) === MaintenanceStatus::Completed),
+                    ->required(fn (Get $get): bool => $get('status') === MaintenanceStatus::Completed)
+                    ->afterOrEqual('reported_at'),
                 DatePicker::make('completed_at')
                     ->label('Tanggal Selesai')
-                    ->required(fn (Get $get): bool => MaintenanceStatus::tryFrom($get('status')) === MaintenanceStatus::Completed),
+                    ->required(fn (Get $get): bool => $get('status') === MaintenanceStatus::Completed)
+                    ->afterOrEqual('started_at'),
                 Select::make('item_audit_id')
                     ->label('Audit')
                     ->options(function (): array {
@@ -93,6 +101,22 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->minValue(0)
                     ->prefix('Rp'),
                 Textarea::make('notes'),
+                Fieldset::make('Status Item')
+                    // sembunyikan berdasarkan authorization create dan status item (Active, UnderDiagnosis, UnderRepair, Damaged)
+                    ->visible(Gate::allows('create', $this->getOwnerRecord()))
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        Select::make('from_status')
+                            ->label('Status dari')
+                            ->options(ItemStatus::class)
+                            ->default(fn (): ?string => $this->getOwnerRecord()?->status?->value)
+                            ->disabled(),
+                        Select::make('to_status')
+                            ->label('Status ke')
+                            ->options(ItemStatus::class)
+                            ->native(false),
+                    ]),
             ]);
     }
 
@@ -135,18 +159,54 @@ class ManageMaintenance extends ManageRelatedRecords
                 TrashedFilter::make(),
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->authorize('create', $this->getOwnerRecord())
+                    ->label('Tambah Maintenance')
+                    ->after(function (array $data): void {
+                        if (filled($data['to_status'] ?? null)) {
+                            ItemStateLog::create([
+                                'item_id' => $this->getOwnerRecord()->id,
+                                'maintenance_id' => $this->getOwnerRecord()->latestMaintenance->id,
+                                'event_type' => ItemStateEventType::StatusChange,
+                                'from_status' => $this->getOwnerRecord()->status,
+                                'to_status' => $data['to_status'],
+                                'notes' => $data['notes'] ?? null,
+                            ]);
+                        }
+                    }),
             ])
             ->recordActions([
                 EditAction::make()
-                    ->hiddenLabel(),
+                    ->hiddenLabel()
+                    ->closeModalByClickingAway(false)
+                    ->label('Tambah Maintenance')
+                    ->fillForm(fn ($record): array => [
+                        ...$record->toArray(),
+                        'from_status' => $this->getOwnerRecord()?->status?->value,
+                    ])
+                    ->after(function (array $data): void {
+                        if (filled($data['to_status'] ?? null)) {
+                            ItemStateLog::create([
+                                'item_id' => $this->getOwnerRecord()->id,
+                                'maintenance_id' => $this->getOwnerRecord()->latestMaintenance->id,
+                                'event_type' => ItemStateEventType::StatusChange,
+                                'from_status' => $this->getOwnerRecord()->status,
+                                'to_status' => $data['to_status'],
+                                'notes' => $data['notes'] ?? null,
+                            ]);
+                        }
+                    }),
                 DeleteAction::make()
                     ->hiddenLabel(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                    ForceDeleteBulkAction::make()
+                        ->authorizeIndividualRecords('forceDelete')
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
                     RestoreBulkAction::make(),
                 ]),
             ]);

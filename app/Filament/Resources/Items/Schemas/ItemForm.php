@@ -174,7 +174,7 @@ class ItemForm
                                     ->dehydrated()
                                     ->default(fn () => self::generateSerialNumber()),
                                 Select::make('user_id')
-                                    ->label('Pengguna')
+                                    ->label('Penanggung Jawab')
                                     ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
                                     ->nullable()
                                     ->searchable()
@@ -196,7 +196,7 @@ class ItemForm
                             ->dehydrated()
                             ->default(fn () => self::generateSerialNumber()),
                         Select::make('user_id')
-                            ->label('Pengguna')
+                            ->label('Penanggung Jawab')
                             ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
                             ->disabled(fn (Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
                             ->nullable()

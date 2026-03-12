@@ -9,12 +9,7 @@ use App\Enums\ItemStatus;
 use App\Filament\Resources\Items\ItemResource;
 use App\Models\ItemStateLog;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -120,6 +115,8 @@ class ManageItemAudits extends ManageRelatedRecords
             ])
             ->headerActions([
                 CreateAction::make()
+                    ->authorize('create', $this->getOwnerRecord())
+                    ->label('Tambah Audit')
                     ->after(function (array $data): void {
                         if (filled($data['to_status'] ?? null)) {
                             ItemStateLog::create([
@@ -132,16 +129,16 @@ class ManageItemAudits extends ManageRelatedRecords
                             ]);
                         }
                     }),
-            ])
-            ->recordActions([
-                DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
             ]);
+        // ->recordActions([
+        //     DeleteAction::make(),
+        // ])
+        // ->toolbarActions([
+        //     BulkActionGroup::make([
+        //         DeleteBulkAction::make(),
+        //         ForceDeleteBulkAction::make(),
+        //         RestoreBulkAction::make(),
+        //     ]),
+        // ]);
     }
 }

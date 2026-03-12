@@ -7,6 +7,7 @@ use App\Enums\MaintenanceType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Maintenance extends Model
@@ -42,5 +43,10 @@ class Maintenance extends Model
     public function itemAudit(): BelongsTo
     {
         return $this->belongsTo(ItemAudit::class, 'item_audit_id');
+    }
+
+    public function stateLogs(): HasMany
+    {
+        return $this->hasMany(ItemStateLog::class, 'maintenance_id');
     }
 }
