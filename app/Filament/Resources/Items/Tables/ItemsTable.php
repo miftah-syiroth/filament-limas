@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Items\Tables;
 
+use App\Models\Item;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -12,6 +13,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ItemsTable
 {
@@ -20,6 +22,10 @@ class ItemsTable
         return $table
             ->recordUrl(null)
             ->defaultSort('created_at', direction: 'desc')
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->withSum(
+                ['borrowingItems as borrowing_items_sum_quantity' => fn (Builder $q): Builder => $q->whereNull('checked_in_at')],
+                'quantity'
+            ))
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')
@@ -38,6 +44,12 @@ class ItemsTable
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('quantity')
+                    ->label('Total')
+                    ->numeric()
+                    ->alignCenter(),
+                TextColumn::make('available_quantity')
+                    ->label('Tersedia')
+                    ->state(fn (Item $record): int|float => $record->quantity - ((float) ($record->borrowing_items_sum_quantity ?? 0)))
                     ->numeric()
                     ->alignCenter(),
                 IconColumn::make('is_individual_tracking')

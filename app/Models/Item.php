@@ -95,7 +95,10 @@ class Item extends BaseModel
     #[Scope]
     public function scopeBorrowable(Builder $query): void
     {
-        $query->where('status', ItemStatus::Active);
+        $query->where('status', ItemStatus::Active)
+            ->whereDoesntHave('borrowingItems', function (Builder $query) {
+                $query->whereNull('checked_in_at');
+            });
     }
 
     // relationships

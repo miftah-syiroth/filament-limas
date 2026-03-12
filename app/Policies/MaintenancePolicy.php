@@ -29,10 +29,9 @@ class MaintenancePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Item $item): bool
+    public function create(User $user, ?Item $item = null): bool
     {
-        // boleh jika status item adalah active, under_diagnosis, under_repair, damaged, irreparable, lost, stolen, archived
-        if (! in_array($item->status, [
+        if ($item && ! in_array($item->status, [
             ItemStatus::Active,
             ItemStatus::UnderDiagnosis,
             ItemStatus::UnderRepair,

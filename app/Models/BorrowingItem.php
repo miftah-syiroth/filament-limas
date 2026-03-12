@@ -17,8 +17,8 @@ class BorrowingItem extends Model
         'item_id',
         'quantity',
         'checked_out_at',
-        'checked_in_at',
         'condition_out',
+        'checked_in_at',
         'condition_in',
         'notes',
     ];

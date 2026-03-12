@@ -28,9 +28,9 @@ class ItemAuditPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Item $item): bool
+    public function create(User $user, ?Item $item = null): bool
     {
-        if ($item->status === ItemStatus::Disposed) {
+        if ($item && $item->status === ItemStatus::Disposed) {
             return false;
         }
 
