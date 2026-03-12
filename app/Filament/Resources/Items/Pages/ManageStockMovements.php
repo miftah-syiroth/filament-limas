@@ -103,18 +103,8 @@ class ManageStockMovements extends ManageRelatedRecords
                 TrashedFilter::make(),
             ])
             ->headerActions([
-                CreateAction::make(),
-            ])
-            ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                CreateAction::make()
+                    ->authorize('create', $this->getOwnerRecord()),
             ]);
     }
 }
