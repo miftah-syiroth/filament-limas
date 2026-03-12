@@ -14,6 +14,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class BorrowingForm
 {
@@ -52,19 +54,37 @@ class BorrowingForm
                             ->schema([
                                 Select::make('item_id')
                                     ->label('Item')
+                                    ->options(
+                                        Item::borrowable()->limit(10)->get()->mapWithKeys(fn(Item $item): array => [
+                                            $item->id => "{$item->serial_number} - {$item->model->name}",
+                                        ])->all()
+                                    )
                                     ->searchable()
-                                    ->getSearchResultsUsing(fn (string $search): array => Item::query()
-                                        ->where('serial_number', 'like', "{$search}%")
-                                        ->orWhere('name', 'like', "%{$search}%")
-                                        ->limit(20)
-                                        ->get()
-                                        ->mapWithKeys(fn (Item $item): array => [
-                                            $item->id => "{$item->serial_number} - {$item->model?->name}",
-                                        ])
-                                        ->all())
-                                    ->getOptionLabelUsing(fn ($value): ?string => Item::find($value)?->serial_number
-                                        ? Item::find($value)?->serial_number.' - '.Item::find($value)?->model?->name
-                                        : null)
+                                    ->getSearchResultsUsing(function (string $search): array {
+                                        return Item::borrowable()
+                                            ->where(function ($query) use ($search) {
+                                                $query->where('serial_number', 'ilike', "{$search}%")
+                                                    ->orWhere('name', 'ilike', "%{$search}%")
+                                                    ->orWhereHas('model', function (Builder $query) use ($search) {
+                                                        $query->where('name', 'ilike', "%{$search}%")
+                                                            ->orWhereHas('category', function(Builder $query) use ($search){
+                                                                $query->where('name', 'ilike', "%{$search}%");
+                                                            });
+                                                    });
+                                            })
+                                            ->limit(20)
+                                            ->get()
+                                            ->mapWithKeys(fn(Item $item): array => [
+                                                $item->id => "{$item->serial_number} - {$item->model?->name}",
+                                            ])
+                                            ->all();
+                                    })
+                                    ->getOptionLabelUsing(function ($value): ?string {
+                                        $item = Item::find($value);
+                                        return $item?->serial_number
+                                            ? $item?->serial_number . ' - ' . $item?->model?->name
+                                            : null;
+                                    })
                                     ->required()
                                     ->live()
                                     ->preload()
@@ -85,7 +105,7 @@ class BorrowingForm
                                     ->required()
                                     ->default(1)
                                     ->live()
-                                    ->maxValue(fn (Get $get): ?int => Item::find($get('item_id'))?->quantity),
+                                    ->maxValue(fn(Get $get): ?int => Item::find($get('item_id'))?->quantity),
                                 Select::make('condition_out')
                                     ->label('Kondisi Keluar')
                                     ->options(ItemAuditCondition::class)

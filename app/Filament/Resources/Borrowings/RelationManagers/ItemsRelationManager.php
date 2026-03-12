@@ -53,8 +53,8 @@ class ItemsRelationManager extends RelationManager
                         ])
                         ->all())
                     ->getSearchResultsUsing(fn (string $search): array => Item::query()
-                        ->where('serial_number', 'like', "{$search}%")
-                        ->orWhere('name', 'like', "%{$search}%")
+                        ->where('serial_number', 'ilike', "{$search}%")
+                        ->orWhere('name', 'ilike', "%{$search}%")
                         ->limit(20)
                         ->get()
                         ->mapWithKeys(fn (Item $item): array => [

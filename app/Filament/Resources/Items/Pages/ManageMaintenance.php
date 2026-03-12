@@ -81,7 +81,7 @@ class ManageMaintenance extends ManageRelatedRecords
 
                         return ItemAudit::query()
                             ->when($ownerRecord, fn (Builder $q) => $q->where('item_id', $ownerRecord->getKey()))
-                            ->where('id', 'like', "%{$search}%")
+                            ->where('id', 'ilike', "%{$search}%")
                             ->latest('audited_at')
                             ->limit(50)
                             ->get()
@@ -130,7 +130,7 @@ class ManageMaintenance extends ManageRelatedRecords
                 TextColumn::make('itemAudit.code')
                     ->label('Kode Audit')
                     ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->whereHas('itemAudit', fn (Builder $q) => $q->where('id', 'like', "%{$search}"));
+                        return $query->whereHas('itemAudit', fn (Builder $q) => $q->where('id', 'ilike', "%{$search}%"));
                     }),
                 TextColumn::make('reported_at')
                     ->label('Tanggal Laporan')

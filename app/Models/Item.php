@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -88,6 +90,12 @@ class Item extends BaseModel
                 $item->is_individual_tracking = false;
             }
         });
+    }
+
+    #[Scope]
+    public function scopeBorrowable(Builder $query): void
+    {
+        $query->where('status', ItemStatus::Active);
     }
 
     // relationships

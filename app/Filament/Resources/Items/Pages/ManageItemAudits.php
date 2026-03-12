@@ -104,7 +104,7 @@ class ManageItemAudits extends ManageRelatedRecords
                 TextColumn::make('code')
                     ->label('Kode')
                     ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->where('id', 'like', "%{$search}%");
+                        return $query->where('id', 'ilike', "%{$search}%");
                     }),
                 TextColumn::make('notes')
                     ->limit(50)
