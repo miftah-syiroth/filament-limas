@@ -21,10 +21,6 @@ class ItemsTable
         return $table
             ->recordUrl(null)
             ->defaultSort('created_at', direction: 'desc')
-            // ->modifyQueryUsing(fn (Builder $query): Builder => $query->withSum(
-            //     ['borrowingItems as borrowing_items_sum_quantity' => fn (Builder $q): Builder => $q->whereNull('checked_in_at')],
-            //     'quantity'
-            // ))
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')

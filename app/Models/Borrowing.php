@@ -29,7 +29,7 @@ class Borrowing extends Model
         'status' => BorrowingStatus::class,
     ];
 
-    protected $with = ['items'];
+    // protected $with = ['items'];
     
     // protected function borrowableQuantity(): Attribute
     // {

@@ -6,7 +6,6 @@ use App\Enums\BorrowingStatus;
 use App\Models\Borrowing;
 use App\Models\BorrowingItem;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class BorrowingItemPolicy
 {
@@ -71,7 +70,7 @@ class BorrowingItemPolicy
         if ($borrowingItem->borrowing->status === BorrowingStatus::Returned && $borrowingItem->borrowing->returned_at) {
             return false;
         }
-        
+
         return true;
     }
 

@@ -14,6 +14,11 @@ class EditBorrowing extends EditRecord
 {
     protected static string $resource = BorrowingResource::class;
 
+    protected function getAllRelationManagers(): array
+    {
+        return [];
+    }
+
     protected function mutateFormDataBeforeSave(array $data): array
     {
         if (! empty($data['returned_at'])) {
