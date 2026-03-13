@@ -29,6 +29,19 @@ class Borrowing extends Model
         'status' => BorrowingStatus::class,
     ];
 
+    protected $with = ['items'];
+    
+    // protected function borrowableQuantity(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: function ($value) {
+    //             $borrowed = $this->activeBorrowingItems->sum('quantity');
+
+    //             return max(0, $this->quantity - $borrowed);
+    //         }
+    //     );
+    // }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

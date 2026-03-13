@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Borrowings\Pages;
 
+use App\Enums\BorrowingStatus;
 use App\Filament\Resources\Borrowings\BorrowingResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
@@ -12,6 +13,15 @@ use Filament\Resources\Pages\EditRecord;
 class EditBorrowing extends EditRecord
 {
     protected static string $resource = BorrowingResource::class;
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if (! empty($data['returned_at'])) {
+            $data['status'] = BorrowingStatus::Returned;
+        }
+
+        return $data;
+    }
 
     protected function getHeaderActions(): array
     {

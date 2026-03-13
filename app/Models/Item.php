@@ -6,6 +6,7 @@ use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,36 +39,9 @@ class Item extends BaseModel
         'status_updated_at',
     ];
 
-    // appends deprecated_price
-    public function getDeprecatedPriceAttribute(): ?float
-    {
-        if ($this->purchase_price === null || $this->purchase_date === null) {
-            return null;
-        }
+    protected $appends = ['borrowable_quantity'];
 
-        if ($this->model->deprecation === null) {
-            return null;
-        }
-
-        if ($this->purchase_date->isFuture()) {
-            return (float) $this->purchase_price;
-        }
-
-        $minimum_percent = (float) $this->model->deprecation->minimum_value;
-        $deprecation_months = $this->model->deprecation->months;
-
-        $minimum_value = $this->purchase_price * ($minimum_percent / 100);
-        $months_passed = max(0, $this->purchase_date->diffInMonths(now()));
-
-        if ($months_passed >= $deprecation_months) {
-            return round($minimum_value, 2);
-        }
-
-        $monthly_depreciation = ($this->purchase_price - $minimum_value) / $deprecation_months;
-        $deprecated_price = $this->purchase_price - ($monthly_depreciation * $months_passed);
-
-        return max($minimum_value, round($deprecated_price, 2));
-    }
+    protected $with = ['activeBorrowingItems'];
 
     protected function casts(): array
     {
@@ -83,6 +57,65 @@ class Item extends BaseModel
         ];
     }
 
+    protected function borrowableQuantity(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                $borrowed = $this->activeBorrowingItems->sum('quantity');
+
+                return max(0, $this->quantity - $borrowed);
+            }
+        );
+    }
+
+    protected function deprecatedPrice(): Attribute
+    {
+        return Attribute::get(function (): ?float {
+
+            if ($this->purchase_price === null || $this->purchase_date === null) {
+                return null;
+            }
+
+            $deprecation = $this->model?->deprecation;
+
+            if ($deprecation === null) {
+                return null;
+            }
+
+            if ($this->purchase_date->isFuture()) {
+                return (float) $this->purchase_price;
+            }
+
+            $months = (int) $deprecation->months;
+
+            if ($months <= 0) {
+                return (float) $this->purchase_price;
+            }
+
+            $minimumPercent = (float) $deprecation->minimum_value;
+
+            $minimumValue = $this->purchase_price * ($minimumPercent / 100);
+
+            $monthsPassed = max(
+                0,
+                $this->purchase_date->diffInMonths(now())
+            );
+
+            if ($monthsPassed >= $months) {
+                return round($minimumValue, 2);
+            }
+
+            $monthlyDepreciation =
+                ($this->purchase_price - $minimumValue) / $months;
+
+            $deprecatedPrice =
+                $this->purchase_price -
+                ($monthlyDepreciation * $monthsPassed);
+
+            return round(max($minimumValue, $deprecatedPrice), 2);
+        });
+    }
+
     protected static function booted(): void
     {
         static::saving(function (Item $item): void {
@@ -96,9 +129,16 @@ class Item extends BaseModel
     public function scopeBorrowable(Builder $query): void
     {
         $query->where('status', ItemStatus::Active)
-            ->whereDoesntHave('borrowingItems', function (Builder $query) {
-                $query->whereNull('checked_in_at');
-            });
+            ->whereRaw('
+                quantity > COALESCE(
+                    (
+                        SELECT SUM(borrowing_items.quantity)
+                        FROM borrowing_items
+                        WHERE borrowing_items.item_id = items.id
+                        AND borrowing_items.checked_in_at IS NULL
+                    ), 0
+                )
+            ');
     }
 
     // relationships
@@ -165,5 +205,11 @@ class Item extends BaseModel
     public function borrowingItems(): HasMany
     {
         return $this->hasMany(BorrowingItem::class, 'item_id');
+    }
+
+    public function activeBorrowingItems(): HasMany
+    {
+        return $this->hasMany(BorrowingItem::class, 'item_id')
+            ->whereNull('checked_in_at');
     }
 }

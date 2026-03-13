@@ -17,6 +17,7 @@ class BorrowingsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('borrowed_at', direction: 'desc')
             ->columns([
                 TextColumn::make('user.name')
                     ->searchable(),

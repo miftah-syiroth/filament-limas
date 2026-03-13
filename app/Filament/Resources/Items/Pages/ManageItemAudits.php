@@ -130,15 +130,5 @@ class ManageItemAudits extends ManageRelatedRecords
                         }
                     }),
             ]);
-        // ->recordActions([
-        //     DeleteAction::make(),
-        // ])
-        // ->toolbarActions([
-        //     BulkActionGroup::make([
-        //         DeleteBulkAction::make(),
-        //         ForceDeleteBulkAction::make(),
-        //         RestoreBulkAction::make(),
-        //     ]),
-        // ]);
     }
 }

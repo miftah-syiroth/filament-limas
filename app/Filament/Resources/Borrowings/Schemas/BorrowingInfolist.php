@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Borrowings\Schemas;
 
-use App\Models\Borrowing;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
@@ -38,7 +37,7 @@ class BorrowingInfolist
                                             ->dateTime('j M Y'),
                                         TextEntry::make('returned_at')
                                             ->label('Tanggal Pengembalian')
-                                            ->dateTime()
+                                            ->dateTime('j M Y')
                                             ->placeholder('-'),
                                     ]),
                             ]),

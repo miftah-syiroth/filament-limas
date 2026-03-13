@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Borrowings\Schemas;
 
 use App\Enums\ItemAuditCondition;
+use App\Models\Borrowing;
+use App\Models\BorrowingItem;
 use App\Models\Item;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
@@ -15,7 +17,6 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class BorrowingForm
 {
@@ -43,10 +44,20 @@ class BorrowingForm
                             ->required(),
                         DatePicker::make('returned_at')
                             ->label('Tanggal Pengembalian')
+                            ->disabled(function (Get $get): bool {
+                                $borrowingId = $get('id');
+
+                                // Disable if there are any item(s) in this borrowing not yet checked in
+                                return BorrowingItem::where('borrowing_id', $borrowingId)
+                                    ->whereNull('checked_in_at')
+                                    ->exists();
+                            })
                             ->visibleOn('edit'),
                         Textarea::make('notes'),
                     ]),
+                // jangan ada di operation edit
                 Section::make('')
+                    ->hiddenOn('edit')
                     ->columnSpanFull()
                     ->schema([
                         Repeater::make('items')
@@ -55,9 +66,13 @@ class BorrowingForm
                                 Select::make('item_id')
                                     ->label('Item')
                                     ->options(
-                                        Item::borrowable()->limit(10)->get()->mapWithKeys(fn(Item $item): array => [
-                                            $item->id => "{$item->serial_number} - {$item->model->name}",
-                                        ])->all()
+                                        Item::borrowable()
+                                            ->with('activeBorrowingItems')
+                                            ->limit(10)
+                                            ->get()
+                                            ->mapWithKeys(fn (Item $item): array => [
+                                                $item->id => "{$item->serial_number} - {$item->model->name}",
+                                            ])->all()
                                     )
                                     ->searchable()
                                     ->getSearchResultsUsing(function (string $search): array {
@@ -67,22 +82,23 @@ class BorrowingForm
                                                     ->orWhere('name', 'ilike', "%{$search}%")
                                                     ->orWhereHas('model', function (Builder $query) use ($search) {
                                                         $query->where('name', 'ilike', "%{$search}%")
-                                                            ->orWhereHas('category', function(Builder $query) use ($search){
+                                                            ->orWhereHas('category', function (Builder $query) use ($search) {
                                                                 $query->where('name', 'ilike', "%{$search}%");
                                                             });
                                                     });
                                             })
                                             ->limit(20)
                                             ->get()
-                                            ->mapWithKeys(fn(Item $item): array => [
+                                            ->mapWithKeys(fn (Item $item): array => [
                                                 $item->id => "{$item->serial_number} - {$item->model?->name}",
                                             ])
                                             ->all();
                                     })
                                     ->getOptionLabelUsing(function ($value): ?string {
                                         $item = Item::find($value);
+
                                         return $item?->serial_number
-                                            ? $item?->serial_number . ' - ' . $item?->model?->name
+                                            ? $item?->serial_number.' - '.$item?->model?->name
                                             : null;
                                     })
                                     ->required()
@@ -93,8 +109,9 @@ class BorrowingForm
                                         $set('quantity', null);
                                         $set('condition_out', null);
                                         if ($state) {
-                                            $item = Item::with('latestAudit')->find($state);
-                                            $set('quantity', $item?->quantity ?? 1);
+                                            $item = Item::with(['latestAudit', 'activeBorrowingItems'])
+                                                ->find($state);
+                                            $set('quantity', $item?->borrowable_quantity ?? 1);
                                             $set('condition_out', $item?->latestAudit?->condition?->value);
                                         }
                                     }),
@@ -105,7 +122,7 @@ class BorrowingForm
                                     ->required()
                                     ->default(1)
                                     ->live()
-                                    ->maxValue(fn(Get $get): ?int => Item::find($get('item_id'))?->quantity),
+                                    ->maxValue(fn (Get $get): ?int => Item::find($get('item_id'))?->quantity),
                                 Select::make('condition_out')
                                     ->label('Kondisi Keluar')
                                     ->options(ItemAuditCondition::class)

@@ -39,7 +39,7 @@ class ItemInfolist
                                     ->label('Tipe')
                                     ->inlineLabel()
                                     ->badge()
-                                    ->color(fn($state) => $state->getColor()),
+                                    ->color(fn ($state) => $state->getColor()),
                                 TextEntry::make('model.category.name')
                                     ->label('Kategori')
                                     ->inlineLabel(),
@@ -77,9 +77,13 @@ class ItemInfolist
                                     ->inlineLabel(),
                                 TextEntry::make('quantity')
                                     ->label('Kuantitas')
-                                    ->formatStateUsing(fn($state, $record): string => $record->unit?->name
+                                    ->formatStateUsing(fn ($state, $record): string => $record->unit?->name
                                         ? "{$state} {$record->unit->name}"
                                         : (string) $state)
+                                    ->inlineLabel(),
+                                TextEntry::make('borrowable_quantity')
+                                    ->label('Dapat Dipinjam')
+                                    ->numeric()
                                     ->inlineLabel(),
                                 TextEntry::make('user.name')
                                     ->label('PJ')

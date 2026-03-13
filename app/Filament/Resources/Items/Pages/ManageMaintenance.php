@@ -207,7 +207,9 @@ class ManageMaintenance extends ManageRelatedRecords
                     ForceDeleteBulkAction::make()
                         ->authorizeIndividualRecords('forceDelete')
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
-                    RestoreBulkAction::make(),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore')
+                        ->action(fn (Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

@@ -27,6 +27,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -95,11 +96,15 @@ class ItemsRelationManager extends RelationManager
                     ->native(false)
                     ->required(),
                 DatePicker::make('checked_in_at')
-                    ->label('Tanggal Masuk'),
+                    ->label('Tanggal Masuk')
+                    ->live()
+                    ->required(fn (Get $get): bool => !empty($get('condition_in'))),
                 Select::make('condition_in')
                     ->label('Kondisi Masuk')
                     ->options(ItemAuditCondition::class)
-                    ->native(false),
+                    ->native(false)
+                    ->live()
+                    ->required(fn (Get $get): bool => !empty($get('checked_in_at'))),
                 Textarea::make('notes')
                     ->label('Catatan'),
             ]);
@@ -139,7 +144,8 @@ class ItemsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->label('Add Item'),
+                    ->label('Add Item')
+                    ->authorize('create', $this->getOwnerRecord()),
             ])
             ->recordActions([
                 Action::make('view')
@@ -206,9 +212,15 @@ class ItemsRelationManager extends RelationManager
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                    ForceDeleteBulkAction::make()
+                        ->authorizeIndividualRecords('forceDelete')
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore')
+                        ->action(fn (Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }
