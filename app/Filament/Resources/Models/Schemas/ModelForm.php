@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Models\Schemas;
 
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
@@ -61,12 +61,12 @@ class ModelForm
                         Section::make()
                             ->columns(2)
                             ->schema([
-                                FileUpload::make('images')
-                                    ->collection('models')
+                                SpatieMediaLibraryFileUpload::make('images')
                                     ->hiddenLabel()
-                                    ->image()
                                     ->multiple()
-                                    ->optimize('webp')
+                                    ->image()
+                                    ->maxSize(1024)
+                                    ->maxFiles(3)
                                     ->columnSpanFull(),
                             ]),
                     ]),

@@ -19,7 +19,7 @@ class Model extends EloquentModel implements HasMedia
         'end_of_life', // int in months
         'manufacture_id',
         'category_id',
-        'deprecation_id', // no use for now
+        'deprecation_id',
         'audit_interval', // in months
         'notes',
     ];
