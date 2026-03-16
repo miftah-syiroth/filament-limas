@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Enums\DeprecationMethod;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Deprecation extends Model
 {
-    use HasUuids;
+    use HasUuids, LogsActivity;
 
     protected $fillable = [
         'name',
@@ -24,5 +26,14 @@ class Deprecation extends Model
             'minimum_value' => 'decimal:2',
             'method' => DeprecationMethod::class,
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->dontLogIfAttributesChangedOnly(['notes'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

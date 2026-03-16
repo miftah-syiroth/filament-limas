@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Borrowing extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids, SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'user_id',
@@ -29,18 +31,14 @@ class Borrowing extends Model
         'status' => BorrowingStatus::class,
     ];
 
-    // protected $with = ['items'];
-    
-    // protected function borrowableQuantity(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: function ($value) {
-    //             $borrowed = $this->activeBorrowingItems->sum('quantity');
-
-    //             return max(0, $this->quantity - $borrowed);
-    //         }
-    //     );
-    // }
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->dontLogIfAttributesChangedOnly(['notes'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function user(): BelongsTo
     {
