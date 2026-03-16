@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Items\Schemas;
 
 use App\Filament\Infolists\Components\QrCodeEntry;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
@@ -35,11 +36,15 @@ class ItemInfolist
                                 TextEntry::make('model.name')
                                     ->label('Model')
                                     ->inlineLabel(),
+                                TextEntry::make('status')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->inlineLabel(),
                                 TextEntry::make('model.category.type')
                                     ->label('Tipe')
                                     ->inlineLabel()
                                     ->badge()
-                                    ->color(fn ($state) => $state->getColor()),
+                                    ->color(fn($state) => $state->getColor()),
                                 TextEntry::make('model.category.name')
                                     ->label('Kategori')
                                     ->inlineLabel(),
@@ -49,18 +54,32 @@ class ItemInfolist
                                     ->inlineLabel(),
                                 TextEntry::make('notes')
                                     ->inlineLabel(),
+
                                 Grid::make(2)
                                     ->columnSpanFull()
                                     ->schema([
+                                        TextEntry::make('quantity')
+                                            ->label('Kuantitas')
+                                            ->formatStateUsing(fn($state, $record): string => $record->unit?->name
+                                                ? "{$state} {$record->unit->name}"
+                                                : (string) $state),
+                                        TextEntry::make('borrowable_quantity')
+                                            ->label('Dapat Dipinjam')
+                                            ->numeric(),
+                                        TextEntry::make('user.name')
+                                            ->label('Penanggung Jawab'),
+                                        TextEntry::make('department.name')
+                                            ->label('Department'),
+                                        TextEntry::make('location.name')
+                                            ->label('Location'),
                                         TextEntry::make('latestAudit.audited_at')
                                             ->label('Audit Terakhir')
-                                            ->dateTime('j M Y')
-                                            ->inlineLabel(),
+                                            ->dateTime('j M Y'),
                                         TextEntry::make('latestAudit.next_audit_at')
                                             ->label('Audit Berikutnya')
-                                            ->dateTime('j M Y')
-                                            ->inlineLabel(),
+                                            ->dateTime('j M Y'),
                                     ]),
+
 
                             ]),
                         Section::make('')
@@ -71,29 +90,9 @@ class ItemInfolist
                             ->schema([
                                 QrCodeEntry::make('serial_number')
                                     ->hiddenLabel(),
-                                TextEntry::make('status')
-                                    ->label('Status')
-                                    ->badge()
-                                    ->inlineLabel(),
-                                TextEntry::make('quantity')
-                                    ->label('Kuantitas')
-                                    ->formatStateUsing(fn ($state, $record): string => $record->unit?->name
-                                        ? "{$state} {$record->unit->name}"
-                                        : (string) $state)
-                                    ->inlineLabel(),
-                                TextEntry::make('borrowable_quantity')
-                                    ->label('Dapat Dipinjam')
-                                    ->numeric()
-                                    ->inlineLabel(),
-                                TextEntry::make('user.name')
-                                    ->label('PJ')
-                                    ->inlineLabel(),
-                                TextEntry::make('department.name')
-                                    ->label('Department')
-                                    ->inlineLabel(),
-                                TextEntry::make('location.name')
-                                    ->label('Location')
-                                    ->inlineLabel(),
+                                SpatieMediaLibraryImageEntry::make('images')
+                                    ->collection('images')
+                                    ->hiddenLabel(),
                             ]),
                     ]),
                 Section::make('Informasi Pembelian')

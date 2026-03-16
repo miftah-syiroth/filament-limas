@@ -59,6 +59,11 @@ class Item extends BaseModel implements HasMedia
         ];
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images');
+    }
+
     protected function borrowableQuantity(): Attribute
     {
         return Attribute::make(
