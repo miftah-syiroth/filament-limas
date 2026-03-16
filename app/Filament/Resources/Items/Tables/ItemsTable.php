@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Items\Tables;
 
+use App\Enums\CategoryType;
+use App\Enums\ItemStatus;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -10,6 +12,7 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,13 +54,31 @@ class ItemsTable
                     ->alignCenter()
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('department.name'),
+                TextColumn::make('department.name')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('user.name')
                     ->label('Pengguna')
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(ItemStatus::class),
+                SelectFilter::make('type')
+                    ->label('Tipe Kategori')
+                    ->multiple()
+                    ->options(CategoryType::class)
+                    ->query(function (Builder $query, array $data): Builder {
+                        $types = $data['values'] ?? [];
+                        if (empty($types)) {
+                            return $query;
+                        }
+
+                        return $query->whereHas('model', function (Builder $q) use ($types): Builder {
+                            return $q->whereHas('category', fn (Builder $q): Builder => $q->whereIn('type', $types));
+                        });
+                    }),
                 TrashedFilter::make(),
             ])
             ->recordActions([

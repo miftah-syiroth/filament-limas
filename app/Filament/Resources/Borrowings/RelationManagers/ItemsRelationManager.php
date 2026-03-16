@@ -98,13 +98,13 @@ class ItemsRelationManager extends RelationManager
                 DatePicker::make('checked_in_at')
                     ->label('Tanggal Masuk')
                     ->live()
-                    ->required(fn (Get $get): bool => !empty($get('condition_in'))),
+                    ->required(fn (Get $get): bool => ! empty($get('condition_in'))),
                 Select::make('condition_in')
                     ->label('Kondisi Masuk')
                     ->options(ItemAuditCondition::class)
                     ->native(false)
                     ->live()
-                    ->required(fn (Get $get): bool => !empty($get('checked_in_at'))),
+                    ->required(fn (Get $get): bool => ! empty($get('checked_in_at'))),
                 Textarea::make('notes')
                     ->label('Catatan'),
             ]);
@@ -190,6 +190,7 @@ class ItemsRelationManager extends RelationManager
                                             ->color('gray'),
                                     ]),
                                 Fieldset::make('Masuk')
+                                    ->columns(1)
                                     ->schema([
                                         TextEntry::make('checked_in_at')
                                             ->label('Tanggal')
