@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BorrowingStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Borrowing extends Model
 {
-    use HasUuids, SoftDeletes, LogsActivity;
+    use HasUuids, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -30,6 +31,24 @@ class Borrowing extends Model
         'returned_at' => 'datetime',
         'status' => BorrowingStatus::class,
     ];
+
+    // append
+    protected $appends = ['overdue'];
+
+    protected function overdue(): Attribute
+    {
+        return Attribute::make(
+            get: function (): bool {
+                if ($this->returned_at === null) {
+                    // Overdue if not returned and due date has passed (strictly before today)
+                    return $this->due_at !== null && $this->due_at < now()->startOfDay();
+                }
+
+                // Overdue if returned after due date
+                return $this->due_at !== null && $this->returned_at > $this->due_at;
+            },
+        );
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

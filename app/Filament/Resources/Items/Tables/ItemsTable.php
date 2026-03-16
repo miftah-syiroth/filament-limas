@@ -11,8 +11,10 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,9 +27,9 @@ class ItemsTable
             ->recordUrl(null)
             ->defaultSort('created_at', direction: 'desc')
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->hidden(),
+                SpatieMediaLibraryImageColumn::make('image')
+                    ->collection('images')
+                    ->limit(1),
                 TextColumn::make('serial_number')
                     ->searchable(),
                 TextColumn::make('name')
@@ -79,6 +81,8 @@ class ItemsTable
                             return $q->whereHas('category', fn (Builder $q): Builder => $q->whereIn('type', $types));
                         });
                     }),
+                TernaryFilter::make('is_individual_tracking')
+                    ->label('Individu'),
                 TrashedFilter::make(),
             ])
             ->recordActions([

@@ -14,6 +14,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
 class ActivityLogResource extends Resource
@@ -64,15 +65,10 @@ class ActivityLogResource extends Resource
                     ->placeholder('-'),
                 TextEntry::make('causer_id')
                     ->placeholder('-'),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
                 TextEntry::make('event')
                     ->placeholder('-'),
-                TextEntry::make('batch_uuid')
+                TextEntry::make('created_at')
+                    ->dateTime()
                     ->placeholder('-'),
             ]);
     }
@@ -81,34 +77,40 @@ class ActivityLogResource extends Resource
     {
         return $table
             ->recordTitleAttribute('id')
+            // jangen clickable
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID'),
-                TextColumn::make('log_name')
-                    ->searchable(),
-                TextColumn::make('subject_type')
-                    ->searchable(),
-                TextColumn::make('subject_id'),
-                TextColumn::make('causer_type')
-                    ->searchable(),
-                TextColumn::make('causer_id'),
+                TextColumn::make('subject_type'),
+                TextColumn::make('subject')
+                    ->formatStateUsing(function (mixed $state): string {
+                        if ($state === null) {
+                            return '-';
+                        }
+                        if ($state instanceof Model) {
+                            return json_encode($state->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                        }
+                        if (is_string($state)) {
+                            $decoded = json_decode($state, true);
+
+                            return json_encode($decoded ?? $state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                        }
+
+                        return json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    })
+                    ->wrap()
+                    ->url(fn (ActivityLog $record): string => route('admin.activity-logs.subject-json', $record))
+                    ->openUrlInNewTab(),
+                TextColumn::make('event'),
+                TextColumn::make('causer.name')
+                    ->label('Pengguna'),
                 TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('event')
-                    ->searchable(),
-                TextColumn::make('batch_uuid'),
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
+                // ViewAction::make(),
             ]);
     }
 

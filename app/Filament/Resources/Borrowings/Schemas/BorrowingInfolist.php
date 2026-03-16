@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Borrowings\Schemas;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class BorrowingInfolist
 {
@@ -22,7 +22,6 @@ class BorrowingInfolist
                             ->label('User'),
                         TextEntry::make('status')
                             ->badge(),
-                        // fieldset
                         Fieldset::make('Tanggal')
                             ->columnSpanFull()
                             ->schema([
@@ -44,7 +43,7 @@ class BorrowingInfolist
                         TextEntry::make('notes')
                             ->placeholder('-')
                             ->columnSpanFull(),
-                    ])
+                    ]),
             ]);
     }
 }
