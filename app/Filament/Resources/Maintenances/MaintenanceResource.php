@@ -8,23 +8,13 @@ use App\Filament\Resources\Maintenances\Pages\ManageMaintenances;
 use App\Models\Maintenance;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -110,6 +100,7 @@ class MaintenanceResource extends Resource
     {
         return $table
             ->recordTitleAttribute('id')
+            ->defaultSort('reported_at', direction: 'desc')
             ->columns([
                 TextColumn::make('item.serial_number')
                     ->searchable(),
@@ -134,10 +125,19 @@ class MaintenanceResource extends Resource
                     ->badge()
                     ->searchable(),
                 TextColumn::make('itemAudit.code')
-                    ->label('Audit'),
+                    ->label('Audit')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->whereHas('itemAudit', fn (Builder $q) => $q->where('id', 'ilike', "%{$search}%"));
+                    }),
             ])
             ->filters([
-                // TrashedFilter::make(),
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(MaintenanceStatus::class),
+                SelectFilter::make('type')
+                    ->multiple()
+                    ->options(MaintenanceType::class),
+                TrashedFilter::make(),
             ])
             ->recordActions([
                 ViewAction::make(),

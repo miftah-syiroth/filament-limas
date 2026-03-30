@@ -8,19 +8,7 @@ use App\Filament\Resources\ItemAudits\Pages\ManageItemAudits;
 use App\Models\ItemAudit;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
@@ -28,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -117,7 +106,9 @@ class ItemAuditResource extends Resource
             ->columns([
                 TextColumn::make('code')
                     ->label('Kode')
-                    ->searchable(),
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where('id', 'ilike', "%{$search}%");
+                    }),
                 TextColumn::make('item.serial_number')
                     ->searchable(),
                 TextColumn::make('audited_at')
@@ -137,11 +128,17 @@ class ItemAuditResource extends Resource
                     ->badge(),
             ])
             ->filters([
+                SelectFilter::make('condition')
+                    ->multiple()
+                    ->options(ItemAuditCondition::class),
+                SelectFilter::make('result')
+                    ->multiple()
+                    ->options(ItemAuditResult::class),
                 TrashedFilter::make(),
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->label('Lihat'), // opsional: beri label supaya jelas
+                    ->label(''), // opsional: beri label supaya jelas
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
