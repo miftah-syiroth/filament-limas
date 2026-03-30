@@ -4,21 +4,12 @@ namespace App\Filament\Resources\BorrowingItems;
 
 use App\Enums\ItemAuditCondition;
 use App\Filament\Resources\BorrowingItems\Pages\ManageBorrowingItems;
+use App\Filament\Exports\BorrowingItemExporter;
 use App\Models\BorrowingItem;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreAction;
-use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -152,16 +143,19 @@ class BorrowingItemResource extends Resource
             ->recordActions([
                 ViewAction::make()
                     ->label(''),
-                // EditAction::make(),
-                // DeleteAction::make(),
-                // ForceDeleteAction::make(),
-                // RestoreAction::make(),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Export')
+                    ->exporter(BorrowingItemExporter::class)
+                    ->fileDisk('public'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    // DeleteBulkAction::make(),
-                    // ForceDeleteBulkAction::make(),
-                    // RestoreBulkAction::make(),
+                    // ExportBulkAction::make()
+                    // ->label('Export')
+                    // ->exporter(BorrowingItemExporter::class)
+                    // ->fileDisk('public'),
                 ]),
             ]);
     }

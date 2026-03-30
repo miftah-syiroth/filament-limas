@@ -4,10 +4,12 @@ namespace App\Filament\Resources\ItemAudits;
 
 use App\Enums\ItemAuditCondition;
 use App\Enums\ItemAuditResult;
+use App\Filament\Exports\ItemAuditExporter;
 use App\Filament\Resources\ItemAudits\Pages\ManageItemAudits;
 use App\Models\ItemAudit;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -139,6 +141,12 @@ class ItemAuditResource extends Resource
             ->recordActions([
                 ViewAction::make()
                     ->label(''), // opsional: beri label supaya jelas
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Export')
+                    ->exporter(ItemAuditExporter::class)
+                    ->fileDisk('public'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -62,6 +62,7 @@ class ModelForm
                             ->columns(2)
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('images')
+                                    ->disk('public')
                                     ->hiddenLabel()
                                     ->multiple()
                                     ->image()

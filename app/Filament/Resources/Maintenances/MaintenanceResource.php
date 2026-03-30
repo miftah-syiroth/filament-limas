@@ -4,10 +4,12 @@ namespace App\Filament\Resources\Maintenances;
 
 use App\Enums\MaintenanceStatus;
 use App\Enums\MaintenanceType;
+use App\Filament\Exports\MaintenanceExporter;
 use App\Filament\Resources\Maintenances\Pages\ManageMaintenances;
 use App\Models\Maintenance;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
@@ -141,10 +143,12 @@ class MaintenanceResource extends Resource
             ])
             ->recordActions([
                 ViewAction::make(),
-                // EditAction::make(),
-                // DeleteAction::make(),
-                // ForceDeleteAction::make(),
-                // RestoreAction::make(),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Export')
+                    ->exporter(MaintenanceExporter::class)
+                    ->fileDisk('public'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

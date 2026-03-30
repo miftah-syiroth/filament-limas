@@ -212,6 +212,7 @@ class ItemForm
                     ->collapsed()
                     ->schema([
                         SpatieMediaLibraryFileUpload::make('images')
+                            ->disk('public')
                             ->hiddenLabel()
                             ->collection('images')
                             ->multiple()
