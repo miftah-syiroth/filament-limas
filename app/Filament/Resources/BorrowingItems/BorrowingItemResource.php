@@ -24,6 +24,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -44,42 +45,40 @@ class BorrowingItemResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Schema $schema): Schema
-    {
-        return $schema
-            ->components([
-                Select::make('borrowing_id')
-                    ->relationship('borrowing', 'id')
-                    ->required(),
-                Select::make('item_id')
-                    ->relationship('item', 'name')
-                    ->required(),
-                TextInput::make('quantity')
-                    ->required()
-                    ->numeric(),
-                DateTimePicker::make('checked_out_at')
-                    ->required(),
-                DateTimePicker::make('checked_in_at'),
-                Select::make('condition_in')
-                    ->options(ItemAuditCondition::class),
-                Select::make('condition_out')
-                    ->options(ItemAuditCondition::class)
-                    ->required(),
-                Textarea::make('notes')
-                    ->columnSpanFull(),
-            ]);
-    }
+    // public static function form(Schema $schema): Schema
+    // {
+    //     return $schema
+    //         ->components([
+    //             Select::make('borrowing_id')
+    //                 ->relationship('borrowing', 'id')
+    //                 ->required(),
+    //             Select::make('item_id')
+    //                 ->relationship('item', 'name')
+    //                 ->required(),
+    //             TextInput::make('quantity')
+    //                 ->required()
+    //                 ->numeric(),
+    //             DateTimePicker::make('checked_out_at')
+    //                 ->required(),
+    //             DateTimePicker::make('checked_in_at'),
+    //             Select::make('condition_in')
+    //                 ->options(ItemAuditCondition::class),
+    //             Select::make('condition_out')
+    //                 ->options(ItemAuditCondition::class)
+    //                 ->required(),
+    //             Textarea::make('notes')
+    //                 ->columnSpanFull(),
+    //         ]);
+    // }
 
     public static function infolist(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label('ID'),
+                TextEntry::make('item.serial_number')
+                    ->label('Serial Number'),
                 TextEntry::make('borrowing.id')
                     ->label('Borrowing'),
-                TextEntry::make('item.name')
-                    ->label('Item'),
                 TextEntry::make('quantity')
                     ->numeric(),
                 TextEntry::make('checked_out_at')
@@ -103,7 +102,7 @@ class BorrowingItemResource extends Resource
                     ->placeholder('-'),
                 TextEntry::make('deleted_at')
                     ->dateTime()
-                    ->visible(fn (BorrowingItem $record): bool => $record->trashed()),
+                    ->visible(fn(BorrowingItem $record): bool => $record->trashed()),
             ]);
     }
 
@@ -112,55 +111,57 @@ class BorrowingItemResource extends Resource
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID'),
-                TextColumn::make('borrowing.id')
+                TextColumn::make('item.serial_number')
+                    ->label('Serial Number')
                     ->searchable(),
-                TextColumn::make('item.name')
+                TextColumn::make('item.model.name')
+                    ->label('Model'),
+                TextColumn::make('borrowing.user.name')
+                    ->label('Peminjam')
                     ->searchable(),
+                TextColumn::make('borrowing.user.email')
+                    ->label('Email')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('quantity')
+                    ->label('Qty')
                     ->numeric()
-                    ->sortable(),
+                    ->alignCenter(),
                 TextColumn::make('checked_out_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('checked_in_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('condition_in')
-                    ->badge()
-                    ->searchable(),
+                    ->label('Waktu Keluar')
+                    ->dateTime('j M Y'),
                 TextColumn::make('condition_out')
+                    ->label('Kondisi Keluar')
                     ->badge()
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
+                TextColumn::make('checked_in_at')
+                    ->label('Waktu Kembali')
+                    ->dateTime('j M Y'),
+                TextColumn::make('condition_in')
+                    ->label('Kondisi Masuk')
+                    ->badge()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('condition_in')
+                    ->label('Kondisi Masuk')
+                    ->multiple()
+                    ->options(ItemAuditCondition::class),
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
-                ForceDeleteAction::make(),
-                RestoreAction::make(),
+                ViewAction::make()
+                    ->label(''),
+                // EditAction::make(),
+                // DeleteAction::make(),
+                // ForceDeleteAction::make(),
+                // RestoreAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    // DeleteBulkAction::make(),
+                    // ForceDeleteBulkAction::make(),
+                    // RestoreBulkAction::make(),
                 ]),
             ]);
     }
