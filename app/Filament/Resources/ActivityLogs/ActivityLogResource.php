@@ -5,7 +5,6 @@ namespace App\Filament\Resources\ActivityLogs;
 use App\Filament\Resources\ActivityLogs\Pages\ManageActivityLogs;
 use App\Models\ActivityLog;
 use BackedEnum;
-use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
@@ -15,7 +14,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
 class ActivityLogResource extends Resource
