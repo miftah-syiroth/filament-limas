@@ -5,13 +5,7 @@ namespace App\Filament\Resources\Items\Pages;
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -86,7 +80,7 @@ class ManageStockMovements extends ManageRelatedRecords
                 TextColumn::make('quantity')
                     ->numeric()
                     ->alignCenter(),
-                TextColumn::make('item.unit.name')
+                TextColumn::make('item.model.unit.name')
                     ->label('Satuan')
                     ->alignCenter(),
                 TextColumn::make('notes')

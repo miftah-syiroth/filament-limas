@@ -20,7 +20,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Item extends BaseModel implements HasMedia
 {
-    use HasUuids, SoftDeletes, InteractsWithMedia, LogsActivity;
+    use HasUuids, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'model_id',
@@ -28,7 +28,7 @@ class Item extends BaseModel implements HasMedia
         'department_id',
         'supplier_id',
         'user_id',
-        'unit_id',
+        // 'unit_id',
         'name',
         'serial_number',
         'quantity',
@@ -190,10 +190,10 @@ class Item extends BaseModel implements HasMedia
         return $this->hasMany(StockMovement::class, 'item_id');
     }
 
-    public function unit(): BelongsTo
-    {
-        return $this->belongsTo(Unit::class);
-    }
+    // public function unit(): BelongsTo
+    // {
+    //     return $this->belongsTo(Unit::class);
+    // }
 
     public function stateLogs(): HasMany
     {

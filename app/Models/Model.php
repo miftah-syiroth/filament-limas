@@ -12,7 +12,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Model extends EloquentModel implements HasMedia
 {
-    use HasUuids, SoftDeletes, InteractsWithMedia, LogsActivity;
+    use HasUuids, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -24,8 +24,9 @@ class Model extends EloquentModel implements HasMedia
         'deprecation_id',
         'audit_interval', // in months
         'notes',
+        'unit_id',
     ];
-    
+
     protected $casts = [
         'audit_interval' => 'integer',
     ];
@@ -52,5 +53,10 @@ class Model extends EloquentModel implements HasMedia
     public function deprecation()
     {
         return $this->belongsTo(Deprecation::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

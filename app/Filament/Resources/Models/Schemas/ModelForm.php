@@ -29,6 +29,12 @@ class ModelForm
                                     ->searchable()
                                     ->preload()
                                     ->required(),
+                                Select::make('unit_id')
+                                    ->label('Satuan')
+                                    ->relationship('unit', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required(),
                                 TextInput::make('name')
                                     ->required(),
                                 Select::make('manufacture_id')

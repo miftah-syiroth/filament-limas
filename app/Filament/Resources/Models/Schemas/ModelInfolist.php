@@ -24,6 +24,9 @@ class ModelInfolist
                             ->schema([
                                 TextEntry::make('name')
                                     ->label('Nama'),
+                                TextEntry::make('unit.name')
+                                    ->label('Satuan')
+                                    ->placeholder('-'),
                                 TextEntry::make('model_number')
                                     ->label('Nomor Model')
                                     ->placeholder('-'),

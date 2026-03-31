@@ -19,20 +19,25 @@ class ModelImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('model_number')
-                ->rules(['max:255']),
+                ->rules(['max:255', 'unique:models,model_number']),
             ImportColumn::make('min_amount')
                 ->numeric()
                 ->rules(['integer']),
             ImportColumn::make('end_of_life')
                 ->numeric()
                 ->rules(['integer']),
-            ImportColumn::make('manufacture_id'),
-            ImportColumn::make('category_id'),
-            ImportColumn::make('deprecation_id'),
+            ImportColumn::make('manufacture')
+                ->relationship(resolveUsing: 'name'),
+            ImportColumn::make('category')
+                ->relationship(resolveUsing: 'name'),
+            ImportColumn::make('deprecation')
+                ->relationship(resolveUsing: 'name'),
             ImportColumn::make('notes'),
             ImportColumn::make('audit_interval')
                 ->numeric()
                 ->rules(['integer']),
+            ImportColumn::make('unit')
+                ->relationship(resolveUsing: 'name'),
         ];
     }
 

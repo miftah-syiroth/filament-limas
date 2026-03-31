@@ -26,6 +26,9 @@ class ModelsTable
                     ->limit(1),
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('unit.name')
+                    ->label('Satuan')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('manufacture.name'),
                 TextColumn::make('category.name'),
                 TextColumn::make('category.type')
@@ -44,18 +47,6 @@ class ModelsTable
                 TextColumn::make('end_of_life')
                     ->label('Kadaluarsa')
                     ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
