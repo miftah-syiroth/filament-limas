@@ -5,16 +5,15 @@ namespace App\Filament\Resources\ActivityLogs;
 use App\Filament\Resources\ActivityLogs\Pages\ManageActivityLogs;
 use App\Models\ActivityLog;
 use BackedEnum;
-use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
 class ActivityLogResource extends Resource
@@ -79,29 +78,37 @@ class ActivityLogResource extends Resource
             ->recordTitleAttribute('id')
             // jangen clickable
             ->columns([
-                TextColumn::make('subject_type'),
-                TextColumn::make('subject')
-                    ->formatStateUsing(function (mixed $state): string {
-                        if ($state === null) {
-                            return '-';
-                        }
-                        if ($state instanceof Model) {
-                            return json_encode($state->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-                        }
-                        if (is_string($state)) {
-                            $decoded = json_decode($state, true);
-
-                            return json_encode($decoded ?? $state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-                        }
-
-                        return json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-                    })
-                    ->wrap()
-                    ->url(fn (ActivityLog $record): string => route('admin.activity-logs.subject-json', $record))
-                    ->openUrlInNewTab(),
-                TextColumn::make('event'),
                 TextColumn::make('causer.name')
-                    ->label('Pengguna'),
+                ->label('Nama'),
+                TextColumn::make('causer.email')
+                ->label('Email'),
+                TextColumn::make('event'),
+                TextColumn::make('subject_type')
+                    ->label('Tabel'),
+                IconColumn::make('subject')
+                    ->label('Row')
+                    ->icon(fn (mixed $state): ?Heroicon => $state === null
+                        ? null
+                        : Heroicon::OutlinedEye)
+                    ->color(fn (mixed $state): ?string => $state === null
+                        ? null
+                        : 'info')
+                    ->url(
+                        fn (ActivityLog $record): string => route('admin.activity-logs.show', ['activityLog' => $record, 'data' => 'subject']),
+                    )
+                    ->openUrlInNewTab(),
+                IconColumn::make('properties')
+                    ->label('Properties')
+                    ->icon(fn (mixed $state): ?Heroicon => $state === null
+                        ? null
+                        : Heroicon::OutlinedEye)
+                    ->color(fn (mixed $state): ?string => $state === null
+                        ? null
+                        : 'info')
+                    ->url(
+                        fn (ActivityLog $record): string => route('admin.activity-logs.show', ['activityLog' => $record, 'data' => 'properties']),
+                    )
+                    ->openUrlInNewTab(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

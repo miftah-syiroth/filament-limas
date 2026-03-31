@@ -9,8 +9,8 @@ use App\Models\Model as ItemModel;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -46,7 +46,7 @@ class ItemForm
                             ->label('Category')
                             ->options(function (Get $get, Component $component): array {
                                 return Category::get()
-                                    ->mapWithKeys(fn(Category $category) => [
+                                    ->mapWithKeys(fn (Category $category) => [
                                         $category->id => "{$category->name} - {$category->type?->getLabel()}",
                                     ])
                                     ->all();
@@ -69,26 +69,26 @@ class ItemForm
                             ->relationship(
                                 name: 'model',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query
+                                modifyQueryUsing: fn (Builder $query, Get $get): Builder => $query
                                     ->with('manufacture')
                                     ->when(
                                         $get('category_id'),
-                                        fn(Builder $q): Builder => $q->where('category_id', $get('category_id')),
-                                        fn(Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                        fn (Builder $q): Builder => $q->where('category_id', $get('category_id')),
+                                        fn (Builder $q): Builder => $q->whereRaw('1 = 0'),
                                     )
                             )
-                            ->getOptionLabelFromRecordUsing(fn(ItemModel $record): string => $record->manufacture
+                            ->getOptionLabelFromRecordUsing(fn (ItemModel $record): string => $record->manufacture
                                 ? "{$record->name} - {$record->manufacture->name}"
                                 : $record->name)
-                            ->disabled(fn(Get $get): bool => blank($get('category_id')))
+                            ->disabled(fn (Get $get): bool => blank($get('category_id')))
                             ->required()
                             ->native(false),
                         Select::make('location_id')
                             ->relationship('location', 'name')
                             ->required()
                             ->live()
-                            ->disabled(fn(Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
-                            ->afterStateUpdated(fn(Select $component) => $component
+                            ->disabled(fn (Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
+                            ->afterStateUpdated(fn (Select $component) => $component
                                 ->getContainer()
                                 ->getComponent('department_id')
                                 ->state(null))
@@ -97,20 +97,20 @@ class ItemForm
                             ->relationship(
                                 name: 'department',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query
+                                modifyQueryUsing: fn (Builder $query, Get $get): Builder => $query
                                     ->when(
                                         $get('location_id'),
-                                        fn(Builder $q): Builder => $q->where('location_id', $get('location_id')),
-                                        fn(Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                        fn (Builder $q): Builder => $q->where('location_id', $get('location_id')),
+                                        fn (Builder $q): Builder => $q->whereRaw('1 = 0'),
                                     )
                             )
                             ->live()
-                            ->disabled(fn(Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
+                            ->disabled(fn (Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
                             ->native(false)
                             ->key('department_id'),
                         Select::make('status')
                             ->options(ItemStatus::class)
-                            ->disabled(fn(Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
+                            ->disabled(fn (Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
                             ->native(false)
                             ->required(),
                         Toggle::make('is_individual_tracking')
@@ -118,10 +118,10 @@ class ItemForm
                             ->label('Pelacakan Individu')
                             ->inline(false)
                             // defaultnya adalah true jika kategori bukan consumable
-                            ->default(fn(Get $get) => self::isCategoryConsumable($get) ? false : true)
+                            ->default(fn (Get $get) => self::isCategoryConsumable($get) ? false : true)
                             ->live()
-                            ->afterStateUpdated(fn(Set $set, $state) => $state ? $set('quantity', 1) : null)
-                            ->disabled(fn(Get $get) => self::isCategoryConsumable($get))
+                            ->afterStateUpdated(fn (Set $set, $state) => $state ? $set('quantity', 1) : null)
+                            ->disabled(fn (Get $get) => self::isCategoryConsumable($get))
                             ->saved()
                             ->rules([
                                 function (Get $get) {
@@ -138,7 +138,7 @@ class ItemForm
                             ->numeric()
                             ->minValue(1)
                             ->default(1)
-                            ->disabled(fn(Get $get, Component $component) => $component->getContainer()?->getOperation() === 'edit' || $get('is_individual_tracking') === true)
+                            ->disabled(fn (Get $get, Component $component) => $component->getContainer()?->getOperation() === 'edit' || $get('is_individual_tracking') === true)
                             ->saved()
                             ->rules([
                                 function (Get $get) {
@@ -152,18 +152,12 @@ class ItemForm
                                     };
                                 },
                             ]),
-                        Select::make('unit_id')
-                            ->label('Satuan')
-                            ->relationship('unit', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->native(false),
                         TextInput::make('name'),
                         Textarea::make('notes'),
                     ]),
                 Section::make('Serial Number')
                     ->columnSpanFull()
-                    ->visible(fn(Get $get) => $get('is_individual_tracking') === true)
+                    ->visible(fn (Get $get) => $get('is_individual_tracking') === true)
                     ->hiddenOn('edit')
                     ->schema([
                         Repeater::make('tracking_entries')
@@ -173,10 +167,10 @@ class ItemForm
                                     ->unique(table: 'items', column: 'serial_number', ignoreRecord: true)
                                     ->disabled()
                                     ->dehydrated()
-                                    ->default(fn() => self::generateSerialNumber()),
+                                    ->default(fn () => self::generateSerialNumber()),
                                 Select::make('user_id')
                                     ->label('Penanggung Jawab')
-                                    ->options(fn(): array => User::query()->pluck('name', 'id')->toArray())
+                                    ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
                                     ->nullable()
                                     ->searchable()
                                     ->native(false),
@@ -188,18 +182,18 @@ class ItemForm
                     ]),
                 Section::make('Serial Number')
                     ->columnSpanFull()
-                    ->visible(fn(Get $get, string $operation) => $get('is_individual_tracking') === false || $operation === 'edit')
+                    ->visible(fn (Get $get, string $operation) => $get('is_individual_tracking') === false || $operation === 'edit')
                     ->schema([
                         TextInput::make('serial_number')
                             ->required()
                             ->unique(table: 'items', column: 'serial_number', ignoreRecord: true)
                             ->disabled()
                             ->dehydrated()
-                            ->default(fn() => self::generateSerialNumber()),
+                            ->default(fn () => self::generateSerialNumber()),
                         Select::make('user_id')
                             ->label('Penanggung Jawab')
-                            ->options(fn(): array => User::query()->pluck('name', 'id')->toArray())
-                            ->disabled(fn(Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
+                            ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
+                            ->disabled(fn (Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
                             ->nullable()
                             ->searchable()
                             ->preload()
@@ -212,6 +206,7 @@ class ItemForm
                     ->collapsed()
                     ->schema([
                         SpatieMediaLibraryFileUpload::make('images')
+                            ->disk('public')
                             ->hiddenLabel()
                             ->collection('images')
                             ->multiple()
