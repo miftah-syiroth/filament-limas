@@ -14,6 +14,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 use UnitEnum;
 
 class ActivityLogResource extends Resource
@@ -76,12 +77,12 @@ class ActivityLogResource extends Resource
     {
         return $table
             ->recordTitleAttribute('id')
-            // jangen clickable
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('causer.name')
-                ->label('Nama'),
+                    ->label('Nama'),
                 TextColumn::make('causer.email')
-                ->label('Email'),
+                    ->label('Email'),
                 TextColumn::make('event'),
                 TextColumn::make('subject_type')
                     ->label('Tabel'),
@@ -99,18 +100,32 @@ class ActivityLogResource extends Resource
                     ->openUrlInNewTab(),
                 IconColumn::make('properties')
                     ->label('Properties')
-                    ->icon(fn (mixed $state): ?Heroicon => $state === null
-                        ? null
-                        : Heroicon::OutlinedEye)
-                    ->color(fn (mixed $state): ?string => $state === null
-                        ? null
-                        : 'info')
-                    ->url(
-                        fn (ActivityLog $record): string => route('admin.activity-logs.show', ['activityLog' => $record, 'data' => 'properties']),
+                    ->state(function (ActivityLog $record): ?bool {
+                        $properties = $record->properties;
+
+                        if ($properties === null) {
+                            return null;
+                        }
+
+                        if ($properties instanceof Collection) {
+                            return $properties->isEmpty() ? null : true;
+                        }
+
+                        if (is_array($properties)) {
+                            return $properties === [] ? null : true;
+                        }
+
+                        return true;
+                    })
+                    ->icon(fn (?bool $state): ?Heroicon => $state ? Heroicon::OutlinedEye : null)
+                    ->color(fn (?bool $state): ?string => $state ? 'info' : null)
+                    ->url(fn (ActivityLog $record): ?string => blank($record->properties)
+                            ? null
+                            : route('admin.activity-logs.show', ['activityLog' => $record, 'data' => 'properties'])
                     )
                     ->openUrlInNewTab(),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('j M Y H:i')
                     ->sortable(),
             ])
             ->filters([
