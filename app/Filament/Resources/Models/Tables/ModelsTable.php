@@ -21,6 +21,8 @@ class ModelsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('name', 'asc')
+            ->recordUrl(null)
             ->columns([
                 SpatieMediaLibraryImageColumn::make('images')
                     ->limit(1),

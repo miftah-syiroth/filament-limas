@@ -17,12 +17,13 @@ class DepartmentsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')
                     ->hidden(),
                 TextColumn::make('name')
-                        ->searchable(),
+                    ->searchable(),
                 TextColumn::make('company.name')
                     ->searchable(),
                 TextColumn::make('location.name')
@@ -47,8 +48,8 @@ class DepartmentsTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->label(''),
+                EditAction::make()->label(''),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

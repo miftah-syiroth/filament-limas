@@ -4,12 +4,15 @@ namespace App\Filament\Resources\Items\Tables;
 
 use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
+use App\Filament\Imports\ItemImporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\ImportAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -88,6 +91,12 @@ class ItemsTable
             ->recordActions([
                 ViewAction::make()->label(''),
                 EditAction::make()->label(''),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(ItemImporter::class)
+                    ->label('Import')
+                    ->icon(Heroicon::OutlinedArrowUpTray),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

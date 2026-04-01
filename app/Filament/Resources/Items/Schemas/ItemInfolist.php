@@ -111,7 +111,7 @@ class ItemInfolist
                                         ->inlineLabel(),
                                     TextEntry::make('eol_date')
                                         ->label('End of Life')
-                                        ->dateTime()
+                                        ->date()
                                         ->inlineLabel(),
                                 ]),
                                 Group::make([
