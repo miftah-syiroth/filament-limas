@@ -146,8 +146,9 @@ class BorrowingItemResource extends Resource
             ])
             ->headerActions([
                 ExportAction::make()
-                    ->label('Export')
                     ->exporter(BorrowingItemExporter::class)
+                    ->label('Export')
+                    ->icon(Heroicon::OutlinedArrowDownTray)
                     ->fileDisk('public'),
             ])
             ->toolbarActions([
