@@ -30,22 +30,24 @@ class ManageItemStateLogs extends ManageRelatedRecords
 
     protected static string $relationship = 'stateLogs';
 
-    // nama menu
-    protected static ?string $navigationLabel = 'Transfer & Status';
+    public static function getNavigationLabel(): string
+    {
+        return __('items.pages.state_logs.navigation_label');
+    }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 Select::make('event_type')
-                    ->label('Tipe Event')
+                    ->label(__('items.pages.state_logs.event_type'))
                     ->options(ItemStateEventType::class)
                     ->required()
                     ->native(false)
                     ->live()
                     ->columnSpanFull(),
                 Select::make('from_location_id')
-                    ->label('Lokasi dari')
+                    ->label(__('items.pages.state_logs.location_from'))
                     ->relationship('fromLocation', 'name')
                     ->default(fn (): ?string => $this->getOwnerRecord()?->location_id)
                     ->disabled()
@@ -56,7 +58,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->live(),
                 Select::make('to_location_id')
-                    ->label('Lokasi ke')
+                    ->label(__('items.pages.state_logs.location_to'))
                     ->relationship('toLocation', 'name')
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->live()
@@ -67,7 +69,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         ->state(null))
                     ->native(false),
                 Select::make('from_department_id')
-                    ->label('Departemen dari')
+                    ->label(__('items.pages.state_logs.department_from'))
                     ->relationship(
                         name: 'fromDepartment',
                         titleAttribute: 'name',
@@ -84,7 +86,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->native(false)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value),
                 Select::make('to_department_id')
-                    ->label('Departemen ke')
+                    ->label(__('items.pages.state_logs.department_to'))
                     ->relationship(
                         name: 'toDepartment',
                         titleAttribute: 'name',
@@ -100,7 +102,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->required(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value),
                 Select::make('from_user_id')
-                    ->label('Pengguna dari')
+                    ->label(__('items.pages.state_logs.user_from'))
                     ->relationship('fromUser', 'name')
                     ->default(fn (): ?string => $this->getOwnerRecord()?->user_id)
                     ->disabled()
@@ -110,7 +112,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->native(false)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value),
                 Select::make('to_user_id')
-                    ->label('Pengguna ke')
+                    ->label(__('items.pages.state_logs.user_to'))
                     ->relationship('toUser', 'name')
                     ->searchable()
                     ->preload()
@@ -118,7 +120,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->required(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value),
                 Select::make('from_status')
-                    ->label('Status dari')
+                    ->label(__('items.pages.state_logs.status_from'))
                     ->options(ItemStatus::class)
                     ->default(fn (): ?string => $this->getOwnerRecord()?->status?->value)
                     ->disabled()
@@ -126,12 +128,12 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->native(false)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value),
                 Select::make('to_status')
-                    ->label('Status ke')
+                    ->label(__('items.pages.state_logs.status_to'))
                     ->options(ItemStatus::class)
                     ->native(false)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value),
                 Textarea::make('notes')
-                    ->label('Catatan'),
+                    ->label(__('items.pages.state_logs.notes')),
             ]);
     }
 
@@ -171,41 +173,41 @@ class ManageItemStateLogs extends ManageRelatedRecords
             ->defaultSort('created_at', direction: 'desc')
             ->columns([
                 TextColumn::make('event_type')
-                    ->label('Tipe'),
+                    ->label(__('items.pages.state_logs.type_short')),
                 TextColumn::make('fromLocation.name')
-                    ->label('Lokasi dari')
+                    ->label(__('items.pages.state_logs.location_from'))
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('toLocation.name')
-                    ->label('Lokasi ke')
+                    ->label(__('items.pages.state_logs.location_to'))
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('fromDepartment.name')
-                    ->label('Departemen dari')
+                    ->label(__('items.pages.state_logs.department_from'))
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('toDepartment.name')
-                    ->label('Departemen ke')
+                    ->label(__('items.pages.state_logs.department_to'))
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('fromUser.name')
-                    ->label('PJ dari')
+                    ->label(__('items.pages.state_logs.responsible_from'))
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('toUser.name')
-                    ->label('PJ ke')
+                    ->label(__('items.pages.state_logs.responsible_to'))
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('from_status')
-                    ->label('Status dari')
+                    ->label(__('items.pages.state_logs.status_from'))
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('to_status')
-                    ->label('Status ke')
+                    ->label(__('items.pages.state_logs.status_to'))
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('notes')
-                    ->label('Catatan')
+                    ->label(__('items.pages.state_logs.notes'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime('j M Y H:i')
@@ -221,7 +223,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->label('Tambah Transfer')
+                    ->label(__('items.pages.state_logs.add_transfer'))
                     ->closeModalByClickingAway(false)
                     ->mutateDataUsing(fn (array $data): array => $this->nullifyFromWhenToIsNull($data)),
             ])
@@ -229,45 +231,47 @@ class ManageItemStateLogs extends ManageRelatedRecords
                 Action::make('view')
                     ->label('')
                     ->icon('heroicon-o-eye')
-                    ->modalHeading(fn (ItemStateLog $record): string => 'Detail Log - '.$record->event_type->getLabel())
+                    ->modalHeading(fn (ItemStateLog $record): string => __('items.pages.state_logs.modal_heading', [
+                        'type' => $record->event_type->getLabel(),
+                    ]))
                     ->modalSubmitAction(false)
                     ->schema([
-                        Section::make('Informasi Transfer & Status')
+                        Section::make(__('items.pages.state_logs.modal_section'))
                             ->schema([
                                 TextEntry::make('event_type')
-                                    ->label('Tipe Event')
+                                    ->label(__('items.pages.state_logs.event_type'))
                                     ->badge(),
                                 TextEntry::make('fromLocation.name')
-                                    ->label('Lokasi dari')
+                                    ->label(__('items.pages.state_logs.location_from'))
                                     ->placeholder('—'),
                                 TextEntry::make('toLocation.name')
-                                    ->label('Lokasi ke')
+                                    ->label(__('items.pages.state_logs.location_to'))
                                     ->placeholder('—'),
                                 TextEntry::make('fromDepartment.name')
-                                    ->label('Departemen dari')
+                                    ->label(__('items.pages.state_logs.department_from'))
                                     ->placeholder('—'),
                                 TextEntry::make('toDepartment.name')
-                                    ->label('Departemen ke')
+                                    ->label(__('items.pages.state_logs.department_to'))
                                     ->placeholder('—'),
                                 TextEntry::make('fromUser.name')
-                                    ->label('Pengguna dari')
+                                    ->label(__('items.pages.state_logs.user_from'))
                                     ->placeholder('—'),
                                 TextEntry::make('toUser.name')
-                                    ->label('Pengguna ke')
+                                    ->label(__('items.pages.state_logs.user_to'))
                                     ->placeholder('—'),
                                 TextEntry::make('from_status')
-                                    ->label('Status dari')
+                                    ->label(__('items.pages.state_logs.status_from'))
                                     ->badge()
                                     ->placeholder('—'),
                                 TextEntry::make('to_status')
-                                    ->label('Status ke')
+                                    ->label(__('items.pages.state_logs.status_to'))
                                     ->badge()
                                     ->placeholder('—'),
                                 TextEntry::make('notes')
-                                    ->label('Catatan')
+                                    ->label(__('items.pages.state_logs.notes'))
                                     ->placeholder('—'),
                                 TextEntry::make('created_at')
-                                    ->label('Dibuat')
+                                    ->label(__('items.pages.state_logs.created_at'))
                                     ->dateTime('j M Y H:i'),
                             ])
                             ->columns(2),

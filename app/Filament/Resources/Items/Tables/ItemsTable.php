@@ -34,35 +34,37 @@ class ItemsTable
                     ->collection('images')
                     ->limit(1),
                 TextColumn::make('serial_number')
+                    ->label(__('items.table.serial_number'))
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label(__('items.table.name'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('model.name')
                     ->searchable(),
                 TextColumn::make('model.category.name'),
                 TextColumn::make('model.category.type')
-                    ->label('Tipe')
+                    ->label(__('items.table.type'))
                     ->badge(),
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('quantity')
-                    ->label('Total')
+                    ->label(__('items.table.total'))
                     ->numeric()
                     ->alignCenter(),
                 TextColumn::make('borrowable_quantity')
-                    ->label('Tersedia')
+                    ->label(__('items.table.available'))
                     ->numeric()
                     ->alignCenter(),
                 IconColumn::make('is_individual_tracking')
-                    ->label('Individu')
+                    ->label(__('items.table.individual'))
                     ->alignCenter()
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('department.name')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('user.name')
-                    ->label('Pengguna')
+                    ->label(__('items.table.user'))
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -71,7 +73,7 @@ class ItemsTable
                     ->multiple()
                     ->options(ItemStatus::class),
                 SelectFilter::make('type')
-                    ->label('Tipe Kategori')
+                    ->label(__('items.table.category_type'))
                     ->multiple()
                     ->options(CategoryType::class)
                     ->query(function (Builder $query, array $data): Builder {
@@ -85,7 +87,7 @@ class ItemsTable
                         });
                     }),
                 TernaryFilter::make('is_individual_tracking')
-                    ->label('Individu'),
+                    ->label(__('items.table.individual')),
                 TrashedFilter::make(),
             ])
             ->recordActions([
@@ -95,7 +97,7 @@ class ItemsTable
             ->headerActions([
                 ImportAction::make()
                     ->importer(ItemImporter::class)
-                    ->label('Import')
+                    ->label(__('items.table.import'))
                     ->icon(Heroicon::OutlinedArrowUpTray),
             ])
             ->toolbarActions([

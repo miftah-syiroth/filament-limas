@@ -43,7 +43,7 @@ class ItemForm
                     ->columns(2)
                     ->schema([
                         Select::make('category_id')
-                            ->label('Category')
+                            ->label(__('items.form.category'))
                             ->options(function (Get $get, Component $component): array {
                                 return Category::get()
                                     ->mapWithKeys(fn (Category $category) => [
@@ -115,7 +115,7 @@ class ItemForm
                             ->required(),
                         Toggle::make('is_individual_tracking')
                             ->required()
-                            ->label('Pelacakan Individu')
+                            ->label(__('items.form.individual_tracking'))
                             ->inline(false)
                             // defaultnya adalah true jika kategori bukan consumable
                             ->default(fn (Get $get) => self::isCategoryConsumable($get) ? false : true)
@@ -127,13 +127,13 @@ class ItemForm
                                 function (Get $get) {
                                     return function ($attribute, $value, $fail) use ($get) {
                                         if (self::isCategoryConsumable($get) && $value === true) {
-                                            $fail('Kategori Consumable tidak dapat menggunakan pelacakan individu.');
+                                            $fail(__('items.form.validation.consumable_no_individual'));
                                         }
                                     };
                                 },
                             ]),
                         TextInput::make('quantity')
-                            ->label('Kuantitas')
+                            ->label(__('items.form.quantity'))
                             ->required()
                             ->numeric()
                             ->minValue(1)
@@ -144,10 +144,10 @@ class ItemForm
                                 function (Get $get) {
                                     return function ($attribute, $value, $fail) use ($get) {
                                         if (self::isCategoryConsumable($get) && (int) $value < 1) {
-                                            $fail('Kuantitas wajib positif untuk kategori Consumable.');
+                                            $fail(__('items.form.validation.quantity_positive_consumable'));
                                         }
                                         if ($get('is_individual_tracking') === true && (int) $value !== 1) {
-                                            $fail('Kuantitas harus 1 jika pelacakan individu aktif.');
+                                            $fail(__('items.form.validation.quantity_one_when_individual'));
                                         }
                                     };
                                 },
@@ -155,7 +155,7 @@ class ItemForm
                         TextInput::make('name'),
                         Textarea::make('notes'),
                     ]),
-                Section::make('Serial Number')
+                Section::make(__('items.form.sections.serial_number'))
                     ->columnSpanFull()
                     ->visible(fn (Get $get) => $get('is_individual_tracking') === true)
                     ->hiddenOn('edit')
@@ -169,7 +169,7 @@ class ItemForm
                                     ->dehydrated()
                                     ->default(fn () => self::generateSerialNumber()),
                                 Select::make('user_id')
-                                    ->label('Penanggung Jawab')
+                                    ->label(__('items.form.responsible_person'))
                                     ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
                                     ->nullable()
                                     ->searchable()
@@ -178,9 +178,9 @@ class ItemForm
                             ->columns(2)
                             ->defaultItems(1)
                             ->minItems(1)
-                            ->addActionLabel('Tambah Serial'),
+                            ->addActionLabel(__('items.form.add_serial')),
                     ]),
-                Section::make('Serial Number')
+                Section::make(__('items.form.sections.serial_number'))
                     ->columnSpanFull()
                     ->visible(fn (Get $get, string $operation) => $get('is_individual_tracking') === false || $operation === 'edit')
                     ->schema([
@@ -191,7 +191,7 @@ class ItemForm
                             ->dehydrated()
                             ->default(fn () => self::generateSerialNumber()),
                         Select::make('user_id')
-                            ->label('Penanggung Jawab')
+                            ->label(__('items.form.responsible_person'))
                             ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
                             ->disabled(fn (Component $component): bool => $component->getContainer()?->getOperation() === 'edit')
                             ->nullable()
@@ -199,7 +199,7 @@ class ItemForm
                             ->preload()
                             ->native(false),
                     ])->columns(2),
-                Section::make('Gambar')
+                Section::make(__('items.form.sections.images'))
                     ->hiddenOn('create')
                     ->columnSpanFull()
                     ->collapsible()
@@ -215,7 +215,7 @@ class ItemForm
                             ->maxFiles(3)
                             ->columnSpanFull(),
                     ]),
-                Section::make('Informasi Pembelian')
+                Section::make(__('items.form.sections.purchase'))
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
@@ -229,10 +229,10 @@ class ItemForm
                             ->numeric()
                             ->prefix('Rp'),
                         TextInput::make('warranty_months')
-                            ->label('Garansi (bulan)')
+                            ->label(__('items.form.warranty_months'))
                             ->numeric(),
                         DatePicker::make('eol_date')
-                            ->label('Kadaluarsa'),
+                            ->label(__('items.form.eol_date')),
                     ]),
 
             ]);

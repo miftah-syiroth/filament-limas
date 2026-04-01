@@ -21,7 +21,10 @@ class ManageBorrowingItems extends ManageRelatedRecords
 
     protected static string $relationship = 'borrowingItems';
 
-    protected static ?string $navigationLabel = 'Peminjaman';
+    public static function getNavigationLabel(): string
+    {
+        return __('items.pages.borrowing.navigation_label');
+    }
 
     public function table(Table $table): Table
     {
@@ -29,41 +32,41 @@ class ManageBorrowingItems extends ManageRelatedRecords
             ->defaultSort('checked_out_at', direction: 'desc')
             ->columns([
                 TextColumn::make('borrowing.user.name')
-                    ->label('Peminjam')
+                    ->label(__('items.pages.borrowing.borrower'))
                     ->searchable(),
                 TextColumn::make('borrowing.due_at')
-                    ->label('Batas Peminjaman')
+                    ->label(__('items.pages.borrowing.due_at'))
                     ->dateTime('j M Y')
                     ->sortable(),
                 TextColumn::make('borrowing.status')
-                    ->label('Status')
+                    ->label(__('items.pages.borrowing.status'))
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('checked_out_at')
-                    ->label('Tanggal Keluar')
+                    ->label(__('items.pages.borrowing.checked_out_at'))
                     ->dateTime('j M Y')
                     ->sortable(),
                 TextColumn::make('condition_out')
-                    ->label('Kondisi Keluar')
+                    ->label(__('items.pages.borrowing.condition_out'))
                     ->badge()
                     ->color('gray')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('checked_in_at')
-                    ->label('Tanggal Masuk')
+                    ->label(__('items.pages.borrowing.checked_in_at'))
                     ->dateTime('j M Y'),
                 TextColumn::make('condition_in')
-                    ->label('Kondisi Masuk')
+                    ->label(__('items.pages.borrowing.condition_in'))
                     ->badge()
                     ->color('primary')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('quantity')
-                    ->label('Qty')
+                    ->label(__('items.pages.borrowing.quantity'))
                     ->numeric()
                     ->alignCenter(),
             ])
             ->recordActions([
                 Action::make('view')
-                    ->label('Peminjaman')
+                    ->label(__('items.pages.borrowing.view_borrowing'))
                     ->icon('heroicon-o-eye')
                     ->url(fn (BorrowingItem $record): string => BorrowingResource::getUrl('view', ['record' => $record->borrowing->id])),
             ])

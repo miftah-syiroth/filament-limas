@@ -21,7 +21,7 @@ class ItemInfolist
                     ->columnSpanFull()
                     ->columns(3)
                     ->schema([
-                        Section::make('Informasi Umum')
+                        Section::make(__('items.infolist.sections.general'))
                             ->columnSpan(2)
                             ->columnOrder([
                                 'default' => 2,
@@ -31,25 +31,25 @@ class ItemInfolist
                                 TextEntry::make('serial_number')
                                     ->inlineLabel(),
                                 TextEntry::make('name')
-                                    ->label('Nama')
+                                    ->label(__('items.infolist.name'))
                                     ->inlineLabel(),
                                 TextEntry::make('model.name')
-                                    ->label('Model')
+                                    ->label(__('items.infolist.model'))
                                     ->inlineLabel(),
                                 TextEntry::make('status')
-                                    ->label('Status')
+                                    ->label(__('items.infolist.status'))
                                     ->badge()
                                     ->inlineLabel(),
                                 TextEntry::make('model.category.type')
-                                    ->label('Tipe')
+                                    ->label(__('items.infolist.type'))
                                     ->inlineLabel()
                                     ->badge()
                                     ->color(fn ($state) => $state->getColor()),
                                 TextEntry::make('model.category.name')
-                                    ->label('Kategori')
+                                    ->label(__('items.infolist.category'))
                                     ->inlineLabel(),
                                 IconEntry::make('is_individual_tracking')
-                                    ->label('Pelacakan Individu')
+                                    ->label(__('items.infolist.individual_tracking'))
                                     ->boolean()
                                     ->inlineLabel(),
                                 TextEntry::make('notes')
@@ -59,24 +59,24 @@ class ItemInfolist
                                     ->columnSpanFull()
                                     ->schema([
                                         TextEntry::make('quantity')
-                                            ->label('Kuantitas')
+                                            ->label(__('items.infolist.quantity'))
                                             ->formatStateUsing(fn ($state, $record): string => $record->model->unit?->name
                                                 ? "{$state} {$record->model?->unit?->name}"
                                                 : (string) $state),
                                         TextEntry::make('borrowable_quantity')
-                                            ->label('Dapat Dipinjam')
+                                            ->label(__('items.infolist.borrowable'))
                                             ->numeric(),
                                         TextEntry::make('user.name')
-                                            ->label('Penanggung Jawab'),
+                                            ->label(__('items.infolist.responsible_person')),
                                         TextEntry::make('department.name')
-                                            ->label('Department'),
+                                            ->label(__('items.infolist.department')),
                                         TextEntry::make('location.name')
-                                            ->label('Location'),
+                                            ->label(__('items.infolist.location')),
                                         TextEntry::make('latestAudit.audited_at')
-                                            ->label('Audit Terakhir')
+                                            ->label(__('items.infolist.last_audit'))
                                             ->dateTime('j M Y'),
                                         TextEntry::make('latestAudit.next_audit_at')
-                                            ->label('Audit Berikutnya')
+                                            ->label(__('items.infolist.next_audit'))
                                             ->dateTime('j M Y'),
                                     ]),
 
@@ -94,7 +94,7 @@ class ItemInfolist
                                     ->hiddenLabel(),
                             ]),
                     ]),
-                Section::make('Informasi Pembelian')
+                Section::make(__('items.infolist.sections.purchase'))
                     ->columnSpanFull()
                     ->schema([
                         Grid::make(2)
@@ -110,22 +110,22 @@ class ItemInfolist
                                         ->money('IDR')
                                         ->inlineLabel(),
                                     TextEntry::make('eol_date')
-                                        ->label('End of Life')
+                                        ->label(__('items.infolist.eol'))
                                         ->date()
                                         ->inlineLabel(),
                                 ]),
                                 Group::make([
                                     TextEntry::make('supplier.name')
-                                        ->label('Supplier')
+                                        ->label(__('items.infolist.supplier'))
                                         ->inlineLabel(),
                                     TextEntry::make('order_quantity')
                                         ->numeric()
                                         ->inlineLabel(),
                                     TextEntry::make('warranty_months')
-                                        ->label('Garansi bulan')
+                                        ->label(__('items.infolist.warranty_months'))
                                         ->inlineLabel()
                                         ->numeric()
-                                        ->suffix('bulan'),
+                                        ->suffix(__('items.infolist.warranty_suffix')),
                                 ]),
                             ]),
 
