@@ -25,7 +25,10 @@ class ManageStockMovements extends ManageRelatedRecords
 
     protected static string $relationship = 'stockMovements';
 
-    protected static ?string $navigationLabel = 'Stock';
+    public static function getNavigationLabel(): string
+    {
+        return __('items.pages.stock_movements.navigation_label');
+    }
 
     public static function canAccess(array $parameters = []): bool
     {
@@ -54,15 +57,15 @@ class ManageStockMovements extends ManageRelatedRecords
                         fn (Get $get) => function (string $attribute, $value, $fail) use ($get) {
                             $value = (int) $value;
                             if ($value === 0) {
-                                $fail('Kuantitas tidak boleh 0.');
+                                $fail(__('items.pages.stock_movements.validation.quantity_not_zero'));
                             }
                             $type = $get('type');
                             $typeValue = $type instanceof StockMovementType ? $type->value : $type;
                             if ($typeValue === StockMovementType::In->value && $value < 0) {
-                                $fail('Kuantitas harus positif untuk tipe In.');
+                                $fail(__('items.pages.stock_movements.validation.in_must_positive'));
                             }
                             if ($typeValue === StockMovementType::Out->value && $value > 0) {
-                                $fail('Kuantitas harus negatif untuk tipe Out.');
+                                $fail(__('items.pages.stock_movements.validation.out_must_negative'));
                             }
                         },
                     ]),
@@ -81,7 +84,7 @@ class ManageStockMovements extends ManageRelatedRecords
                     ->numeric()
                     ->alignCenter(),
                 TextColumn::make('item.model.unit.name')
-                    ->label('Satuan')
+                    ->label(__('items.pages.stock_movements.unit'))
                     ->alignCenter(),
                 TextColumn::make('notes')
                     ->limit(50),

@@ -28,7 +28,6 @@ class Item extends BaseModel implements HasMedia
         'department_id',
         'supplier_id',
         'user_id',
-        // 'unit_id',
         'name',
         'serial_number',
         'quantity',

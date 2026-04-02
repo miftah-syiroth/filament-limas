@@ -146,8 +146,9 @@ class MaintenanceResource extends Resource
             ])
             ->headerActions([
                 ExportAction::make()
+                ->exporter(MaintenanceExporter::class)
                     ->label('Export')
-                    ->exporter(MaintenanceExporter::class)
+                    ->icon(Heroicon::OutlinedArrowDownTray)
                     ->fileDisk('public'),
             ])
             ->toolbarActions([

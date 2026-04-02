@@ -41,7 +41,10 @@ class ManageMaintenance extends ManageRelatedRecords
 
     protected static string $relationship = 'maintenances';
 
-    protected static ?string $navigationLabel = 'Maintenance';
+    public static function getNavigationLabel(): string
+    {
+        return __('items.pages.maintenance.navigation_label');
+    }
 
     public function form(Schema $schema): Schema
     {
@@ -52,18 +55,18 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->native(false)
                     ->required(),
                 DatePicker::make('reported_at')
-                    ->label('Tanggal Laporan')
+                    ->label(__('items.pages.maintenance.reported_at'))
                     ->required(),
                 DatePicker::make('started_at')
-                    ->label('Tanggal Mulai')
+                    ->label(__('items.pages.maintenance.started_at'))
                     ->required(fn (Get $get): bool => $get('status') === MaintenanceStatus::Completed)
                     ->afterOrEqual('reported_at'),
                 DatePicker::make('completed_at')
-                    ->label('Tanggal Selesai')
+                    ->label(__('items.pages.maintenance.completed_at'))
                     ->required(fn (Get $get): bool => $get('status') === MaintenanceStatus::Completed)
                     ->afterOrEqual('started_at'),
                 Select::make('item_audit_id')
-                    ->label('Audit')
+                    ->label(__('items.pages.maintenance.audit'))
                     ->options(function (): array {
                         $ownerRecord = $this->getOwnerRecord();
 
@@ -96,24 +99,24 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->required()
                     ->live(),
                 TextInput::make('cost')
-                    ->label('Biaya')
+                    ->label(__('items.pages.maintenance.cost'))
                     ->numeric()
                     ->minValue(0)
                     ->prefix('Rp'),
                 Textarea::make('notes'),
-                Fieldset::make('Status Item')
+                Fieldset::make(__('items.pages.maintenance.fieldset_item_status'))
                     // sembunyikan berdasarkan authorization create dan status item (Active, UnderDiagnosis, UnderRepair, Damaged)
                     ->visible(Gate::allows('create', $this->getOwnerRecord()))
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         Select::make('from_status')
-                            ->label('Status dari')
+                            ->label(__('items.pages.maintenance.status_from'))
                             ->options(ItemStatus::class)
                             ->default(fn (): ?string => $this->getOwnerRecord()?->status?->value)
                             ->disabled(),
                         Select::make('to_status')
-                            ->label('Status ke')
+                            ->label(__('items.pages.maintenance.status_to'))
                             ->options(ItemStatus::class)
                             ->native(false),
                     ]),
@@ -128,26 +131,26 @@ class ManageMaintenance extends ManageRelatedRecords
                 TextColumn::make('type')
                     ->badge(),
                 TextColumn::make('itemAudit.code')
-                    ->label('Kode Audit')
+                    ->label(__('items.pages.maintenance.audit_code'))
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->whereHas('itemAudit', fn (Builder $q) => $q->where('id', 'ilike', "%{$search}%"));
                     }),
                 TextColumn::make('reported_at')
-                    ->label('Tanggal Laporan')
+                    ->label(__('items.pages.maintenance.reported_at'))
                     ->dateTime('j M Y')
                     ->sortable(),
                 TextColumn::make('started_at')
-                    ->label('Tanggal Mulai')
+                    ->label(__('items.pages.maintenance.started_at'))
                     ->dateTime('j M Y')
                     ->sortable(),
                 TextColumn::make('completed_at')
-                    ->label('Tanggal Selesai')
+                    ->label(__('items.pages.maintenance.completed_at'))
                     ->dateTime('j M Y')
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('cost')
-                    ->label('Biaya')
+                    ->label(__('items.pages.maintenance.cost'))
                     ->numeric()
                     ->prefix('Rp ')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -161,7 +164,7 @@ class ManageMaintenance extends ManageRelatedRecords
             ->headerActions([
                 CreateAction::make()
                     ->authorize('create', $this->getOwnerRecord())
-                    ->label('Tambah Maintenance')
+                    ->label(__('items.pages.maintenance.add'))
                     ->after(function (array $data): void {
                         if (filled($data['to_status'] ?? null)) {
                             ItemStateLog::create([
@@ -179,7 +182,7 @@ class ManageMaintenance extends ManageRelatedRecords
                 EditAction::make()
                     ->hiddenLabel()
                     ->closeModalByClickingAway(false)
-                    ->label('Tambah Maintenance')
+                    ->label(__('items.pages.maintenance.edit'))
                     ->fillForm(fn ($record): array => [
                         ...$record->toArray(),
                         'from_status' => $this->getOwnerRecord()?->status?->value,

@@ -17,6 +17,8 @@ class SuppliersTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
+            ->defaultSort('name', 'asc')
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')
@@ -66,8 +68,8 @@ class SuppliersTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->label(''),
+                EditAction::make()->label(''),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

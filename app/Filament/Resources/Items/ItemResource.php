@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Items;
 use App\Filament\Resources\Items\Pages\CreateItem;
 use App\Filament\Resources\Items\Pages\EditItem;
 use App\Filament\Resources\Items\Pages\ListItems;
-use App\Filament\Resources\Items\Pages\ManageItemAudits;
 use App\Filament\Resources\Items\Pages\ManageBorrowingItems;
+use App\Filament\Resources\Items\Pages\ManageItemAudits;
 use App\Filament\Resources\Items\Pages\ManageItemStateLogs;
 use App\Filament\Resources\Items\Pages\ManageMaintenance;
 use App\Filament\Resources\Items\Pages\ManageStockMovements;
@@ -28,6 +28,21 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
+
+    public static function getModelLabel(): string
+    {
+        return __('items.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('items.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('items.navigation_label');
+    }
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
 
@@ -81,7 +96,7 @@ class ItemResource extends Resource
     }
 
     public static function getRecordSubNavigation(Page $page): array
-    {       
+    {
         return $page->generateNavigationItems([
             ViewItem::class,
             EditItem::class,

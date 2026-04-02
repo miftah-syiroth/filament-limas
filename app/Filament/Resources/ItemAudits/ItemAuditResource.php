@@ -144,8 +144,9 @@ class ItemAuditResource extends Resource
             ])
             ->headerActions([
                 ExportAction::make()
+                ->exporter(ItemAuditExporter::class)
                     ->label('Export')
-                    ->exporter(ItemAuditExporter::class)
+                    ->icon(Heroicon::OutlinedArrowDownTray)
                     ->fileDisk('public'),
             ])
             ->toolbarActions([

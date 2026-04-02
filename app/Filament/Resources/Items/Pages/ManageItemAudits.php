@@ -33,14 +33,17 @@ class ManageItemAudits extends ManageRelatedRecords
 
     protected static string $relationship = 'audits';
 
-    protected static ?string $navigationLabel = 'Audit';
+    public static function getNavigationLabel(): string
+    {
+        return __('items.pages.audits.navigation_label');
+    }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 DatePicker::make('audited_at')
-                    ->label('Tanggal Audit')
+                    ->label(__('items.pages.audits.audited_at'))
                     ->required()
                     ->default(now()->format('m/d/Y')),
                 Select::make('condition')
@@ -52,11 +55,11 @@ class ManageItemAudits extends ManageRelatedRecords
                     ->native(false)
                     ->required(),
                 Toggle::make('location_verified')
-                    ->label('Lokasi Diverifikasi')
+                    ->label(__('items.pages.audits.location_verified'))
                     ->inline(false),
                 // jika item->model->audit_interval null, maka input next audit date
                 DatePicker::make('next_audit_at')
-                    ->label('Tanggal Audit Berikutnya')
+                    ->label(__('items.pages.audits.next_audit_at'))
                     ->required()
                     ->default(function (): Carbon {
                         $auditInterval = $this->getOwnerRecord()?->model?->audit_interval ?? 3;
@@ -64,18 +67,18 @@ class ManageItemAudits extends ManageRelatedRecords
                         return Carbon::now()->addMonths($auditInterval);
                     }),
                 Textarea::make('notes'),
-                Fieldset::make('Status Item')
+                Fieldset::make(__('items.pages.audits.fieldset_item_status'))
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         Select::make('from_status')
-                            ->label('Status dari')
+                            ->label(__('items.pages.audits.status_from'))
                             ->options(ItemStatus::class)
                             ->default(fn (): ?string => $this->getOwnerRecord()?->status?->value)
                             ->disabled()
                             ->dehydrated(),
                         Select::make('to_status')
-                            ->label('Status ke')
+                            ->label(__('items.pages.audits.status_to'))
                             ->options(ItemStatus::class)
                             ->native(false),
                     ]),
@@ -88,21 +91,21 @@ class ManageItemAudits extends ManageRelatedRecords
             ->defaultSort('audited_at', direction: 'desc')
             ->columns([
                 TextColumn::make('audited_at')
-                    ->label('Tanggal Audit')
+                    ->label(__('items.pages.audits.audited_at'))
                     ->dateTime('j M Y')
                     ->sortable(),
                 TextColumn::make('condition'),
                 TextColumn::make('result'),
                 IconColumn::make('location_verified')
-                    ->label('Lokasi Diverifikasi')
+                    ->label(__('items.pages.audits.location_verified'))
                     ->alignCenter()
                     ->boolean(),
                 TextColumn::make('next_audit_at')
-                    ->label('Audit Berikutnya')
+                    ->label(__('items.pages.audits.next_audit'))
                     ->dateTime('j M Y')
                     ->sortable(),
                 TextColumn::make('code')
-                    ->label('Kode')
+                    ->label(__('items.pages.audits.code'))
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->where('id', 'ilike', "%{$search}%");
                     }),
@@ -116,7 +119,7 @@ class ManageItemAudits extends ManageRelatedRecords
             ->headerActions([
                 CreateAction::make()
                     ->authorize('create', $this->getOwnerRecord())
-                    ->label('Tambah Audit')
+                    ->label(__('items.pages.audits.add'))
                     ->after(function (array $data): void {
                         if (filled($data['to_status'] ?? null)) {
                             ItemStateLog::create([

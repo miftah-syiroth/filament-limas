@@ -53,7 +53,7 @@ class CreateItem extends CreateRecord
                 'item_id' => $item->id,
                 'type' => StockMovementType::In,
                 'quantity' => $quantity,
-                'notes' => 'Stok awal',
+                'notes' => __('items.create.initial_stock_notes'),
             ]);
         }
 
