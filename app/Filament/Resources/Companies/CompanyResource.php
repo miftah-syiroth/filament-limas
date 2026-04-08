@@ -23,6 +23,21 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('company.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('company.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('company.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
 
     protected static ?string $recordTitleAttribute = 'name';
