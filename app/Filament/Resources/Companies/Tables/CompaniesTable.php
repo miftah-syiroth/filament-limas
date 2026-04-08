@@ -18,25 +18,27 @@ class CompaniesTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->hidden(),
                 TextColumn::make('name')
+                    ->label(__('company.table.name'))
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label(__('company.table.email'))
                     ->searchable(),
                 TextColumn::make('phone')
+                    ->label(__('company.table.phone'))
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('company.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('company.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
+                    ->label(__('company.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

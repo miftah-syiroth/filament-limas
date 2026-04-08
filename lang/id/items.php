@@ -2,11 +2,12 @@
 
 return [
 
-    'model_label' => 'Item',
-    'plural_model_label' => 'Item',
-    'navigation_label' => 'Item',
+    'model_label' => 'Barang',
+    'plural_model_label' => 'Barang',
+    'navigation_label' => 'Barang',
 
     'form' => [
+        'add' => 'Tambah barang',
         'sections' => [
             'serial_number' => 'Nomor seri',
             'images' => 'Gambar',
@@ -79,7 +80,7 @@ return [
             'completed_at' => 'Tanggal selesai',
             'audit' => 'Audit',
             'cost' => 'Biaya',
-            'fieldset_item_status' => 'Status item',
+            'fieldset_item_status' => 'Status barang',
             'status_from' => 'Status dari',
             'status_to' => 'Status ke',
             'audit_code' => 'Kode audit',
@@ -96,7 +97,7 @@ return [
             'add' => 'Tambah audit',
             'status_from' => 'Status dari',
             'status_to' => 'Status ke',
-            'fieldset_item_status' => 'Status item',
+            'fieldset_item_status' => 'Status barang',
         ],
         'state_logs' => [
             'navigation_label' => 'Transfer & status',
