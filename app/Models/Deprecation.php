@@ -15,7 +15,7 @@ class Deprecation extends Model
     protected $fillable = [
         'name',
         'months',
-        'minimum_value',
+        'minimum_value', // percentase penyusutan maksimal
         'method',
         'notes',
     ];

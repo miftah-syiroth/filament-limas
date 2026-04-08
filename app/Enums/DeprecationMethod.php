@@ -12,6 +12,8 @@ enum DeprecationMethod: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return $this->name;
+        return match ($this) {
+            self::Amount => __('deprecation.enums.method.amount'),
+        };
     }
 }

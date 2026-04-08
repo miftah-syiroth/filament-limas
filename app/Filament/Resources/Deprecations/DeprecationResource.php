@@ -11,23 +11,37 @@ use App\Filament\Resources\Deprecations\Schemas\DeprecationInfolist;
 use App\Filament\Resources\Deprecations\Tables\DeprecationsTable;
 use App\Models\Deprecation;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class DeprecationResource extends Resource
 {
     protected static ?string $model = Deprecation::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('deprecation.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('deprecation.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('deprecation.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?int $navigationSort = 8;
 

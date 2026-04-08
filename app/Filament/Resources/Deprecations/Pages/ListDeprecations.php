@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Deprecations\Pages;
 use App\Filament\Resources\Deprecations\DeprecationResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 
 class ListDeprecations extends ListRecords
 {
@@ -13,7 +14,9 @@ class ListDeprecations extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->label(__('deprecation.form.add'))
+                ->icon(Heroicon::OutlinedPlus),
         ];
     }
 }

@@ -18,21 +18,26 @@ class DeprecationsTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('deprecation.table.name'))
                     ->searchable(),
                 TextColumn::make('months')
+                    ->label(__('deprecation.table.months'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('minimum_value')
-                    ->label('Nilai Minimum')
+                    ->label(__('deprecation.table.minimum_value'))
                     ->numeric()
                     ->suffix('%')
                     ->sortable(),
-                TextColumn::make('method'),
+                TextColumn::make('method')
+                    ->label(__('deprecation.table.method')),
                 TextColumn::make('created_at')
+                    ->label(__('deprecation.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('deprecation.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -6,6 +6,7 @@ use App\Enums\DeprecationMethod;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class DeprecationForm
@@ -14,27 +15,35 @@ class DeprecationForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('months')
-                    ->label('Lama Penggunaan (bulan)')
-                    ->required()
-                    ->minValue(1)
-                    ->numeric(),
-                TextInput::make('minimum_value')
-                    ->label('Nilai Minimum')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1)
-                    ->maxValue(100)
-                    ->suffix('%'),
-                Select::make('method')
-                    ->options(DeprecationMethod::class)
-                    ->native(false)
-                    ->default(DeprecationMethod::Amount->value)
-                    ->required(),
-                Textarea::make('notes')
-                    ->columnSpanFull(),
+                Section::make()
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('deprecation.form.name'))
+                            ->required(),
+                        TextInput::make('months')
+                            ->label(__('deprecation.form.months'))
+                            ->required()
+                            ->minValue(1)
+                            ->numeric(),
+                        TextInput::make('minimum_value')
+                            ->label(__('deprecation.form.minimum_value'))
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(100)
+                            ->suffix('%'),
+                        Select::make('method')
+                            ->label(__('deprecation.form.method'))
+                            ->options(DeprecationMethod::class)
+                            ->native(false)
+                            ->default(DeprecationMethod::Amount->value)
+                            ->required(),
+                        Textarea::make('notes')
+                            ->label(__('deprecation.form.notes'))
+                            ->columnSpanFull(),
+                    ])
             ]);
     }
 }
