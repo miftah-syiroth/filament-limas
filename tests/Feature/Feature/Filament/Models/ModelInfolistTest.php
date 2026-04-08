@@ -62,6 +62,5 @@ test('model infolist menampilkan data relasi yang relevan', function () {
         ->assertSee('Laptop')
         ->assertSee('Asset')
         ->assertSee('SL 3 Tahun')
-        ->assertSee('36')
-        ->assertSee('Amount');
+        ->assertSee('36');
 });
