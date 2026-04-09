@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Suppliers\Schemas;
 
 use App\Models\Supplier;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class SupplierInfolist
@@ -12,40 +13,45 @@ class SupplierInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label('ID'),
-                TextEntry::make('name'),
-                TextEntry::make('address')
-                    ->placeholder('-'),
-                TextEntry::make('address2')
-                    ->placeholder('-'),
-                TextEntry::make('city')
-                    ->placeholder('-'),
-                TextEntry::make('state')
-                    ->placeholder('-'),
-                TextEntry::make('country')
-                    ->placeholder('-'),
-                TextEntry::make('zip')
-                    ->placeholder('-'),
-                TextEntry::make('phone')
-                    ->placeholder('-'),
-                TextEntry::make('email')
-                    ->label('Email address')
-                    ->placeholder('-'),
-                TextEntry::make('url')
-                    ->placeholder('-'),
-                TextEntry::make('notes')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (Supplier $record): bool => $record->trashed()),
+                Section::make()
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('name')
+                            ->label(__('supplier.infolist.name')),
+                        TextEntry::make('address')
+                            ->label(__('supplier.infolist.address'))
+                            ->placeholder('-'),
+                        TextEntry::make('address2')
+                            ->label(__('supplier.infolist.address2'))
+                            ->placeholder('-'),
+                        TextEntry::make('city')
+                            ->label(__('supplier.infolist.city'))
+                            ->placeholder('-'),
+                        TextEntry::make('state')
+                            ->label(__('supplier.infolist.province'))
+                            ->placeholder('-'),
+                        TextEntry::make('country')
+                            ->label(__('supplier.infolist.country'))
+                            ->placeholder('-'),
+                        TextEntry::make('zip')
+                            ->label(__('supplier.infolist.zip'))
+                            ->placeholder('-'),
+                        TextEntry::make('phone')
+                            ->label(__('supplier.infolist.phone'))
+                            ->placeholder('-'),
+                        TextEntry::make('email')
+                            ->label(__('supplier.infolist.email'))
+                            ->placeholder('-'),
+                        TextEntry::make('url')
+                            ->label(__('supplier.infolist.url'))
+                            ->placeholder('-'),
+                        TextEntry::make('notes')
+                            ->label(__('supplier.infolist.notes'))
+                            ->placeholder('-')
+                            ->columnSpanFull(),
+
+                    ]),
             ]);
     }
 }

@@ -21,45 +21,57 @@ class SuppliersTable
             ->defaultSort('name', 'asc')
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID')
+                    ->label(__('supplier.table.id'))
                     ->hidden(),
                 TextColumn::make('name')
+                    ->label(__('supplier.table.name'))
                     ->searchable(),
                 TextColumn::make('address')
+                    ->label(__('supplier.table.address'))
                     ->searchable(),
                 TextColumn::make('address2')
+                    ->label(__('supplier.table.address2'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('city')
+                    ->label(__('supplier.table.city'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('state')
+                    ->label(__('supplier.table.province'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('country')
+                    ->label(__('supplier.table.country'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('zip')
+                    ->label(__('supplier.table.zip'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('phone')
+                    ->label(__('supplier.table.phone'))
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label(__('supplier.table.email'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('url')
+                    ->label(__('supplier.table.url'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
+                    ->label(__('supplier.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('supplier.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
+                    ->label(__('supplier.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
