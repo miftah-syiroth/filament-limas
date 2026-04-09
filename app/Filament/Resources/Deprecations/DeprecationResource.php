@@ -41,7 +41,7 @@ class DeprecationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Settings';
+    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
 
     protected static ?int $navigationSort = 8;
 

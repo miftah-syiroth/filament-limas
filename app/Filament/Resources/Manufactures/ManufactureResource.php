@@ -42,7 +42,11 @@ class ManufactureResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+<<<<<<< HEAD
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
+=======
+    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+>>>>>>> eab1f05725c685966d5e97985cdab96a8242def4
 
     protected static ?int $navigationSort = 3;
 
