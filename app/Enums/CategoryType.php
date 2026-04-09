@@ -16,7 +16,7 @@ enum CategoryType: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return $this->name;
+        return __('category.types.'.$this->value);
     }
 
     public function getColor(): string

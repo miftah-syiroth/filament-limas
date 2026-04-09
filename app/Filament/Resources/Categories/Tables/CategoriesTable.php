@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Categories\Tables;
 
+use App\Enums\CategoryType;
 use App\Filament\Imports\CategoryImporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -22,21 +23,27 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID')
+                    ->label(__('category.table.id'))
                     ->hidden(),
                 TextColumn::make('name')
+                    ->label(__('category.table.name'))
                     ->searchable(),
                 TextColumn::make('type')
+                    ->label(__('category.table.type'))
+                    ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('category.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('category.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
+                    ->label(__('category.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -45,13 +52,15 @@ class CategoriesTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()
+                    ->label(''),
+                EditAction::make()
+                    ->label(''),
             ])
             ->headerActions([
                 ImportAction::make()
                     ->importer(CategoryImporter::class)
-                    ->label('Import')
+                    ->label(__('category.actions.import'))
                     ->icon(Heroicon::OutlinedArrowUpTray),
             ])
             ->toolbarActions([
