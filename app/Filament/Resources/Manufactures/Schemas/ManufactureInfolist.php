@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Manufactures\Schemas;
 use App\Models\Manufacture;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
 
 class ManufactureInfolist
 {
@@ -12,31 +13,32 @@ class ManufactureInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label('ID'),
-                TextEntry::make('name'),
-                TextEntry::make('url')
-                    ->placeholder('-'),
-                TextEntry::make('support_url')
-                    ->placeholder('-'),
-                TextEntry::make('support_phone')
-                    ->placeholder('-'),
-                TextEntry::make('support_email')
-                    ->placeholder('-'),
-                TextEntry::make('warranty_lookup_url')
-                    ->placeholder('-'),
-                TextEntry::make('notes')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (Manufacture $record): bool => $record->trashed()),
+                Section::make()
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('name')
+                            ->label(__('manufacture.infolist.name')),
+                        TextEntry::make('url')
+                            ->label(__('manufacture.infolist.url'))
+                            ->placeholder('-'),
+                        TextEntry::make('support_url')
+                            ->label(__('manufacture.infolist.support_url'))
+                            ->placeholder('-'),
+                        TextEntry::make('support_phone')
+                            ->label(__('manufacture.infolist.support_phone'))
+                            ->placeholder('-'),
+                        TextEntry::make('support_email')
+                            ->label(__('manufacture.infolist.support_email'))
+                            ->placeholder('-'),
+                        TextEntry::make('warranty_lookup_url')
+                            ->label(__('manufacture.infolist.warranty_lookup_url'))
+                            ->placeholder('-'),
+                        TextEntry::make('notes')
+                            ->label(__('manufacture.infolist.notes'))
+                            ->placeholder('-')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }

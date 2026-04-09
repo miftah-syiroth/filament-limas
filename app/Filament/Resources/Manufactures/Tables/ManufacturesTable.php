@@ -22,33 +22,42 @@ class ManufacturesTable
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID')
+                    ->label(__('manufacture.table.id'))
                     ->hidden(),
                 TextColumn::make('name')
+                    ->label(__('manufacture.table.name'))
                     ->searchable(),
                 TextColumn::make('url')
+                    ->label(__('manufacture.table.url'))
                     ->searchable(),
                 TextColumn::make('support_url')
+                    ->label(__('manufacture.table.support_url'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('support_phone')
+                    ->label(__('manufacture.table.support_phone'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('support_email')
+                    ->label(__('manufacture.table.support_email'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('warranty_lookup_url')
+                    ->label(__('manufacture.table.warranty_lookup_url'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
+                    ->label(__('manufacture.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('manufacture.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
+                    ->label(__('manufacture.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -63,7 +72,7 @@ class ManufacturesTable
             ->headerActions([
                 ImportAction::make()
                     ->importer(ManufactureImporter::class)
-                    ->label('Import')
+                    ->label(__('manufacture.actions.import'))
                     ->icon(Heroicon::OutlinedArrowUpTray),
             ])
             ->toolbarActions([

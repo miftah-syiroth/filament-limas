@@ -23,11 +23,26 @@ class UnitResource extends Resource
 {
     protected static ?string $model = Unit::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('unit.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('unit.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('unit.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedScale;
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?int $navigationSort = 4;
 
@@ -36,6 +51,7 @@ class UnitResource extends Resource
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('unit.form.name'))
                     ->required(),
             ]);
     }
@@ -45,12 +61,15 @@ class UnitResource extends Resource
         return $schema
             ->components([
                 TextEntry::make('id')
-                    ->label('ID'),
-                TextEntry::make('name'),
+                    ->label(__('unit.infolist.id')),
+                TextEntry::make('name')
+                    ->label(__('unit.infolist.name')),
                 TextEntry::make('created_at')
+                    ->label(__('unit.infolist.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
+                    ->label(__('unit.infolist.updated_at'))
                     ->dateTime()
                     ->placeholder('-'),
             ]);
@@ -62,14 +81,17 @@ class UnitResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID'),
+                    ->label(__('unit.table.id')),
                 TextColumn::make('name')
+                    ->label(__('unit.table.name'))
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('unit.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('unit.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

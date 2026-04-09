@@ -11,26 +11,41 @@ use App\Filament\Resources\Manufactures\Schemas\ManufactureInfolist;
 use App\Filament\Resources\Manufactures\Tables\ManufacturesTable;
 use App\Models\Manufacture;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class ManufactureResource extends Resource
 {
     protected static ?string $model = Manufacture::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('manufacture.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('manufacture.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('manufacture.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCpuChip;
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?int $navigationSort = 3;
-    
+
     public static function form(Schema $schema): Schema
     {
         return ManufactureForm::configure($schema);
