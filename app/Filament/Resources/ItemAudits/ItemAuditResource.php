@@ -29,9 +29,22 @@ class ItemAuditResource extends Resource
 {
     protected static ?string $model = ItemAudit::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
+    public static function getModelLabel(): string
+    {
+        return __('item-audit.model_label');
+    }
 
-    protected static ?string $navigationLabel = 'Audit';
+    public static function getPluralModelLabel(): string
+    {
+        return __('item-audit.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('item-audit.navigation_label');
+    }
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
     protected static ?string $recordTitleAttribute = 'id';
 
@@ -39,61 +52,51 @@ class ItemAuditResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    // public static function form(Schema $schema): Schema
-    // {
-    //     return $schema
-    //         ->components([
-    //             Select::make('item_id')
-    //                 ->relationship('item', 'name')
-    //                 ->required(),
-    //             TextInput::make('status'),
-    //             Toggle::make('location_verified')
-    //                 ->required(),
-    //             Textarea::make('notes')
-    //                 ->columnSpanFull(),
-    //             DateTimePicker::make('audited_at')
-    //                 ->required(),
-    //             DateTimePicker::make('next_audit_at'),
-    //             Select::make('condition')
-    //                 ->options(ItemAuditCondition::class),
-    //             Select::make('result')
-    //                 ->options(ItemAuditResult::class),
-    //         ]);
-    // }
-
     public static function infolist(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextEntry::make('id')
-                    ->label('ID'),
+                    ->label(__('item-audit.infolist.id')),
                 TextEntry::make('item.name')
-                    ->label('Item'),
+                    ->label(__('item-audit.infolist.item')),
                 TextEntry::make('status')
+                    ->label(__('item-audit.infolist.status'))
                     ->placeholder('-'),
                 IconEntry::make('location_verified')
+                    ->label(__('item-audit.infolist.location_verified'))
                     ->boolean(),
                 TextEntry::make('notes')
+                    ->label(__('item-audit.infolist.notes'))
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('audited_at')
-                    ->dateTime(),
+                    ->label(__('item-audit.infolist.audited_at'))
+                    ->dateTime()
+                    ->placeholder('-'),
                 TextEntry::make('created_at')
+                    ->label(__('item-audit.infolist.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
+                    ->label(__('item-audit.infolist.updated_at'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('deleted_at')
+                    ->label(__('item-audit.infolist.deleted_at'))
                     ->dateTime()
-                    ->visible(fn(ItemAudit $record): bool => $record->trashed()),
+                    ->placeholder('-')
+                    ->visible(fn (ItemAudit $record): bool => $record->trashed()),
                 TextEntry::make('next_audit_at')
+                    ->label(__('item-audit.infolist.next_audit_at'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('condition')
+                    ->label(__('item-audit.infolist.condition'))
                     ->badge()
                     ->placeholder('-'),
                 TextEntry::make('result')
+                    ->label(__('item-audit.infolist.result'))
                     ->badge()
                     ->placeholder('-'),
             ]);
@@ -102,56 +105,61 @@ class ItemAuditResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->recordUrl(null) // penting: hilangkan clickable row (tidak ada URL)
+            ->recordUrl(null)
             ->recordTitleAttribute('id')
             ->defaultSort('audited_at', direction: 'desc')
             ->columns([
                 TextColumn::make('code')
-                    ->label('Kode')
+                    ->label(__('item-audit.table.code'))
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->where('id', 'ilike', "%{$search}%");
                     }),
                 TextColumn::make('item.serial_number')
+                    ->label(__('item-audit.table.item'))
                     ->searchable(),
                 TextColumn::make('audited_at')
-                    ->label('Tanggal Audit')
+                    ->label(__('item-audit.table.audited_at'))
                     ->dateTime('d M Y')
                     ->sortable(),
                 TextColumn::make('next_audit_at')
-                    ->label('Audit Berikutnya')
+                    ->label(__('item-audit.table.next_audit_at'))
                     ->dateTime('d M Y')
                     ->sortable(),
                 IconColumn::make('location_verified')
-                    ->label('Lokasi Sesuai')
+                    ->label(__('item-audit.table.location_verified'))
                     ->boolean(),
                 TextColumn::make('condition')
+                    ->label(__('item-audit.table.condition'))
                     ->badge(),
                 TextColumn::make('result')
+                    ->label(__('item-audit.table.result'))
                     ->badge(),
             ])
             ->filters([
                 SelectFilter::make('condition')
+                    ->label(__('item-audit.filters.condition'))
                     ->multiple()
                     ->options(ItemAuditCondition::class),
                 SelectFilter::make('result')
+                    ->label(__('item-audit.filters.result'))
                     ->multiple()
                     ->options(ItemAuditResult::class),
                 TrashedFilter::make(),
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->label(''), // opsional: beri label supaya jelas
+                    ->label(''),
             ])
             ->headerActions([
                 ExportAction::make()
-                ->exporter(ItemAuditExporter::class)
-                    ->label('Export')
+                    ->exporter(ItemAuditExporter::class)
+                    ->label(__('item-audit.actions.export'))
                     ->icon(Heroicon::OutlinedArrowDownTray)
                     ->fileDisk('public'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    // Tidak perlu bulk actions untuk sekarang
+                    //
                 ]),
             ]);
     }

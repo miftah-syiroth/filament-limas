@@ -21,6 +21,21 @@ class ActivityLogResource extends Resource
 {
     protected static ?string $model = ActivityLog::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('activitylog.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('activitylog.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('activitylog.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;
 
     protected static ?string $recordTitleAttribute = 'log_name';
@@ -33,17 +48,26 @@ class ActivityLogResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('log_name'),
+                TextInput::make('log_name')
+                    ->label(__('activitylog.form.log_name')),
                 Textarea::make('description')
+                    ->label(__('activitylog.form.description'))
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('subject_type'),
-                TextInput::make('subject_id'),
-                TextInput::make('causer_type'),
-                TextInput::make('causer_id'),
-                TextInput::make('properties'),
-                TextInput::make('event'),
-                TextInput::make('batch_uuid'),
+                TextInput::make('subject_type')
+                    ->label(__('activitylog.form.subject_type')),
+                TextInput::make('subject_id')
+                    ->label(__('activitylog.form.subject_id')),
+                TextInput::make('causer_type')
+                    ->label(__('activitylog.form.causer_type')),
+                TextInput::make('causer_id')
+                    ->label(__('activitylog.form.causer_id')),
+                TextInput::make('properties')
+                    ->label(__('activitylog.form.properties')),
+                TextInput::make('event')
+                    ->label(__('activitylog.form.event')),
+                TextInput::make('batch_uuid')
+                    ->label(__('activitylog.form.batch_uuid')),
             ]);
     }
 
@@ -52,22 +76,30 @@ class ActivityLogResource extends Resource
         return $schema
             ->components([
                 TextEntry::make('id')
-                    ->label('ID'),
+                    ->label(__('activitylog.infolist.id')),
                 TextEntry::make('log_name')
+                    ->label(__('activitylog.infolist.log_name'))
                     ->placeholder('-'),
                 TextEntry::make('description')
+                    ->label(__('activitylog.infolist.description'))
                     ->columnSpanFull(),
                 TextEntry::make('subject_type')
+                    ->label(__('activitylog.infolist.subject_type'))
                     ->placeholder('-'),
                 TextEntry::make('subject_id')
+                    ->label(__('activitylog.infolist.subject_id'))
                     ->placeholder('-'),
                 TextEntry::make('causer_type')
+                    ->label(__('activitylog.infolist.causer_type'))
                     ->placeholder('-'),
                 TextEntry::make('causer_id')
+                    ->label(__('activitylog.infolist.causer_id'))
                     ->placeholder('-'),
                 TextEntry::make('event')
+                    ->label(__('activitylog.infolist.event'))
                     ->placeholder('-'),
                 TextEntry::make('created_at')
+                    ->label(__('activitylog.infolist.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
             ]);
@@ -80,14 +112,15 @@ class ActivityLogResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('causer.name')
-                    ->label('Nama'),
+                    ->label(__('activitylog.table.causer_name')),
                 TextColumn::make('causer.email')
-                    ->label('Email'),
-                TextColumn::make('event'),
+                    ->label(__('activitylog.table.causer_email')),
+                TextColumn::make('event')
+                    ->label(__('activitylog.table.event')),
                 TextColumn::make('subject_type')
-                    ->label('Tabel'),
+                    ->label(__('activitylog.table.subject_type')),
                 IconColumn::make('subject')
-                    ->label('Row')
+                    ->label(__('activitylog.table.subject_record'))
                     ->icon(fn (mixed $state): ?Heroicon => $state === null
                         ? null
                         : Heroicon::OutlinedEye)
@@ -99,7 +132,7 @@ class ActivityLogResource extends Resource
                     )
                     ->openUrlInNewTab(),
                 IconColumn::make('properties')
-                    ->label('Properties')
+                    ->label(__('activitylog.table.properties'))
                     ->state(function (ActivityLog $record): ?bool {
                         $properties = $record->properties;
 
@@ -125,6 +158,7 @@ class ActivityLogResource extends Resource
                     )
                     ->openUrlInNewTab(),
                 TextColumn::make('created_at')
+                    ->label(__('activitylog.table.created_at'))
                     ->dateTime('j M Y H:i')
                     ->sortable(),
             ])

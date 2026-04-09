@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\BorrowingItems;
 
 use App\Enums\ItemAuditCondition;
-use App\Filament\Resources\BorrowingItems\Pages\ManageBorrowingItems;
 use App\Filament\Exports\BorrowingItemExporter;
+use App\Filament\Resources\BorrowingItems\Pages\ManageBorrowingItems;
 use App\Models\BorrowingItem;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -26,9 +26,22 @@ class BorrowingItemResource extends Resource
 {
     protected static ?string $model = BorrowingItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
+    public static function getModelLabel(): string
+    {
+        return __('borrowing-item.model_label');
+    }
 
-    protected static ?string $navigationLabel = 'Peminjaman';
+    public static function getPluralModelLabel(): string
+    {
+        return __('borrowing-item.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('borrowing-item.navigation_label');
+    }
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     protected static ?string $recordTitleAttribute = 'id';
 
@@ -36,64 +49,50 @@ class BorrowingItemResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    // public static function form(Schema $schema): Schema
-    // {
-    //     return $schema
-    //         ->components([
-    //             Select::make('borrowing_id')
-    //                 ->relationship('borrowing', 'id')
-    //                 ->required(),
-    //             Select::make('item_id')
-    //                 ->relationship('item', 'name')
-    //                 ->required(),
-    //             TextInput::make('quantity')
-    //                 ->required()
-    //                 ->numeric(),
-    //             DateTimePicker::make('checked_out_at')
-    //                 ->required(),
-    //             DateTimePicker::make('checked_in_at'),
-    //             Select::make('condition_in')
-    //                 ->options(ItemAuditCondition::class),
-    //             Select::make('condition_out')
-    //                 ->options(ItemAuditCondition::class)
-    //                 ->required(),
-    //             Textarea::make('notes')
-    //                 ->columnSpanFull(),
-    //         ]);
-    // }
-
     public static function infolist(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextEntry::make('item.serial_number')
-                    ->label('Serial Number'),
+                    ->label(__('borrowing-item.infolist.item_serial')),
                 TextEntry::make('borrowing.id')
-                    ->label('Borrowing'),
+                    ->label(__('borrowing-item.infolist.borrowing')),
                 TextEntry::make('quantity')
+                    ->label(__('borrowing-item.infolist.quantity'))
                     ->numeric(),
                 TextEntry::make('checked_out_at')
-                    ->dateTime(),
+                    ->label(__('borrowing-item.infolist.checked_out_at'))
+                    ->dateTime()
+                    ->placeholder('-'),
                 TextEntry::make('checked_in_at')
+                    ->label(__('borrowing-item.infolist.checked_in_at'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('condition_in')
+                    ->label(__('borrowing-item.infolist.condition_in'))
                     ->badge()
                     ->placeholder('-'),
                 TextEntry::make('condition_out')
-                    ->badge(),
+                    ->label(__('borrowing-item.infolist.condition_out'))
+                    ->badge()
+                    ->placeholder('-'),
                 TextEntry::make('notes')
+                    ->label(__('borrowing-item.infolist.notes'))
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('created_at')
+                    ->label(__('borrowing-item.infolist.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
+                    ->label(__('borrowing-item.infolist.updated_at'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('deleted_at')
+                    ->label(__('borrowing-item.infolist.deleted_at'))
                     ->dateTime()
-                    ->visible(fn(BorrowingItem $record): bool => $record->trashed()),
+                    ->placeholder('-')
+                    ->visible(fn (BorrowingItem $record): bool => $record->trashed()),
             ]);
     }
 
@@ -103,39 +102,39 @@ class BorrowingItemResource extends Resource
             ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('item.serial_number')
-                    ->label('Serial Number')
+                    ->label(__('borrowing-item.table.item_serial'))
                     ->searchable(),
                 TextColumn::make('item.model.name')
-                    ->label('Model'),
+                    ->label(__('borrowing-item.table.model_name')),
                 TextColumn::make('borrowing.user.name')
-                    ->label('Peminjam')
+                    ->label(__('borrowing-item.table.borrower'))
                     ->searchable(),
                 TextColumn::make('borrowing.user.email')
-                    ->label('Email')
+                    ->label(__('borrowing-item.table.email'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('quantity')
-                    ->label('Qty')
+                    ->label(__('borrowing-item.table.quantity'))
                     ->numeric()
                     ->alignCenter(),
                 TextColumn::make('checked_out_at')
-                    ->label('Waktu Keluar')
+                    ->label(__('borrowing-item.table.checked_out_at'))
                     ->dateTime('j M Y'),
                 TextColumn::make('condition_out')
-                    ->label('Kondisi Keluar')
+                    ->label(__('borrowing-item.table.condition_out'))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('checked_in_at')
-                    ->label('Waktu Kembali')
+                    ->label(__('borrowing-item.table.checked_in_at'))
                     ->dateTime('j M Y'),
                 TextColumn::make('condition_in')
-                    ->label('Kondisi Masuk')
+                    ->label(__('borrowing-item.table.condition_in'))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('condition_in')
-                    ->label('Kondisi Masuk')
+                    ->label(__('borrowing-item.filters.condition_in'))
                     ->multiple()
                     ->options(ItemAuditCondition::class),
                 TrashedFilter::make(),
@@ -147,16 +146,13 @@ class BorrowingItemResource extends Resource
             ->headerActions([
                 ExportAction::make()
                     ->exporter(BorrowingItemExporter::class)
-                    ->label('Export')
+                    ->label(__('borrowing-item.actions.export'))
                     ->icon(Heroicon::OutlinedArrowDownTray)
                     ->fileDisk('public'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    // ExportBulkAction::make()
-                    // ->label('Export')
-                    // ->exporter(BorrowingItemExporter::class)
-                    // ->fileDisk('public'),
+                    //
                 ]),
             ]);
     }

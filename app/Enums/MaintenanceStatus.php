@@ -14,6 +14,6 @@ enum MaintenanceStatus: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return $this->name;
+        return __('maintenance.statuses.'.$this->value);
     }
 }

@@ -15,6 +15,6 @@ enum ItemAuditCondition: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return $this->name;
+        return __('item-audit.conditions.'.$this->value);
     }
 }
