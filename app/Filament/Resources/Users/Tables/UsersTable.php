@@ -6,8 +6,8 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class UsersTable
@@ -25,8 +25,9 @@ class UsersTable
                 TextColumn::make('email')
                     ->label(__('user.table.email'))
                     ->searchable(),
-                CheckboxColumn::make('email_verified_at')
+                ToggleColumn::make('email_verified_at')
                     ->label(__('user.table.email_verified'))
+                    ->alignCenter()
                     ->getStateUsing(fn ($record): bool => $record->email_verified_at !== null)
                     ->updateStateUsing(function ($record, bool $state): void {
                         $record->update([
