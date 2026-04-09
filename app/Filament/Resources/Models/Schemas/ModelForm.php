@@ -25,43 +25,49 @@ class ModelForm
                             ->columns(2)
                             ->schema([
                                 Select::make('category_id')
+                                    ->label(__('model.form.category'))
                                     ->relationship('category', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->required(),
                                 Select::make('unit_id')
-                                    ->label('Satuan')
+                                    ->label(__('model.form.unit'))
                                     ->relationship('unit', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->required(),
                                 TextInput::make('name')
+                                    ->label(__('model.form.name'))
                                     ->required(),
                                 Select::make('manufacture_id')
+                                    ->label(__('model.form.manufacturer'))
                                     ->relationship('manufacture', 'name')
                                     ->searchable()
                                     ->preload(),
-                                TextInput::make('model_number'),
+                                TextInput::make('model_number')
+                                    ->label(__('model.form.model_number')),
                                 TextInput::make('min_amount')
-                                    ->label('Minimal Stock')
+                                    ->label(__('model.form.min_amount'))
                                     ->numeric()
-                                    ->belowContent('Jumlah stock minimal yang harus ada.'),
+                                    ->belowContent(__('model.form.min_amount_helper')),
                                 TextInput::make('end_of_life')
-                                    ->label('Masa Pakai')
+                                    ->label(__('model.form.end_of_life'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('bulan'),
+                                    ->suffix(__('model.form.months_suffix')),
                                 Select::make('deprecation_id')
+                                    ->label(__('model.form.depreciation'))
                                     ->relationship('deprecation', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->default(null),
                                 TextInput::make('audit_interval')
-                                    ->label('Interval Audit')
+                                    ->label(__('model.form.audit_interval'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('bulan'),
+                                    ->suffix(__('model.form.months_suffix')),
                                 Textarea::make('notes')
+                                    ->label(__('model.form.notes'))
                                     ->columnSpanFull(),
                             ]),
                         Section::make()

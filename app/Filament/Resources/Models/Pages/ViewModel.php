@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Models\Pages;
 use App\Filament\Resources\Models\ModelResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Icons\Heroicon;
 
 class ViewModel extends ViewRecord
 {
@@ -13,7 +14,8 @@ class ViewModel extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            EditAction::make(),
+            EditAction::make()
+                ->icon(Heroicon::OutlinedPencilSquare),
         ];
     }
 }

@@ -11,23 +11,38 @@ use App\Filament\Resources\Models\Schemas\ModelInfolist;
 use App\Filament\Resources\Models\Tables\ModelsTable;
 use App\Models\Model;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class ModelResource extends Resource
 {
     protected static ?string $model = Model::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('model.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('model.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('model.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+    protected static string|UnitEnum|null $navigationGroup = 'Master Data';
 
     protected static ?int $navigationSort = 1;
 

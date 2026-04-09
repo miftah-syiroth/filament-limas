@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Models\Tables;
 
+use App\Enums\CategoryType;
 use App\Filament\Imports\ModelImporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -25,29 +26,35 @@ class ModelsTable
             ->recordUrl(null)
             ->columns([
                 SpatieMediaLibraryImageColumn::make('images')
+                    ->label(__('model.table.images'))
                     ->limit(1),
                 TextColumn::make('name')
+                    ->label(__('model.table.name'))
                     ->searchable(),
                 TextColumn::make('unit.name')
-                    ->label('Satuan')
+                    ->label(__('model.table.unit'))
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('manufacture.name'),
-                TextColumn::make('category.name'),
+                TextColumn::make('manufacture.name')
+                    ->label(__('model.table.manufacturer')),
+                TextColumn::make('category.name')
+                    ->label(__('model.table.category')),
                 TextColumn::make('category.type')
-                    ->label('Tipe')
+                    ->label(__('model.table.category_type'))
+                    ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
                     ->badge(),
                 TextColumn::make('audit_interval')
-                    ->label('Interval Audit')
+                    ->label(__('model.table.audit_interval'))
                     ->numeric()
-                    ->suffix(' bulan'),
+                    ->suffix(__('model.table.months_suffix')),
                 TextColumn::make('model_number')
+                    ->label(__('model.table.model_number'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('min_amount')
-                    ->label('Jumlah minimal')
+                    ->label(__('model.table.min_amount'))
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('end_of_life')
-                    ->label('Kadaluarsa')
+                    ->label(__('model.table.end_of_life'))
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -56,13 +63,15 @@ class ModelsTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()
+                    ->label(''),
+                EditAction::make()
+                    ->label(''),
             ])
             ->headerActions([
                 ImportAction::make()
                     ->importer(ModelImporter::class)
-                    ->label('Import')
+                    ->label(__('model.actions.import'))
                     ->icon(Heroicon::OutlinedArrowUpTray),
             ])
             ->toolbarActions([

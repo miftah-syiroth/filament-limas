@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Models\Schemas;
 
+use App\Enums\CategoryType;
 use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
@@ -18,59 +19,60 @@ class ModelInfolist
                     ->columnSpanFull()
                     ->columns(3)
                     ->schema([
-                        Section::make('Informasi Model')
+                        Section::make(__('model.infolist.section_information'))
                             ->columnSpan(2)
                             ->columns(2)
                             ->schema([
                                 TextEntry::make('name')
-                                    ->label('Nama'),
+                                    ->label(__('model.infolist.name')),
                                 TextEntry::make('unit.name')
-                                    ->label('Satuan')
+                                    ->label(__('model.infolist.unit'))
                                     ->placeholder('-'),
                                 TextEntry::make('model_number')
-                                    ->label('Nomor Model')
+                                    ->label(__('model.infolist.model_number'))
                                     ->placeholder('-'),
                                 TextEntry::make('manufacture.name')
-                                    ->label('Manufacture')
+                                    ->label(__('model.infolist.manufacturer'))
                                     ->placeholder('-'),
                                 TextEntry::make('category.name')
-                                    ->label('Kategori')
+                                    ->label(__('model.infolist.category'))
                                     ->placeholder('-'),
                                 TextEntry::make('category.type')
-                                    ->label('Tipe Kategori')
+                                    ->label(__('model.infolist.category_type'))
+                                    ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
                                     ->badge()
-                                    ->color(fn ($state): string => $state?->getColor() ?? 'gray')
+                                    ->color(fn ($state): string => $state instanceof CategoryType ? $state->getColor() : 'gray')
                                     ->placeholder('-'),
                                 TextEntry::make('end_of_life')
-                                    ->label('Masa Pakai')
+                                    ->label(__('model.infolist.end_of_life'))
                                     ->numeric()
-                                    ->suffix(' bulan')
+                                    ->suffix(__('model.infolist.months_suffix'))
                                     ->placeholder('-'),
                                 TextEntry::make('audit_interval')
-                                    ->label('Interval Audit')
+                                    ->label(__('model.infolist.audit_interval'))
                                     ->numeric()
-                                    ->suffix(' bulan')
+                                    ->suffix(__('model.infolist.months_suffix'))
                                     ->placeholder('-'),
                                 TextEntry::make('deprecation.months')
-                                    ->label('Masa Depresiasi')
+                                    ->label(__('model.infolist.depreciation_period'))
                                     ->numeric()
-                                    ->suffix(' bulan')
+                                    ->suffix(__('model.infolist.months_suffix'))
                                     ->placeholder('-'),
                                 TextEntry::make('deprecation.minimum_value')
-                                    ->label('Nilai Minimum')
+                                    ->label(__('model.infolist.minimum_value'))
                                     ->placeholder('-'),
 
                                 TextEntry::make('min_amount')
-                                    ->label('Minimal Stock')
+                                    ->label(__('model.infolist.min_amount'))
                                     ->numeric()
                                     ->placeholder('-'),
 
                                 TextEntry::make('notes')
-                                    ->label('Catatan')
+                                    ->label(__('model.infolist.notes'))
                                     ->placeholder('-')
                                     ->columnSpanFull(),
                             ]),
-                        Section::make('Gambar')
+                        Section::make(__('model.infolist.section_images'))
                             ->schema([
                                 SpatieMediaLibraryImageEntry::make('images')
                                     ->hiddenLabel(),
