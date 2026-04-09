@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Borrowings\Pages;
 use App\Filament\Resources\Borrowings\BorrowingResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Icons\Heroicon;
 
 class ViewBorrowing extends ViewRecord
 {
@@ -13,7 +14,8 @@ class ViewBorrowing extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            EditAction::make(),
+            EditAction::make()
+                ->icon(Heroicon::OutlinedPencilSquare),
         ];
     }
 }

@@ -23,9 +23,22 @@ class BorrowingResource extends Resource
 {
     protected static ?string $model = Borrowing::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
+    public static function getModelLabel(): string
+    {
+        return __('borrowing.model_label');
+    }
 
-    protected static ?string $navigationLabel = 'Peminjaman';
+    public static function getPluralModelLabel(): string
+    {
+        return __('borrowing.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('borrowing.navigation_label');
+    }
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     protected static ?string $recordTitleAttribute = 'id';
 

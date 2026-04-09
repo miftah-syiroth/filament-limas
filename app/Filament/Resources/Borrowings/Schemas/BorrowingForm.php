@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Borrowings\Schemas;
 
 use App\Enums\ItemAuditCondition;
-use App\Models\Borrowing;
 use App\Models\BorrowingItem;
 use App\Models\Item;
 use Carbon\Carbon;
@@ -24,39 +23,38 @@ class BorrowingForm
     {
         return $schema
             ->components([
-                Section::make('Peminjam')
+                Section::make(__('borrowing.form.section_borrower'))
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         Select::make('user_id')
-                            ->label('Peminjam')
+                            ->label(__('borrowing.form.user'))
                             ->relationship('user', 'name')
                             ->searchable()
                             ->preload()
                             ->native(false)
                             ->required(),
                         DatePicker::make('borrowed_at')
-                            ->label('Tanggal Peminjaman')
+                            ->label(__('borrowing.form.borrowed_at'))
                             ->required()
                             ->default(now()->format('m/d/Y')),
                         DatePicker::make('due_at')
-                            ->label('Batas Peminjaman')
+                            ->label(__('borrowing.form.due_at'))
                             ->required(),
                         DatePicker::make('returned_at')
-                            ->label('Tanggal Pengembalian')
+                            ->label(__('borrowing.form.returned_at'))
                             ->disabled(function (Get $get): bool {
                                 $borrowingId = $get('id');
 
-                                // Disable if there are any item(s) in this borrowing not yet checked in
                                 return BorrowingItem::where('borrowing_id', $borrowingId)
                                     ->whereNull('checked_in_at')
                                     ->exists();
                             })
                             ->visibleOn('edit'),
-                        Textarea::make('notes'),
+                        Textarea::make('notes')
+                            ->label(__('borrowing.form.notes')),
                     ]),
-                // jangan ada di operation edit
-                Section::make('')
+                Section::make(__('borrowing.form.section_items'))
                     ->hiddenOn('edit')
                     ->columnSpanFull()
                     ->schema([
@@ -64,7 +62,7 @@ class BorrowingForm
                             ->columns(3)
                             ->schema([
                                 Select::make('item_id')
-                                    ->label('Item')
+                                    ->label(__('borrowing.form.item'))
                                     ->options(
                                         Item::borrowable()
                                             ->with('activeBorrowingItems')
@@ -116,7 +114,7 @@ class BorrowingForm
                                         }
                                     }),
                                 TextInput::make('quantity')
-                                    ->label('Jumlah')
+                                    ->label(__('borrowing.form.quantity'))
                                     ->numeric()
                                     ->minValue(1)
                                     ->required()
@@ -124,7 +122,7 @@ class BorrowingForm
                                     ->live()
                                     ->maxValue(fn (Get $get): ?int => Item::find($get('item_id'))?->quantity),
                                 Select::make('condition_out')
-                                    ->label('Kondisi Keluar')
+                                    ->label(__('borrowing.form.condition_out'))
                                     ->options(ItemAuditCondition::class)
                                     ->native(false)
                                     ->required(),
@@ -140,7 +138,7 @@ class BorrowingForm
                             })
                             ->defaultItems(1)
                             ->minItems(1)
-                            ->addActionLabel('Tambah Item'),
+                            ->addActionLabel(__('borrowing.form.add_item_repeater')),
                     ]),
             ]);
     }

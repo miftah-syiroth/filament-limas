@@ -25,43 +25,48 @@ class BorrowingsTable
             ->defaultSort('borrowed_at', direction: 'desc')
             ->columns([
                 TextColumn::make('user.name')
+                    ->label(__('borrowing.table.borrower'))
                     ->searchable(),
                 TextColumn::make('borrowed_at')
-                    ->label('Tanggal Peminjaman')
+                    ->label(__('borrowing.table.borrowed_at'))
                     ->date('j M Y')
                     ->sortable(),
                 TextColumn::make('due_at')
-                    ->label('Batas Peminjaman')
+                    ->label(__('borrowing.table.due_at'))
                     ->date('j M Y')
                     ->sortable(),
                 TextColumn::make('returned_at')
-                    ->label('Tanggal Pengembalian')
+                    ->label(__('borrowing.table.returned_at'))
                     ->date('j M Y')
                     ->sortable(),
                 TextColumn::make('items_count')
                     ->counts('items')
-                    ->label('Items')
+                    ->label(__('borrowing.table.items_count'))
                     ->alignCenter()
                     ->numeric(),
                 TextColumn::make('status')
+                    ->label(__('borrowing.table.status'))
                     ->badge(),
                 IconColumn::make('overdue')
+                    ->label(__('borrowing.table.overdue'))
                     ->alignCenter()
                     ->boolean(),
                 TextColumn::make('created_at')
+                    ->label(__('borrowing.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('status')
+                    ->label(__('borrowing.filters.status'))
                     ->multiple()
                     ->options(BorrowingStatus::class),
                 TernaryFilter::make('overdue')
-                    ->label('Terlambat')
-                    ->placeholder('Semua')
-                    ->trueLabel('Ya')
-                    ->falseLabel('Tidak')
+                    ->label(__('borrowing.filters.overdue'))
+                    ->placeholder(__('borrowing.filters.overdue_placeholder'))
+                    ->trueLabel(__('borrowing.filters.overdue_true'))
+                    ->falseLabel(__('borrowing.filters.overdue_false'))
                     ->queries(
                         true: fn (Builder $query) => $query->where(function (Builder $q) {
                             return $q->whereNull('returned_at')->where('due_at', '<', now()->startOfDay());

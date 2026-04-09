@@ -1,0 +1,75 @@
+<?php
+
+return [
+
+    'model_label' => 'Borrowing',
+    'plural_model_label' => 'Borrowings',
+    'navigation_label' => 'Borrowings',
+
+    'statuses' => [
+        'active' => 'Active',
+        'returned' => 'Returned',
+    ],
+
+    'form' => [
+        'add' => 'Add Borrowing',
+        'section_borrower' => 'Borrower',
+        'section_items' => '',
+        'user' => 'Borrower',
+        'borrowed_at' => 'Borrowed on',
+        'due_at' => 'Due date',
+        'returned_at' => 'Returned on',
+        'notes' => 'Notes',
+        'item' => 'Item',
+        'quantity' => 'Quantity',
+        'condition_out' => 'Condition (out)',
+        'add_item_repeater' => 'Add item',
+    ],
+
+    'infolist' => [
+        'section_general' => 'General information',
+        'borrower' => 'Borrower',
+        'status' => 'Status',
+        'fieldset_dates' => 'Dates',
+        'borrowed_at' => 'Borrowed on',
+        'due_at' => 'Due date',
+        'returned_at' => 'Returned on',
+        'notes' => 'Notes',
+    ],
+
+    'table' => [
+        'borrower' => 'Borrower',
+        'borrowed_at' => 'Borrowed on',
+        'due_at' => 'Due date',
+        'returned_at' => 'Returned on',
+        'items_count' => 'Items',
+        'status' => 'Status',
+        'overdue' => 'Overdue',
+        'created_at' => 'Created at',
+    ],
+
+    'filters' => [
+        'status' => 'Status',
+        'overdue' => 'Overdue',
+        'overdue_placeholder' => 'All',
+        'overdue_true' => 'Yes',
+        'overdue_false' => 'No',
+    ],
+
+    'relation' => [
+        'table_heading' => 'Items',
+        'add_item' => 'Add item',
+        'item' => 'Item',
+        'quantity' => 'Quantity',
+        'checked_out_at' => 'Checked out on',
+        'condition_out' => 'Condition (out)',
+        'checked_in_at' => 'Checked in on',
+        'condition_in' => 'Condition (in)',
+        'notes' => 'Notes',
+        'serial_number' => 'Serial number',
+        'model' => 'Model',
+        'modal_fieldset_out' => 'Checked out',
+        'modal_fieldset_in' => 'Checked in',
+        'modal_date' => 'Date',
+    ],
+];

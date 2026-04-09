@@ -12,6 +12,6 @@ enum BorrowingStatus: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return $this->name;
+        return __('borrowing.statuses.'.$this->value);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Borrowings\Pages;
 use App\Filament\Resources\Borrowings\BorrowingResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 
 class ListBorrowings extends ListRecords
 {
@@ -13,7 +14,8 @@ class ListBorrowings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->icon(Heroicon::OutlinedPlus),
         ];
     }
 }

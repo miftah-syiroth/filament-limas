@@ -14,33 +14,35 @@ class BorrowingInfolist
     {
         return $schema
             ->components([
-                Section::make('Informasi Umum')
+                Section::make(__('borrowing.infolist.section_general'))
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         TextEntry::make('user.name')
-                            ->label('User'),
+                            ->label(__('borrowing.infolist.borrower')),
                         TextEntry::make('status')
+                            ->label(__('borrowing.infolist.status'))
                             ->badge(),
-                        Fieldset::make('Tanggal')
+                        Fieldset::make(__('borrowing.infolist.fieldset_dates'))
                             ->columnSpanFull()
                             ->schema([
                                 Grid::make(3)
                                     ->columnSpanFull()
                                     ->schema([
                                         TextEntry::make('borrowed_at')
-                                            ->label('Tanggal Peminjaman')
+                                            ->label(__('borrowing.infolist.borrowed_at'))
                                             ->dateTime('j M Y'),
                                         TextEntry::make('due_at')
-                                            ->label('Batas Peminjaman')
+                                            ->label(__('borrowing.infolist.due_at'))
                                             ->dateTime('j M Y'),
                                         TextEntry::make('returned_at')
-                                            ->label('Tanggal Pengembalian')
+                                            ->label(__('borrowing.infolist.returned_at'))
                                             ->dateTime('j M Y')
                                             ->placeholder('-'),
                                     ]),
                             ]),
                         TextEntry::make('notes')
+                            ->label(__('borrowing.infolist.notes'))
                             ->placeholder('-')
                             ->columnSpanFull(),
                     ]),

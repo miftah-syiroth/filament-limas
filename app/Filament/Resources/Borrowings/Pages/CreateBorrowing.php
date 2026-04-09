@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Borrowings\Pages;
 
-use App\Filament\Resources\Borrowings\BorrowingResource;
 use App\Enums\BorrowingStatus;
+use App\Filament\Resources\Borrowings\BorrowingResource;
 use App\Models\Borrowing;
 use App\Models\BorrowingItem;
 use Filament\Resources\Pages\CreateRecord;
@@ -25,12 +25,11 @@ class CreateBorrowing extends CreateRecord
         return $data;
     }
 
-
     protected function handleRecordCreation(array $data): Model
     {
         return DB::transaction(function () use ($data) {
             $borrowing = Borrowing::create($data);
-            
+
             foreach ($data['items'] ?? [] as $key => $item) {
                 // update or Create
                 BorrowingItem::updateOrCreate([
@@ -42,6 +41,7 @@ class CreateBorrowing extends CreateRecord
                     'condition_out' => $item['condition_out'],
                 ]);
             }
+
             return $borrowing;
         });
     }

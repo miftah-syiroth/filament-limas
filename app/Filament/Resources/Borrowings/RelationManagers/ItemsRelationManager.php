@@ -43,9 +43,8 @@ class ItemsRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('item_id')
-                    ->label('Item')
+                    ->label(__('borrowing.relation.item'))
                     ->searchable()
-                    // option limit 20
                     ->options(Item::query()
                         ->limit(20)
                         ->get()
@@ -79,7 +78,7 @@ class ItemsRelationManager extends RelationManager
                         }
                     }),
                 TextInput::make('quantity')
-                    ->label('Jumlah')
+                    ->label(__('borrowing.relation.quantity'))
                     ->numeric()
                     ->minValue(1)
                     ->required()
@@ -87,64 +86,63 @@ class ItemsRelationManager extends RelationManager
                     ->live()
                     ->maxValue(fn (Get $get): ?int => Item::find($get('item_id'))?->quantity),
                 DatePicker::make('checked_out_at')
-                    ->label('Tanggal Keluar')
+                    ->label(__('borrowing.relation.checked_out_at'))
                     ->default(now()->format('m/d/Y'))
                     ->required(),
                 Select::make('condition_out')
-                    ->label('Kondisi Keluar')
+                    ->label(__('borrowing.relation.condition_out'))
                     ->options(ItemAuditCondition::class)
                     ->native(false)
                     ->required(),
                 DatePicker::make('checked_in_at')
-                    ->label('Tanggal Masuk')
+                    ->label(__('borrowing.relation.checked_in_at'))
                     ->live()
                     ->required(fn (Get $get): bool => ! empty($get('condition_in'))),
                 Select::make('condition_in')
-                    ->label('Kondisi Masuk')
+                    ->label(__('borrowing.relation.condition_in'))
                     ->options(ItemAuditCondition::class)
                     ->native(false)
                     ->live()
                     ->required(fn (Get $get): bool => ! empty($get('checked_in_at'))),
                 Textarea::make('notes')
-                    ->label('Catatan'),
+                    ->label(__('borrowing.relation.notes')),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Items')
+            ->heading(__('borrowing.relation.table_heading'))
             ->columns([
                 TextColumn::make('item.serial_number')
-                    ->label('Serial Number'),
+                    ->label(__('borrowing.relation.serial_number')),
                 TextColumn::make('item.model.name')
-                    ->label('Model'),
+                    ->label(__('borrowing.relation.model')),
                 TextColumn::make('quantity')
-                    ->label('Qty')
+                    ->label(__('borrowing.relation.quantity'))
                     ->numeric()
                     ->alignCenter(),
                 TextColumn::make('checked_out_at')
-                    ->label('Tanggal Keluar')
+                    ->label(__('borrowing.relation.checked_out_at'))
                     ->dateTime('j M Y'),
                 TextColumn::make('condition_out')
-                    ->label('Kondisi Keluar')
+                    ->label(__('borrowing.relation.condition_out'))
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('checked_in_at')
-                    ->label('Tanggal Masuk')
+                    ->label(__('borrowing.relation.checked_in_at'))
                     ->dateTime('j M Y'),
                 TextColumn::make('condition_in')
-                    ->label('Kondisi Masuk')
+                    ->label(__('borrowing.relation.condition_in'))
                     ->badge()
                     ->color('primary'),
-                // notes,
                 TextColumn::make('notes')
-                    ->label('Catatan')
+                    ->label(__('borrowing.relation.notes'))
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->label('Add Item')
+                    ->label(__('borrowing.relation.add_item'))
                     ->authorize('create', $this->getOwnerRecord()),
             ])
             ->recordActions([
@@ -167,10 +165,10 @@ class ItemsRelationManager extends RelationManager
                                 Grid::make(1)
                                     ->schema([
                                         TextEntry::make('item.serial_number')
-                                            ->label('Serial Number')
+                                            ->label(__('borrowing.relation.serial_number'))
                                             ->badge(),
                                         TextEntry::make('quantity')
-                                            ->label('Jumlah')
+                                            ->label(__('borrowing.relation.quantity'))
                                             ->numeric(),
                                     ])
                                     ->columnSpan(1),
@@ -178,22 +176,22 @@ class ItemsRelationManager extends RelationManager
                         Grid::make(2)
                             ->columnSpanFull()
                             ->schema([
-                                Fieldset::make('Keluar')
+                                Fieldset::make(__('borrowing.relation.modal_fieldset_out'))
                                     ->columns(1)
                                     ->schema([
                                         TextEntry::make('checked_out_at')
-                                            ->label('Tanggal')
+                                            ->label(__('borrowing.relation.modal_date'))
                                             ->dateTime('j M Y'),
                                         TextEntry::make('condition_out')
                                             ->hiddenLabel()
                                             ->badge()
                                             ->color('gray'),
                                     ]),
-                                Fieldset::make('Masuk')
+                                Fieldset::make(__('borrowing.relation.modal_fieldset_in'))
                                     ->columns(1)
                                     ->schema([
                                         TextEntry::make('checked_in_at')
-                                            ->label('Tanggal')
+                                            ->label(__('borrowing.relation.modal_date'))
                                             ->dateTime('j M Y'),
                                         TextEntry::make('condition_in')
                                             ->hiddenLabel()
@@ -202,7 +200,7 @@ class ItemsRelationManager extends RelationManager
                                     ]),
                             ]),
                         TextEntry::make('notes')
-                            ->label('Catatan')
+                            ->label(__('borrowing.relation.notes'))
                             ->columnSpanFull()
                             ->placeholder('-'),
                     ]),

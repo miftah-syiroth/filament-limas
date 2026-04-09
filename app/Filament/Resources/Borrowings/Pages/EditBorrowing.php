@@ -9,6 +9,7 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Icons\Heroicon;
 
 class EditBorrowing extends EditRecord
 {
@@ -31,10 +32,14 @@ class EditBorrowing extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make(),
-            DeleteAction::make(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
+            ViewAction::make()
+                ->icon(Heroicon::OutlinedEye),
+            DeleteAction::make()
+                ->icon(Heroicon::OutlinedTrash),
+            ForceDeleteAction::make()
+                ->icon(Heroicon::OutlinedTrash),
+            RestoreAction::make()
+                ->icon(Heroicon::OutlinedArrowPath),
         ];
     }
 }
