@@ -21,42 +21,51 @@ class LocationsTable
             ->columns([
                 TextColumn::make('id')
                     ->hidden()
-                    ->label('ID'),
+                    ->label(__('location.table.id')),
                 TextColumn::make('name')
+                    ->label(__('location.table.name'))
                     ->searchable(),
                 TextColumn::make('company.name')
+                    ->label(__('location.table.company'))
                     ->searchable(),
                 TextColumn::make('address')
+                    ->label(__('location.table.address'))
                     ->searchable(),
                 TextColumn::make('address2')
+                    ->label(__('location.table.address2'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('relationCity.name')
-                    ->label('City')
+                    ->label(__('location.table.city'))
                     ->searchable(),
                 TextColumn::make('relationProvince.name')
-                    ->label('Province')
+                    ->label(__('location.table.province'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('relationCountry.name')
-                    ->label('Country')
+                    ->label(__('location.table.country'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('zip')
+                    ->label(__('location.table.zip'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('phone')
+                    ->label(__('location.table.phone'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
+                    ->label(__('location.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('location.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
+                    ->label(__('location.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

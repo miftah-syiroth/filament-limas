@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Locations\Schemas;
 
-use App\Models\Location;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class LocationInfolist
@@ -12,38 +12,41 @@ class LocationInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label('ID'),
-                TextEntry::make('company.name')
-                    ->label('Company')
-                    ->placeholder('-'),
-                TextEntry::make('name'),
-                TextEntry::make('address')
-                    ->placeholder('-'),
-                TextEntry::make('address2')
-                    ->placeholder('-'),
-                TextEntry::make('city')
-                    ->placeholder('-'),
-                TextEntry::make('state')
-                    ->placeholder('-'),
-                TextEntry::make('country')
-                    ->placeholder('-'),
-                TextEntry::make('zip')
-                    ->placeholder('-'),
-                TextEntry::make('phone')
-                    ->placeholder('-'),
-                TextEntry::make('notes')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (Location $record): bool => $record->trashed()),
+                Section::make()
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('company.name')
+                            ->label(__('location.infolist.company'))
+                            ->placeholder('-'),
+                        TextEntry::make('name')
+                            ->label(__('location.infolist.name')),
+                        TextEntry::make('address')
+                            ->label(__('location.infolist.address'))
+                            ->placeholder('-'),
+                        TextEntry::make('address2')
+                            ->label(__('location.infolist.address2'))
+                            ->placeholder('-'),
+                        TextEntry::make('relationCity.name')
+                            ->label(__('location.infolist.city'))
+                            ->placeholder('-'),
+                        TextEntry::make('relationProvince.name')
+                            ->label(__('location.infolist.province'))
+                            ->placeholder('-'),
+                        TextEntry::make('relationCountry.name')
+                            ->label(__('location.infolist.country'))
+                            ->placeholder('-'),
+                        TextEntry::make('zip')
+                            ->label(__('location.infolist.zip'))
+                            ->placeholder('-'),
+                        TextEntry::make('phone')
+                            ->label(__('location.infolist.phone'))
+                            ->placeholder('-'),
+                        TextEntry::make('notes')
+                            ->label(__('location.infolist.notes'))
+                            ->placeholder('-')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }
