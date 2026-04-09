@@ -6,6 +6,7 @@ use App\Models\Location;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
@@ -15,7 +16,12 @@ class DepartmentForm
     {
         return $schema
             ->components([
+                Section::make()
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
                 Select::make('location_id')
+                    ->label(__('department.form.location'))
                     ->relationship('location', 'name')
                     ->required()
                     ->native(false)
@@ -25,16 +31,21 @@ class DepartmentForm
                         $set('company_id', $location?->company_id);
                     }),
                 Select::make('company_id')
+                    ->label(__('department.form.company'))
                     ->relationship('company', 'name')
                     ->disabled()
                     ->dehydrated()
                     ->native(false),
                 TextInput::make('name')
+                    ->label(__('department.form.name'))
                     ->required(),
                 TextInput::make('phone')
+                    ->label(__('department.form.phone'))
                     ->tel(),
                 Textarea::make('notes')
+                    ->label(__('department.form.notes'))
                     ->columnSpanFull(),
+                ]),
             ]);
     }
 }

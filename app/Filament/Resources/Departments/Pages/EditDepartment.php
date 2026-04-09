@@ -8,6 +8,7 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Icons\Heroicon;
 
 class EditDepartment extends EditRecord
 {
@@ -16,8 +17,10 @@ class EditDepartment extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make(),
-            DeleteAction::make(),
+            ViewAction::make()
+                ->icon(Heroicon::OutlinedEye),
+            DeleteAction::make()
+                ->icon(Heroicon::OutlinedTrash),
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];

@@ -20,26 +20,33 @@ class DepartmentsTable
             ->recordUrl(null)
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID')
+                    ->label(__('department.table.id'))
                     ->hidden(),
                 TextColumn::make('name')
+                    ->label(__('department.table.name'))
                     ->searchable(),
                 TextColumn::make('company.name')
+                    ->label(__('department.table.company'))
                     ->searchable(),
                 TextColumn::make('location.name')
+                    ->label(__('department.table.location'))
                     ->searchable(),
                 TextColumn::make('phone')
+                    ->label(__('department.table.phone'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
+                    ->label(__('department.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('department.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
+                    ->label(__('department.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

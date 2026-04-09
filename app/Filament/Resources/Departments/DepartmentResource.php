@@ -11,23 +11,38 @@ use App\Filament\Resources\Departments\Schemas\DepartmentInfolist;
 use App\Filament\Resources\Departments\Tables\DepartmentsTable;
 use App\Models\Department;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class DepartmentResource extends Resource
 {
     protected static ?string $model = Department::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('department.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('department.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('department.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?int $navigationSort = 6;
 

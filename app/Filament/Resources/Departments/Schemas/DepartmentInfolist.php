@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Departments\Schemas;
 
 use App\Models\Department;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class DepartmentInfolist
@@ -12,29 +13,26 @@ class DepartmentInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label('ID'),
-                TextEntry::make('company.name')
-                    ->label('Company')
-                    ->placeholder('-'),
-                TextEntry::make('location.name')
-                    ->label('Location')
-                    ->placeholder('-'),
-                TextEntry::make('name'),
-                TextEntry::make('phone')
-                    ->placeholder('-'),
-                TextEntry::make('notes')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (Department $record): bool => $record->trashed()),
+                Section::make()
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('company.name')
+                            ->label(__('department.infolist.company'))
+                            ->placeholder('-'),
+                        TextEntry::make('location.name')
+                            ->label(__('department.infolist.location'))
+                            ->placeholder('-'),
+                        TextEntry::make('name')
+                            ->label(__('department.infolist.name')),
+                        TextEntry::make('phone')
+                            ->label(__('department.infolist.phone'))
+                            ->placeholder('-'),
+                        TextEntry::make('notes')
+                            ->label(__('department.infolist.notes'))
+                            ->placeholder('-')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }
