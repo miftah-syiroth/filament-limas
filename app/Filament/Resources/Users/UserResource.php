@@ -20,6 +20,21 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('user.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('user.plural_model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('user.navigation_label');
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static ?string $recordTitleAttribute = 'name';

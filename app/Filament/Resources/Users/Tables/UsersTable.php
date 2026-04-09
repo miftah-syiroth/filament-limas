@@ -17,15 +17,16 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label('ID')
+                    ->label(__('user.table.id'))
                     ->hidden(),
                 TextColumn::make('name')
+                    ->label(__('user.table.name'))
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label(__('user.table.email'))
                     ->searchable(),
                 CheckboxColumn::make('email_verified_at')
-                    ->label('Terverifikasi')
+                    ->label(__('user.table.email_verified'))
                     ->getStateUsing(fn ($record): bool => $record->email_verified_at !== null)
                     ->updateStateUsing(function ($record, bool $state): void {
                         $record->update([
@@ -33,14 +34,17 @@ class UsersTable
                         ]);
                     }),
                 TextColumn::make('created_at')
+                    ->label(__('user.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('user.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('two_factor_confirmed_at')
+                    ->label(__('user.table.two_factor_confirmed_at'))
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -48,8 +52,10 @@ class UsersTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()
+                    ->label(''),
+                EditAction::make()
+                    ->label(''),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
