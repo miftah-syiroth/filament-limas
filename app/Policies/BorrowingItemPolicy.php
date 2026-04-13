@@ -1,88 +1,75 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Enums\BorrowingStatus;
-use App\Models\Borrowing;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\BorrowingItem;
-use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BorrowingItemPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    use HandlesAuthorization;
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return true;
+        return $authUser->can('ViewAny:BorrowingItem');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, BorrowingItem $borrowingItem): bool
+    public function view(AuthUser $authUser, BorrowingItem $borrowingItem): bool
     {
-        return true;
+        return $authUser->can('View:BorrowingItem');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user, ?Borrowing $borrowing = null): bool
+    public function create(AuthUser $authUser): bool
     {
-        // jika status returned && returned_at not null maka tidak boleh create
-        if ($borrowing && $borrowing->status === BorrowingStatus::Returned && $borrowing->returned_at) {
-            return false;
-        }
-
-        return true;
+        return $authUser->can('Create:BorrowingItem');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, BorrowingItem $borrowingItem): bool
+    public function update(AuthUser $authUser, BorrowingItem $borrowingItem): bool
     {
-        if ($borrowingItem->borrowing->status === BorrowingStatus::Returned && $borrowingItem->borrowing->returned_at) {
-            return false;
-        }
-
-        return true;
+        return $authUser->can('Update:BorrowingItem');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, BorrowingItem $borrowingItem): bool
+    public function delete(AuthUser $authUser, BorrowingItem $borrowingItem): bool
     {
-        if ($borrowingItem->borrowing->status === BorrowingStatus::Returned && $borrowingItem->borrowing->returned_at) {
-            return false;
-        }
-
-        return true;
+        return $authUser->can('Delete:BorrowingItem');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, BorrowingItem $borrowingItem): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        if ($borrowingItem->borrowing->status === BorrowingStatus::Returned && $borrowingItem->borrowing->returned_at) {
-            return false;
-        }
-
-        return true;
+        return $authUser->can('DeleteAny:BorrowingItem');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, BorrowingItem $borrowingItem): bool
+    public function restore(AuthUser $authUser, BorrowingItem $borrowingItem): bool
     {
-        if ($borrowingItem->borrowing->status === BorrowingStatus::Returned && $borrowingItem->borrowing->returned_at) {
-            return false;
-        }
-
-        return true;
+        return $authUser->can('Restore:BorrowingItem');
     }
+
+    public function forceDelete(AuthUser $authUser, BorrowingItem $borrowingItem): bool
+    {
+        return $authUser->can('ForceDelete:BorrowingItem');
+    }
+
+    public function forceDeleteAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('ForceDeleteAny:BorrowingItem');
+    }
+
+    public function restoreAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('RestoreAny:BorrowingItem');
+    }
+
+    public function replicate(AuthUser $authUser, BorrowingItem $borrowingItem): bool
+    {
+        return $authUser->can('Replicate:BorrowingItem');
+    }
+
+    public function reorder(AuthUser $authUser): bool
+    {
+        return $authUser->can('Reorder:BorrowingItem');
+    }
+
 }

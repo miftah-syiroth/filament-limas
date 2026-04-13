@@ -1,71 +1,75 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Enums\ItemStatus;
-use App\Models\Item;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\ItemAudit;
-use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ItemAuditPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    use HandlesAuthorization;
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return true;
+        return $authUser->can('ViewAny:ItemAudit');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, ItemAudit $itemAudit): bool
+    public function view(AuthUser $authUser, ItemAudit $itemAudit): bool
     {
-        return true;
+        return $authUser->can('View:ItemAudit');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user, ?Item $item = null): bool
+    public function create(AuthUser $authUser): bool
     {
-        if ($item && $item->status === ItemStatus::Disposed) {
-            return false;
-        }
-
-        return true;
+        return $authUser->can('Create:ItemAudit');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, ItemAudit $itemAudit): bool
+    public function update(AuthUser $authUser, ItemAudit $itemAudit): bool
     {
-        return true;
+        return $authUser->can('Update:ItemAudit');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, ItemAudit $itemAudit): bool
+    public function delete(AuthUser $authUser, ItemAudit $itemAudit): bool
     {
-        return true;
+        return $authUser->can('Delete:ItemAudit');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, ItemAudit $itemAudit): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return true;
+        return $authUser->can('DeleteAny:ItemAudit');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, ItemAudit $itemAudit): bool
+    public function restore(AuthUser $authUser, ItemAudit $itemAudit): bool
     {
-        return true;
+        return $authUser->can('Restore:ItemAudit');
     }
+
+    public function forceDelete(AuthUser $authUser, ItemAudit $itemAudit): bool
+    {
+        return $authUser->can('ForceDelete:ItemAudit');
+    }
+
+    public function forceDeleteAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('ForceDeleteAny:ItemAudit');
+    }
+
+    public function restoreAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('RestoreAny:ItemAudit');
+    }
+
+    public function replicate(AuthUser $authUser, ItemAudit $itemAudit): bool
+    {
+        return $authUser->can('Replicate:ItemAudit');
+    }
+
+    public function reorder(AuthUser $authUser): bool
+    {
+        return $authUser->can('Reorder:ItemAudit');
+    }
+
 }
