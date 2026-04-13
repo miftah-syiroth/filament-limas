@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\LocksSuperAdminModelHasRolesPivot;
-use App\Models\Concerns\LocksSuperAdminRolePermissionsPivot;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 class Role extends SpatieRole
 {
-    use HasUuids, LocksSuperAdminModelHasRolesPivot, LocksSuperAdminRolePermissionsPivot;
+    use HasUuids;
 
     protected $guarded = [];
 
