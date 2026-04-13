@@ -9,6 +9,8 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class UsersTable
 {
@@ -25,10 +27,14 @@ class UsersTable
                 TextColumn::make('email')
                     ->label(__('user.table.email'))
                     ->searchable(),
+                TextColumn::make('roles.name')
+                    ->label(__('user.table.roles'))
+                    ->badge(),
                 ToggleColumn::make('email_verified_at')
                     ->label(__('user.table.email_verified'))
+                    ->disabled(fn ($record) => Gate::denies('update', $record))
                     ->alignCenter()
-                    ->getStateUsing(fn ($record): bool => $record->email_verified_at !== null)
+                    ->getStateUsing(fn($record): bool => $record->email_verified_at !== null)
                     ->updateStateUsing(function ($record, bool $state): void {
                         $record->update([
                             'email_verified_at' => $state ? now() : null,
@@ -60,7 +66,9 @@ class UsersTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

@@ -39,7 +39,6 @@ class UserForm
                                 modifyQueryUsing: fn (Builder $query): Builder => $query->where('name', '!=', config('filament-shield.super_admin.name', 'super_admin')),
                             )
                             ->multiple()
-                            ->required()
                             ->preload()
                             ->searchable(),
                         Toggle::make('email_verified_at')
@@ -50,7 +49,8 @@ class UserForm
                         TextInput::make('password')
                             ->label(__('user.form.password'))
                             ->password()
-                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                            ->default(null)
+                            ->dehydrateStateUsing(fn (?string $state): ?string => filled($state) ? Hash::make($state) : null)
                             ->dehydrated(fn (?string $state): bool => filled($state))
                             ->required(fn (string $operation): bool => $operation === 'create')
                             ->confirmed()
@@ -59,6 +59,7 @@ class UserForm
                         TextInput::make('password_confirmation')
                             ->label(__('user.form.password_confirmation'))
                             ->password()
+                            ->default(null)
                             ->dehydrated(false)
                             ->required(fn (string $operation): bool => $operation === 'create'),
 

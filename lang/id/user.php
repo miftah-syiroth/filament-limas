@@ -36,5 +36,6 @@ return [
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
         'two_factor_confirmed_at' => 'Dua faktor dikonfirmasi',
+        'roles' => 'Peran',
     ],
 ];
