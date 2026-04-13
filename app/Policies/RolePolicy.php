@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Role;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class RolePolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Role');
@@ -29,11 +29,19 @@ class RolePolicy
 
     public function update(AuthUser $authUser, Role $role): bool
     {
+        if ($this->isSuperAdminRole($role)) {
+            return false;
+        }
+
         return $authUser->can('Update:Role');
     }
 
     public function delete(AuthUser $authUser, Role $role): bool
     {
+        if ($this->isSuperAdminRole($role)) {
+            return false;
+        }
+
         return $authUser->can('Delete:Role');
     }
 
@@ -49,6 +57,10 @@ class RolePolicy
 
     public function forceDelete(AuthUser $authUser, Role $role): bool
     {
+        if ($this->isSuperAdminRole($role)) {
+            return false;
+        }
+
         return $authUser->can('ForceDelete:Role');
     }
 
@@ -72,4 +84,10 @@ class RolePolicy
         return $authUser->can('Reorder:Role');
     }
 
+    private function isSuperAdminRole(Role $role): bool
+    {
+        $name = config('filament-shield.super_admin.name', 'super_admin');
+
+        return $role->name === $name;
+    }
 }
