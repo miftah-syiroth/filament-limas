@@ -83,16 +83,6 @@ class RoleResource extends ShieldRoleResource
     {
         $columns = parent::table($table)->getColumns();
 
-        $columns = collect($columns)->map(function ($column) {
-            if ($column->getName() === 'name') {
-                return TextColumn::make('name')
-                    ->label(__('role.table.name'))
-                    ->searchable();
-            }
-
-            return $column;
-        })->toArray();
-
         return $table
             ->columns($columns)
             ->filters(parent::table($table)->getFilters())
