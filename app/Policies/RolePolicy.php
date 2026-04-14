@@ -24,7 +24,8 @@ class RolePolicy
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Role');
+        // return $authUser->can('Create:Role');
+        return false;
     }
 
     public function update(AuthUser $authUser, Role $role): bool
@@ -38,11 +39,12 @@ class RolePolicy
 
     public function delete(AuthUser $authUser, Role $role): bool
     {
-        if ($this->isSuperAdminRole($role)) {
-            return false;
-        }
+        // if ($this->isSuperAdminRole($role)) {
+        //     return false;
+        // }
 
-        return $authUser->can('Delete:Role');
+        // return $authUser->can('Delete:Role');
+        return false;
     }
 
     public function deleteAny(AuthUser $authUser): bool
@@ -57,11 +59,12 @@ class RolePolicy
 
     public function forceDelete(AuthUser $authUser, Role $role): bool
     {
-        if ($this->isSuperAdminRole($role)) {
-            return false;
-        }
+        // if ($this->isSuperAdminRole($role)) {
+        //     return false;
+        // }
 
-        return $authUser->can('ForceDelete:Role');
+        // return $authUser->can('ForceDelete:Role');
+        return false;
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
