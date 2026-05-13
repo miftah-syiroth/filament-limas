@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class Department extends Model
+class Room extends Model
 {
     use HasUuids, LogsActivity;
 
     protected $fillable = [
-        'name',
-        'company_id',
         'location_id',
-        'phone',
+        'name',
+        'capacity',
         'notes',
     ];
 
@@ -28,10 +26,6 @@ class Department extends Model
             ->dontLogIfAttributesChangedOnly(['notes'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
-    }
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
     }
 
     public function location(): BelongsTo

@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
 class Location extends Model
 {
-    use HasUuids, SoftDeletes, LogsActivity;
+    use HasUuids, LogsActivity;
 
     protected $fillable = [
         'name',
@@ -59,5 +59,10 @@ class Location extends Model
     public function relationCity(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city', 'code');
+    }
+
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(Room::class);
     }
 }

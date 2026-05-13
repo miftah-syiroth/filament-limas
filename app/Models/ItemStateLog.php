@@ -7,14 +7,14 @@ use App\Enums\ItemStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
 // ItemTransfer
 class ItemStateLog extends Model
 {
-    use HasUuids, SoftDeletes, LogsActivity;
+    use HasUuids, LogsActivity;
 
     protected $fillable = [
         'item_id',
