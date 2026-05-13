@@ -1,9 +1,9 @@
 <?php
 
 use App\Enums\CategoryType;
-use App\Enums\DeprecationMethod;
+use App\Enums\DepreciationMethod;
 use App\Models\Category;
-use App\Models\Deprecation;
+use App\Models\Depreciation;
 use App\Models\Manufacture;
 use App\Models\Model;
 use App\Models\User;
@@ -29,11 +29,11 @@ test('model infolist menampilkan data relasi yang relevan', function () {
         'notes' => null,
     ]);
 
-    $deprecation = Deprecation::create([
+    $depreciation = Depreciation::create([
         'name' => 'SL 3 Tahun',
         'months' => 36,
         'minimum_value' => 100000,
-        'method' => DeprecationMethod::Amount,
+        'method' => DepreciationMethod::Amount,
         'notes' => null,
     ]);
 
@@ -45,7 +45,7 @@ test('model infolist menampilkan data relasi yang relevan', function () {
         'require_serial_number' => true,
         'manufacture_id' => $manufacture->id,
         'category_id' => $category->id,
-        'deprecation_id' => $deprecation->id,
+        'depreciation_id' => $depreciation->id,
         'audit_interval' => 6,
         'notes' => 'Model untuk tim engineering',
     ]);

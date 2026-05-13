@@ -1,15 +1,14 @@
 <?php
 
-use App\Models\ActivityLog;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+    if (Auth::check() && Auth::user()?->hasRole(['admin', 'super_admin'])) {
+        return redirect('/admin');
+    }
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    return redirect('/app');
+})->name('home');
 
 require __DIR__.'/settings.php';
