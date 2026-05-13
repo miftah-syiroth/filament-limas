@@ -22,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('models', function (Blueprint $table) {
-            $table->dropForeign(['unit_id']);
-            $table->dropColumn('unit_id');
+            $table->dropConstrainedForeignId('unit_id');
         });
     }
 };

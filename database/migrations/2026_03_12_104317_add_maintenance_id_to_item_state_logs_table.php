@@ -22,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('item_state_logs', function (Blueprint $table) {
-            $table->dropForeign(['maintenance_id']);
-            $table->dropColumn('maintenance_id');
+            $table->dropConstrainedForeignId('maintenance_id');
         });
     }
 };

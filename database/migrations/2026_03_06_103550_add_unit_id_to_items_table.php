@@ -35,8 +35,7 @@ return new class extends Migration
         });
 
         Schema::table('items', function (Blueprint $table) {
-            $table->dropForeign(['unit_id']);
-            $table->dropColumn('unit_id');
+            $table->dropConstrainedForeignId('unit_id');
 
             // add column unit_name
             $table->string('unit_name', 20)->nullable();

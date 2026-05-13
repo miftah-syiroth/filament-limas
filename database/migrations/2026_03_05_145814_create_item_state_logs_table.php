@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignUuid('item_id')->constrained('items');
             $table->string('event_type', 50);
 
-            $table->foreignUuid('from_location_id')->nullable();
-            $table->foreignUuid('to_location_id')->nullable();
-            $table->foreignUuid('from_department_id')->nullable();
-            $table->foreignUuid('to_department_id')->nullable();
+            $table->foreignUuid('from_location_id')->nullable()->constrained('locations');
+            $table->foreignUuid('to_location_id')->nullable()->constrained('locations');
+            $table->foreignUuid('from_department_id')->nullable()->constrained('departments');
+            $table->foreignUuid('to_department_id')->nullable()->constrained('departments');
             $table->string('from_assignable_type')->nullable();
             $table->foreignUuid('from_assignable_id')->nullable();
             $table->string('to_assignable_type')->nullable();
