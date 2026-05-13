@@ -106,7 +106,7 @@ class ItemInfolist
                                     TextEntry::make('purchase_price')
                                         ->money('IDR')
                                         ->inlineLabel(),
-                                    TextEntry::make('deprecated_price')
+                                    TextEntry::make('depreciated_price')
                                         ->money('IDR')
                                         ->inlineLabel(),
                                     TextEntry::make('eol_date')

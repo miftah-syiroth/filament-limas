@@ -36,6 +36,7 @@ class UsersTable
                     ->alignCenter()
                     ->getStateUsing(fn($record): bool => $record->email_verified_at !== null)
                     ->updateStateUsing(function ($record, bool $state): void {
+                        Gate::authorize('update', $record);
                         $record->update([
                             'email_verified_at' => $state ? now() : null,
                         ]);

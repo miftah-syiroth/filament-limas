@@ -15,6 +15,12 @@ enum ItemAuditCondition: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return __('item-audit.conditions.'.$this->value);
+        return match ($this) {
+            self::Excellent => __('item-audit.conditions.excellent'),
+            self::Good => __('item-audit.conditions.good'),
+            self::Fair => __('item-audit.conditions.fair'),
+            self::Poor => __('item-audit.conditions.poor'),
+            self::Unusable => __('item-audit.conditions.unusable'),
+        };
     }
 }

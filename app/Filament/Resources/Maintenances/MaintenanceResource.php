@@ -17,7 +17,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -135,7 +134,7 @@ class MaintenanceResource extends Resource
                     ->label(__('maintenance.filters.type'))
                     ->multiple()
                     ->options(MaintenanceType::class),
-                TrashedFilter::make(),
+
             ])
             ->recordActions([
                 ViewAction::make(),

@@ -11,7 +11,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class RolePolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Role');
@@ -29,11 +29,17 @@ class RolePolicy
 
     public function update(AuthUser $authUser, Role $role): bool
     {
+        if ($role->name === 'super_admin') {
+            return false;
+        }
         return $authUser->can('Update:Role');
     }
 
     public function delete(AuthUser $authUser, Role $role): bool
     {
+        if ($role->name === 'super_admin') {
+            return false;
+        }
         return $authUser->can('Delete:Role');
     }
 
@@ -49,6 +55,10 @@ class RolePolicy
 
     public function forceDelete(AuthUser $authUser, Role $role): bool
     {
+        // tidak boleh jika role adalah super admin
+        if ($role->name === 'super_admin') {
+            return false;
+        }
         return $authUser->can('ForceDelete:Role');
     }
 
@@ -71,5 +81,4 @@ class RolePolicy
     {
         return $authUser->can('Reorder:Role');
     }
-
 }

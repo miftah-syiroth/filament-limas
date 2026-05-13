@@ -6,8 +6,10 @@ use App\Enums\DepreciationMethod;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Icon;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class DepreciationForm
 {
@@ -29,6 +31,10 @@ class DepreciationForm
                             ->numeric(),
                         TextInput::make('minimum_value')
                             ->label(__('depreciation.form.minimum_value'))
+                            ->belowContent([
+                                Icon::make(Heroicon::OutlinedInformationCircle),
+                                __('depreciation.form.minimum_value_helper')
+                            ])
                             ->required()
                             ->numeric()
                             ->minValue(1)

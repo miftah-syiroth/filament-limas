@@ -43,7 +43,7 @@ class DepreciationsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // TrashedFilter::make(),
+                //
             ])
             ->recordActions([
                 ViewAction::make(),

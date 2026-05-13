@@ -16,7 +16,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -137,7 +136,7 @@ class BorrowingItemResource extends Resource
                     ->label(__('borrowing-item.filters.condition_in'))
                     ->multiple()
                     ->options(ItemAuditCondition::class),
-                TrashedFilter::make(),
+
             ])
             ->recordActions([
                 ViewAction::make()

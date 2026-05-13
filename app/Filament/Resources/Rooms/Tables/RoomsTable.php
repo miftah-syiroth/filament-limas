@@ -1,59 +1,59 @@
 <?php
 
-namespace App\Filament\Resources\Companies\Tables;
+namespace App\Filament\Resources\Rooms\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CompaniesTable
+class RoomsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label(__('room.table.id'))
+                    ->hidden(),
+                TextColumn::make('location.name')
+                    ->label(__('room.table.location'))
+                    ->searchable(),
                 TextColumn::make('name')
-                    ->label(__('company.table.name'))
+                    ->label(__('room.table.name'))
                     ->searchable(),
-                TextColumn::make('email')
-                    ->label(__('company.table.email'))
-                    ->searchable(),
-                TextColumn::make('phone')
-                    ->label(__('company.table.phone'))
-                    ->searchable(),
+                TextColumn::make('capacity')
+                    ->label(__('room.table.capacity'))
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->label(__('company.table.created_at'))
+                    ->label(__('room.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('company.table.updated_at'))
+                    ->label(__('room.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
-                    ->label(__('company.table.deleted_at'))
+                    ->label(__('room.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-
+                //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->label(''),
+                EditAction::make()->label(''),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
                 ]),
             ]);
     }

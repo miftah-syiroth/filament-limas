@@ -10,7 +10,6 @@ use Filament\Actions\Action;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class ManageBorrowingItems extends ManageRelatedRecords
@@ -71,7 +70,7 @@ class ManageBorrowingItems extends ManageRelatedRecords
                     ->url(fn (BorrowingItem $record): string => BorrowingResource::getUrl('view', ['record' => $record->borrowing->id])),
             ])
             ->filters([
-                TrashedFilter::make(),
+
             ]);
     }
 }

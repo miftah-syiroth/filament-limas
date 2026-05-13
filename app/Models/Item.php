@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -20,7 +19,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Item extends BaseModel implements HasMedia
 {
-    use HasUuids, InteractsWithMedia, LogsActivity, SoftDeletes;
+    use HasUuids, InteractsWithMedia, LogsActivity;
 
     protected $fillable = [
         'model_id',
@@ -85,7 +84,7 @@ class Item extends BaseModel implements HasMedia
         );
     }
 
-    protected function deprecatedPrice(): Attribute
+    protected function depreciatedPrice(): Attribute
     {
         return Attribute::get(function (): ?float {
 
@@ -97,10 +96,6 @@ class Item extends BaseModel implements HasMedia
 
             if ($depreciation === null) {
                 return null;
-            }
-
-            if ($this->purchase_date->isFuture()) {
-                return (float) $this->purchase_price;
             }
 
             $months = (int) $depreciation->months;
@@ -125,11 +120,11 @@ class Item extends BaseModel implements HasMedia
             $monthlyDepreciation =
                 ($this->purchase_price - $minimumValue) / $months;
 
-            $deprecatedPrice =
+            $depreciatedPrice =
                 $this->purchase_price -
                 ($monthlyDepreciation * $monthsPassed);
 
-            return round(max($minimumValue, $deprecatedPrice), 2);
+            return round(max($minimumValue, $depreciatedPrice), 2);
         });
     }
 

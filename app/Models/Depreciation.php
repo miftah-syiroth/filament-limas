@@ -15,7 +15,7 @@ class Depreciation extends Model
     protected $fillable = [
         'name',
         'months',
-        'minimum_value', // percentase penyusutan maksimal
+        'minimum_value', // PERCENTAGE penyusutan maksimal
         'method',
         'notes',
     ];

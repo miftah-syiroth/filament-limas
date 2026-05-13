@@ -18,7 +18,6 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -88,7 +87,7 @@ class ItemsTable
                     }),
                 TernaryFilter::make('is_individual_tracking')
                     ->label(__('items.table.individual')),
-                TrashedFilter::make(),
+
             ])
             ->recordActions([
                 ViewAction::make()->label(''),

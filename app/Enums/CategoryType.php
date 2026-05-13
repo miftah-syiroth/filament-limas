@@ -16,7 +16,12 @@ enum CategoryType: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return __('category.types.'.$this->value);
+        return match ($this) {
+            self::Asset => __('category.types.asset'),
+            self::Accessory => __('category.types.accessory'),
+            self::Consumable => __('category.types.consumable'),
+            self::License => __('category.types.license'),
+        };
     }
 
     public function getColor(): string
