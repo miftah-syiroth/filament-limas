@@ -22,7 +22,7 @@ return [
     */
 
     'shield_resource' => [
-        'slug' => 'shield/roles',
+        'slug' => 'roles',
         'show_model_path' => true,
         'cluster' => null,
         'tabs' => [

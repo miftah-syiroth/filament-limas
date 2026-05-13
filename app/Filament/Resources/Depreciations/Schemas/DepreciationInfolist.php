@@ -26,14 +26,10 @@ class DepreciationInfolist
                             ->numeric(),
                         TextEntry::make('method')
                             ->label(__('depreciation.infolist.method')),
-                        TextEntry::make('created_at')
-                            ->label(__('depreciation.infolist.created_at'))
-                            ->dateTime()
-                            ->placeholder('-'),
-                        TextEntry::make('updated_at')
-                            ->label(__('depreciation.infolist.updated_at'))
-                            ->dateTime()
-                            ->placeholder('-'),
+                        TextEntry::make('notes')
+                            ->columnSpanFull()
+                            ->label(__('depreciation.infolist.notes'))
+                            ->html(),
                     ])
             ]);
     }

@@ -22,6 +22,7 @@ return [
         'months' => 'Masa manfaat (bulan)',
         'minimum_value' => 'Batas Nilai Terendah (%)',
         'method' => 'Metode',
+        'notes' => 'Catatan',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
     ],

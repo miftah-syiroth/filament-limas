@@ -21,8 +21,7 @@ return [
         'months' => 'Useful life (months)',
         'minimum_value' => 'Final value (%)',
         'method' => 'Method',
-        'created_at' => 'Created at',
-        'updated_at' => 'Updated at',
+        'notes' => 'Notes',
     ],
 
     'table' => [

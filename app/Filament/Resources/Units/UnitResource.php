@@ -60,8 +60,6 @@ class UnitResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label(__('unit.infolist.id')),
                 TextEntry::make('name')
                     ->label(__('unit.infolist.name')),
                 TextEntry::make('created_at')
@@ -80,8 +78,6 @@ class UnitResource extends Resource
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                TextColumn::make('id')
-                    ->label(__('unit.table.id')),
                 TextColumn::make('name')
                     ->label(__('unit.table.name'))
                     ->searchable(),
