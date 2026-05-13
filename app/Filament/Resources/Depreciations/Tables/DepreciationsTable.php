@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Deprecations\Tables;
+namespace App\Filament\Resources\Depreciations\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -11,33 +11,33 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class DeprecationsTable
+class DepreciationsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('deprecation.table.name'))
+                    ->label(__('depreciation.table.name'))
                     ->searchable(),
                 TextColumn::make('months')
-                    ->label(__('deprecation.table.months'))
+                    ->label(__('depreciation.table.months'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('minimum_value')
-                    ->label(__('deprecation.table.minimum_value'))
+                    ->label(__('depreciation.table.minimum_value'))
                     ->numeric()
                     ->suffix('%')
                     ->sortable(),
                 TextColumn::make('method')
-                    ->label(__('deprecation.table.method')),
+                    ->label(__('depreciation.table.method')),
                 TextColumn::make('created_at')
-                    ->label(__('deprecation.table.created_at'))
+                    ->label(__('depreciation.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('deprecation.table.updated_at'))
+                    ->label(__('depreciation.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

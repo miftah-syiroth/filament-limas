@@ -55,9 +55,9 @@ class ModelForm
                                     ->numeric()
                                     ->minValue(1)
                                     ->suffix(__('model.form.months_suffix')),
-                                Select::make('deprecation_id')
+                                Select::make('depreciation_id')
                                     ->label(__('model.form.depreciation'))
-                                    ->relationship('deprecation', 'name')
+                                    ->relationship('depreciation', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->default(null),

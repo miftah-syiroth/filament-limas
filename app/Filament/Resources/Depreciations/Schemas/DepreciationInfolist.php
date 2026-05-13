@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Deprecations\Schemas;
+namespace App\Filament\Resources\Depreciations\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
-class DeprecationInfolist
+class DepreciationInfolist
 {
     public static function configure(Schema $schema): Schema
     {
@@ -17,21 +17,21 @@ class DeprecationInfolist
                     ->columns(2)
                     ->schema([
                         TextEntry::make('name')
-                            ->label(__('deprecation.infolist.name')),
+                            ->label(__('depreciation.infolist.name')),
                         TextEntry::make('months')
-                            ->label(__('deprecation.infolist.months'))
+                            ->label(__('depreciation.infolist.months'))
                             ->numeric(),
                         TextEntry::make('minimum_value')
-                            ->label(__('deprecation.infolist.minimum_value'))
+                            ->label(__('depreciation.infolist.minimum_value'))
                             ->numeric(),
                         TextEntry::make('method')
-                            ->label(__('deprecation.infolist.method')),
+                            ->label(__('depreciation.infolist.method')),
                         TextEntry::make('created_at')
-                            ->label(__('deprecation.infolist.created_at'))
+                            ->label(__('depreciation.infolist.created_at'))
                             ->dateTime()
                             ->placeholder('-'),
                         TextEntry::make('updated_at')
-                            ->label(__('deprecation.infolist.updated_at'))
+                            ->label(__('depreciation.infolist.updated_at'))
                             ->dateTime()
                             ->placeholder('-'),
                     ])

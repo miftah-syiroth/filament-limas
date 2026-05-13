@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Deprecations\Pages;
+namespace App\Filament\Resources\Depreciations\Pages;
 
-use App\Filament\Resources\Deprecations\DeprecationResource;
+use App\Filament\Resources\Depreciations\DepreciationResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditDeprecation extends EditRecord
+class EditDepreciation extends EditRecord
 {
-    protected static string $resource = DeprecationResource::class;
+    protected static string $resource = DepreciationResource::class;
 
     protected function getHeaderActions(): array
     {

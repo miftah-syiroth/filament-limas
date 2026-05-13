@@ -93,9 +93,9 @@ class Item extends BaseModel implements HasMedia
                 return null;
             }
 
-            $deprecation = $this->model?->deprecation;
+            $depreciation = $this->model?->depreciation;
 
-            if ($deprecation === null) {
+            if ($depreciation === null) {
                 return null;
             }
 
@@ -103,13 +103,13 @@ class Item extends BaseModel implements HasMedia
                 return (float) $this->purchase_price;
             }
 
-            $months = (int) $deprecation->months;
+            $months = (int) $depreciation->months;
 
             if ($months <= 0) {
                 return (float) $this->purchase_price;
             }
 
-            $minimumPercent = (float) $deprecation->minimum_value;
+            $minimumPercent = (float) $depreciation->minimum_value;
 
             $minimumValue = $this->purchase_price * ($minimumPercent / 100);
 

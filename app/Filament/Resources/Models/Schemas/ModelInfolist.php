@@ -53,12 +53,12 @@ class ModelInfolist
                                     ->numeric()
                                     ->suffix(__('model.infolist.months_suffix'))
                                     ->placeholder('-'),
-                                TextEntry::make('deprecation.months')
+                                TextEntry::make('depreciation.months')
                                     ->label(__('model.infolist.depreciation_period'))
                                     ->numeric()
                                     ->suffix(__('model.infolist.months_suffix'))
                                     ->placeholder('-'),
-                                TextEntry::make('deprecation.minimum_value')
+                                TextEntry::make('depreciation.minimum_value')
                                     ->label(__('model.infolist.minimum_value'))
                                     ->placeholder('-'),
 

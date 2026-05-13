@@ -30,7 +30,7 @@ class ModelImporter extends Importer
                 ->relationship(resolveUsing: 'name'),
             ImportColumn::make('category')
                 ->relationship(resolveUsing: 'name'),
-            ImportColumn::make('deprecation')
+            ImportColumn::make('depreciation')
                 ->relationship(resolveUsing: 'name'),
             ImportColumn::make('notes'),
             ImportColumn::make('audit_interval')

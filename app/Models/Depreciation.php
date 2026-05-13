@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Enums\DeprecationMethod;
+use App\Enums\DepreciationMethod;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class Deprecation extends Model
+class Depreciation extends Model
 {
     use HasUuids, LogsActivity;
 
@@ -24,7 +24,7 @@ class Deprecation extends Model
     {
         return [
             'minimum_value' => 'decimal:2',
-            'method' => DeprecationMethod::class,
+            'method' => DepreciationMethod::class,
         ];
     }
 

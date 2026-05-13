@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 
-enum DeprecationMethod: string implements HasLabel
+enum DepreciationMethod: string implements HasLabel
 {
     // straight line, reducing balance, sum of the years digits
     case Amount = 'amount'; // straight line
@@ -13,7 +13,7 @@ enum DeprecationMethod: string implements HasLabel
     public function getLabel(): string|Htmlable|null
     {
         return match ($this) {
-            self::Amount => __('deprecation.enums.method.amount'),
+            self::Amount => __('depreciation.enums.method.amount'),
         };
     }
 }

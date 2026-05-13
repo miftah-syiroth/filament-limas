@@ -21,7 +21,7 @@ class Model extends EloquentModel implements HasMedia
         'end_of_life', // int in months
         'manufacture_id',
         'category_id',
-        'deprecation_id',
+        'depreciation_id',
         'audit_interval', // in months
         'notes',
         'unit_id',
@@ -50,9 +50,9 @@ class Model extends EloquentModel implements HasMedia
         return $this->belongsTo(Manufacture::class);
     }
 
-    public function deprecation()
+    public function depreciation()
     {
-        return $this->belongsTo(Deprecation::class);
+        return $this->belongsTo(Depreciation::class);
     }
 
     public function unit()

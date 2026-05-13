@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\Deprecations;
+namespace App\Filament\Resources\Depreciations;
 
-use App\Filament\Resources\Deprecations\Pages\CreateDeprecation;
-use App\Filament\Resources\Deprecations\Pages\EditDeprecation;
-use App\Filament\Resources\Deprecations\Pages\ListDeprecations;
-use App\Filament\Resources\Deprecations\Pages\ViewDeprecation;
-use App\Filament\Resources\Deprecations\Schemas\DeprecationForm;
-use App\Filament\Resources\Deprecations\Schemas\DeprecationInfolist;
-use App\Filament\Resources\Deprecations\Tables\DeprecationsTable;
-use App\Models\Deprecation;
+use App\Filament\Resources\Depreciations\Pages\CreateDepreciation;
+use App\Filament\Resources\Depreciations\Pages\EditDepreciation;
+use App\Filament\Resources\Depreciations\Pages\ListDepreciations;
+use App\Filament\Resources\Depreciations\Pages\ViewDepreciation;
+use App\Filament\Resources\Depreciations\Schemas\DepreciationForm;
+use App\Filament\Resources\Depreciations\Schemas\DepreciationInfolist;
+use App\Filament\Resources\Depreciations\Tables\DepreciationsTable;
+use App\Models\Depreciation;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -18,23 +18,23 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
-class DeprecationResource extends Resource
+class DepreciationResource extends Resource
 {
-    protected static ?string $model = Deprecation::class;
+    protected static ?string $model = Depreciation::class;
 
     public static function getModelLabel(): string
     {
-        return __('deprecation.model_label');
+        return __('depreciation.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('deprecation.plural_model_label');
+        return __('depreciation.plural_model_label');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('deprecation.navigation_label');
+        return __('depreciation.navigation_label');
     }
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
@@ -47,17 +47,17 @@ class DeprecationResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return DeprecationForm::configure($schema);
+        return DepreciationForm::configure($schema);
     }
 
     public static function infolist(Schema $schema): Schema
     {
-        return DeprecationInfolist::configure($schema);
+        return DepreciationInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return DeprecationsTable::configure($table);
+        return DepreciationsTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -70,10 +70,10 @@ class DeprecationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListDeprecations::route('/'),
-            'create' => CreateDeprecation::route('/create'),
-            'view' => ViewDeprecation::route('/{record}'),
-            'edit' => EditDeprecation::route('/{record}/edit'),
+            'index' => ListDepreciations::route('/'),
+            'create' => CreateDepreciation::route('/create'),
+            'view' => ViewDepreciation::route('/{record}'),
+            'edit' => EditDepreciation::route('/{record}/edit'),
         ];
     }
 
