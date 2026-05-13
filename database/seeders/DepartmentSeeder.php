@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Location;
+use App\Models\Room;
 use Illuminate\Database\Seeder;
 
 class DepartmentSeeder extends Seeder
@@ -53,41 +54,34 @@ class DepartmentSeeder extends Seeder
             ]
         );
 
-        // Create departments
-        Department::updateOrCreate(
-            ['name' => 'S1 Keperawatan', 'company_id' => $company->id],
-            [
-                'location_id' => $location1->id,
-                'phone' => '021-1111111',
-                'notes' => 'S1 Keperawatan',
-            ]
-        );
+        $departments = [
+            ['name' => 'BAAUK', 'location' => $location1],
+            ['name' => 'KKAP', 'location' => $location1],
+            ['name' => 'DTSI', 'location' => $location2],
+            ['name' => 'SDM', 'location' => $location2],
+            ['name' => 'LPPM', 'location' => $location2],
+        ];
 
-        Department::updateOrCreate(
-            ['name' => 'S1 Farmasi', 'company_id' => $company->id],
-            [
-                'location_id' => $location1->id,
-                'phone' => '021-1111111',
-                'notes' => 'S1 Farmasi',
-            ]
-        );
+        foreach ($departments as $department) {
+            Department::updateOrCreate(
+                ['name' => $department['name'], 'company_id' => $company->id],
+                [
+                    'location_id' => $department['location']->id,
+                    'phone' => $department['location']->phone,
+                    'notes' => $department['name'],
+                ]
+            );
 
-        Department::updateOrCreate(
-            ['name' => 'S1 Hukum', 'company_id' => $company->id],
-            [
-                'location_id' => $location2->id,
-                'phone' => '022-2222222',
-                'notes' => 'S1 Hukum',
-            ]
-        );
-
-        Department::updateOrCreate(
-            ['name' => 'S1 Informatika', 'company_id' => $company->id],
-            [
-                'location_id' => $location2->id,
-                'phone' => '022-2222222',
-                'notes' => 'S1 Informatika',
-            ]
-        );
+            Room::updateOrCreate(
+                [
+                    'name' => $department['name'],
+                    'location_id' => $department['location']->id,
+                ],
+                [
+                    'capacity' => 0,
+                    'notes' => $department['name'],
+                ]
+            );
+        }
     }
 }

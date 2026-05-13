@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CategoryType;
 use App\Models\Category;
 use App\Models\Manufacture;
 use App\Models\Model as InventoryModel;
@@ -14,151 +15,217 @@ class ModelSeeder extends Seeder
      */
     public function run(): void
     {
-        $catalog = [
+        $apple = Manufacture::updateOrCreate(
+            ['name' => 'Apple'],
             [
-                'manufacture' => [
-                    'name' => 'Pyrex',
-                    'url' => 'https://www.pyrex.com',
-                    'support_url' => 'https://www.pyrex.com/customer-service',
-                    'support_phone' => '1-800-999-3436',
-                    'support_email' => 'support@pyrex.com',
-                    'warranty_lookup_url' => 'https://www.pyrex.com/warranty',
-                    'notes' => 'Peralatan laboratorium gelas untuk pendidikan',
-                ],
-                'categories' => [
-                    [
-                        'name' => 'Gelas kaca',
-                        'type' => 'consumable',
-                        'notes' => 'Gelas kaca untuk laboratorium kimia dan praktikum',
-                        'models' => [
-                            ['name' => 'Beaker Low Form 250ml', 'model_number' => 'PYX-BKR-250'],
-                            ['name' => 'Beaker Low Form 500ml', 'model_number' => 'PYX-BKR-500'],
-                            ['name' => 'Graduated Cylinder 100ml', 'model_number' => 'PYX-GC-100'],
-                        ],
-                    ],
-                ],
+                'url' => 'https://www.apple.com',
+                'support_url' => 'https://support.apple.com',
+                'support_phone' => '0008000401966',
+                'support_email' => 'support@apple.com',
+                'warranty_lookup_url' => 'https://checkcoverage.apple.com',
+                'notes' => 'Produsen perangkat elektronik konsumen (iPhone, Mac, iPad, dll.)',
+            ]
+        );
+
+        $swallow = Manufacture::updateOrCreate(
+            ['name' => 'Swallow'],
+            [
+                'url' => 'https://www.swallow.co.id',
+                'support_url' => 'https://www.swallow.co.id',
+                'support_phone' => '+62-21-384-3838',
+                'support_email' => 'info@swallow.co.id',
+                'warranty_lookup_url' => null,
+                'notes' => 'Produsen sandal dan alas kaki karet Indonesia',
+            ]
+        );
+
+        $sidu = Manufacture::updateOrCreate(
+            ['name' => 'Sidu'],
+            [
+                'url' => 'https://www.sidu.com',
+                'support_url' => 'https://www.sidu.com',
+                'support_phone' => '+62-21-460-3333',
+                'support_email' => 'contact@sidu.com',
+                'warranty_lookup_url' => null,
+                'notes' => 'Merek perlengkapan kantor dan kertas (Sinar Dunia)',
+            ]
+        );
+
+        $smartphone = Category::updateOrCreate(
+            ['name' => 'smartphone'],
+            [
+                'type' => CategoryType::Asset,
+                'notes' => 'Telepon pintar untuk keperluan administrasi dan komunikasi',
+            ]
+        );
+
+        $laptop = Category::updateOrCreate(
+            ['name' => 'laptop'],
+            [
+                'type' => CategoryType::Asset,
+                'notes' => 'Komputer jinjing untuk perkantoran dan pembelajaran',
+            ]
+        );
+
+        $sandal = Category::updateOrCreate(
+            ['name' => 'sandal'],
+            [
+                'type' => CategoryType::Accessory,
+                'notes' => 'Sandal serbaguna untuk operasional lapangan dan gudang',
+            ]
+        );
+
+        $kertas = Category::updateOrCreate(
+            ['name' => 'kertas'],
+            [
+                'type' => CategoryType::Consumable,
+                'notes' => 'Kertas cetak untuk dokumen dan administrasi',
+            ]
+        );
+
+        $smartphoneModels = [
+            [
+                'name' => 'iPhone 14 128GB',
+                'model_number' => 'AAPL-IPH14-128',
+                'min_amount' => 1,
+                'end_of_life' => 36,
+                'audit_interval' => 12,
+                'notes' => 'Seri iPhone 14, layar Super Retina XDR 6.1", chip A15 Bionic, warna umum Midnight/Starlight',
             ],
             [
-                'manufacture' => [
-                    'name' => 'Schott Duran',
-                    'url' => 'https://www.schott.com',
-                    'support_url' => 'https://www.schott.com/en-us/contact',
-                    'support_phone' => '+49-6131-66-0',
-                    'support_email' => 'info@schott.com',
-                    'warranty_lookup_url' => 'https://www.schott.com/en-us/service',
-                    'notes' => 'Peralatan laboratorium presisi untuk riset',
-                ],
-                'categories' => [
-                    [
-                        'name' => 'Tabung reaksi',
-                        'type' => 'consumable',
-                        'notes' => 'Tabung reaksi untuk eksperimen laboratorium',
-                        'models' => [
-                            ['name' => 'DURAN Test Tube 18x180mm', 'model_number' => 'SCH-TT-18180'],
-                            ['name' => 'DURAN Test Tube 25x150mm', 'model_number' => 'SCH-TT-25150'],
-                        ],
-                    ],
-                ],
+                'name' => 'iPhone 14 Pro 256GB',
+                'model_number' => 'AAPL-IPH14P-256',
+                'min_amount' => 1,
+                'end_of_life' => 36,
+                'audit_interval' => 12,
+                'notes' => 'Seri iPhone 14 Pro, layar 6.1" ProMotion, chip A16 Bionic, kamera 48 MP',
             ],
             [
-                'manufacture' => [
-                    'name' => 'Omron Healthcare',
-                    'url' => 'https://www.omronhealthcare.com',
-                    'support_url' => 'https://www.omronhealthcare.com/support',
-                    'support_phone' => '1-800-634-4350',
-                    'support_email' => 'support@omronhealthcare.com',
-                    'warranty_lookup_url' => 'https://www.omronhealthcare.com/warranty',
-                    'notes' => 'Peralatan medis untuk klinik kampus',
-                ],
-                'categories' => [
-                    [
-                        'name' => 'Nebulizer',
-                        'type' => 'asset',
-                        'notes' => 'Nebulizer untuk laboratorium kesehatan dan klinik',
-                        'models' => [
-                            ['name' => 'CompAir Elite NE-C30', 'model_number' => 'OMR-NE-C30'],
-                            ['name' => 'MicroAir NE-U22', 'model_number' => 'OMR-NE-U22'],
-                        ],
-                    ],
-                ],
+                'name' => 'iPhone 15 128GB',
+                'model_number' => 'AAPL-IPH15-128',
+                'min_amount' => 1,
+                'end_of_life' => 36,
+                'audit_interval' => 12,
+                'notes' => 'Seri iPhone 15, USB-C, Dynamic Island, chip A16 Bionic',
             ],
             [
-                'manufacture' => [
-                    'name' => 'Philips',
-                    'url' => 'https://www.philips.com',
-                    'support_url' => 'https://www.philips.com/support',
-                    'support_phone' => '1-800-243-7884',
-                    'support_email' => 'support@philips.com',
-                    'warranty_lookup_url' => 'https://www.philips.com/support/warranty',
-                    'notes' => 'Peralatan elektronik untuk kantin dan laboratorium',
-                ],
-                'categories' => [
-                    [
-                        'name' => 'Blender',
-                        'type' => 'asset',
-                        'notes' => 'Blender untuk kantin kampus dan lab nutrisi',
-                        'models' => [
-                            ['name' => 'HR2223 ProBlend 6 3D', 'model_number' => 'PH-HR2223'],
-                            ['name' => 'Daily Collection HR2052', 'model_number' => 'PH-HR2052'],
-                        ],
-                    ],
-                ],
-            ],
-            [
-                'manufacture' => [
-                    'name' => 'Omron Healthcare',
-                    'url' => 'https://www.omronhealthcare.com',
-                    'support_url' => 'https://www.omronhealthcare.com/support',
-                    'support_phone' => '1-800-634-4350',
-                    'support_email' => 'support@omronhealthcare.com',
-                    'warranty_lookup_url' => 'https://www.omronhealthcare.com/warranty',
-                    'notes' => 'Peralatan medis untuk klinik kampus',
-                ],
-                'categories' => [
-                    [
-                        'name' => 'Termogun',
-                        'type' => 'asset',
-                        'notes' => 'Termometer infrared untuk skrining suhu tubuh',
-                        'models' => [
-                            ['name' => 'MC-720 Non-Contact Thermometer', 'model_number' => 'OMR-MC720'],
-                            ['name' => 'MC-623 Instant Thermometer', 'model_number' => 'OMR-MC623'],
-                        ],
-                    ],
-                ],
+                'name' => 'iPhone 15 Pro 256GB',
+                'model_number' => 'AAPL-IPH15P-256',
+                'min_amount' => 1,
+                'end_of_life' => 36,
+                'audit_interval' => 12,
+                'notes' => 'Seri iPhone 15 Pro, rangka titanium, chip A17 Pro, Action Button',
             ],
         ];
 
-        foreach ($catalog as $entry) {
-            $manufacture = Manufacture::updateOrCreate(
-                ['name' => $entry['manufacture']['name']],
-                $entry['manufacture']
-            );
+        $laptopModels = [
+            [
+                'name' => 'MacBook Air 13" M2 256GB',
+                'model_number' => 'AAPL-MBA13-M2-256',
+                'min_amount' => 1,
+                'end_of_life' => 48,
+                'audit_interval' => 12,
+                'notes' => 'MacBook Air 13 inci, Apple M2, RAM 8 GB unified, SSD 256 GB',
+            ],
+            [
+                'name' => 'MacBook Air 15" M2 512GB',
+                'model_number' => 'AAPL-MBA15-M2-512',
+                'min_amount' => 1,
+                'end_of_life' => 48,
+                'audit_interval' => 12,
+                'notes' => 'MacBook Air 15 inci, Apple M2, layar Liquid Retina lebih besar',
+            ],
+            [
+                'name' => 'MacBook Pro 14" M3 512GB',
+                'model_number' => 'AAPL-MBP14-M3-512',
+                'min_amount' => 1,
+                'end_of_life' => 60,
+                'audit_interval' => 12,
+                'notes' => 'MacBook Pro 14 inci, chip Apple M3, cocok untuk desain ringan dan administrasi',
+            ],
+            [
+                'name' => 'MacBook Pro 16" M3 Pro 512GB',
+                'model_number' => 'AAPL-MBP16-M3PRO-512',
+                'min_amount' => 1,
+                'end_of_life' => 60,
+                'audit_interval' => 12,
+                'notes' => 'MacBook Pro 16 inci, Apple M3 Pro, performa tinggi untuk produktivitas berat',
+            ],
+        ];
 
-            foreach ($entry['categories'] as $categoryData) {
-                $category = Category::updateOrCreate(
-                    ['name' => $categoryData['name']],
-                    [
-                        'type' => $categoryData['type'],
-                        'notes' => $categoryData['notes'],
-                    ]
-                );
+        $sandalModels = [
+            [
+                'name' => 'sandal batik',
+                'model_number' => 'SWL-BATIK-001',
+                'min_amount' => 2,
+                'end_of_life' => 24,
+                'audit_interval' => 12,
+                'notes' => 'Sandal karet motif batik, sol anti slip, ukuran campur',
+            ],
+            [
+                'name' => 'sandal polos',
+                'model_number' => 'SWL-POLOS-001',
+                'min_amount' => 2,
+                'end_of_life' => 24,
+                'audit_interval' => 12,
+                'notes' => 'Sandal karet polos warna netral untuk seragam operasional',
+            ],
+        ];
 
-                foreach ($categoryData['models'] as $modelData) {
-                    InventoryModel::updateOrCreate(
-                        [
-                            'name' => $modelData['name'],
-                            'manufacture_id' => $manufacture->id,
-                            'category_id' => $category->id,
-                        ],
-                        [
-                            'model_number' => $modelData['model_number'],
-                            'min_amount' => 1,
-                            'end_of_life' => 60,
-                            'notes' => "{$manufacture->name} - {$category->name}",
-                        ]
-                    );
-                }
-            }
+        $kertasModels = [
+            [
+                'name' => 'kertas A4',
+                'model_number' => 'SIDU-A4-80-500',
+                'min_amount' => 10,
+                'end_of_life' => null,
+                'audit_interval' => 6,
+                'notes' => 'HVS A4 80 gsm, isi ±500 lembar per rim, putih standar fotokopi',
+            ],
+            [
+                'name' => 'Kertas F4',
+                'model_number' => 'SIDU-F4-80-500',
+                'min_amount' => 10,
+                'end_of_life' => null,
+                'audit_interval' => 6,
+                'notes' => 'HVS F4/Folio 80 gsm, isi ±500 lembar per rim, untuk dokumen legal Indonesia',
+            ],
+        ];
+
+        foreach ($smartphoneModels as $modelData) {
+            $this->upsertInventoryModel($apple, $smartphone, $modelData);
         }
+
+        foreach ($laptopModels as $modelData) {
+            $this->upsertInventoryModel($apple, $laptop, $modelData);
+        }
+
+        foreach ($sandalModels as $modelData) {
+            $this->upsertInventoryModel($swallow, $sandal, $modelData);
+        }
+
+        foreach ($kertasModels as $modelData) {
+            $this->upsertInventoryModel($sidu, $kertas, $modelData);
+        }
+    }
+
+    /**
+     * @param  array{name: string, model_number: string, min_amount: int, end_of_life: int|null, audit_interval: int, notes: string}  $modelData
+     */
+    private function upsertInventoryModel(Manufacture $manufacture, Category $category, array $modelData): void
+    {
+        InventoryModel::updateOrCreate(
+            [
+                'name' => $modelData['name'],
+                'manufacture_id' => $manufacture->id,
+                'category_id' => $category->id,
+            ],
+            [
+                'model_number' => $modelData['model_number'],
+                'min_amount' => $modelData['min_amount'],
+                'end_of_life' => $modelData['end_of_life'],
+                'audit_interval' => $modelData['audit_interval'],
+                'notes' => $modelData['notes'],
+            ]
+        );
     }
 }

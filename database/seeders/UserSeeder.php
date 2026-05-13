@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +20,22 @@ class UserSeeder extends Seeder
 
             return;
         }
-        User::create([
-            'name' => 'Admin',
-            'email' => 'irothsyiroth@gmail.com',
+
+        // updateOrCreate super admin role
+        $superAdminRole = Role::updateOrCreate([
+            'name' => 'super_admin',
+        ], [
+            'guard_name' => 'web',
+        ]);
+
+        User::updateOrCreate([
+            'email' => 'superadmin@limas.uhb.ac.id',
+        ], [
+            'name' => 'Super Admin',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
-        ]);
+        ])->assignRole($superAdminRole);
         User::factory(50)->create();
     }
 }

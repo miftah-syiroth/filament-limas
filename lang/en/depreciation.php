@@ -9,7 +9,8 @@ return [
     'form' => [
         'name' => 'Name',
         'months' => 'Useful life (months)',
-        'minimum_value' => 'Maximum depreciation (%)',
+        'minimum_value' => 'Final value (%)',
+        'minimum_value_helper' => 'If the initial price is 100.000 and the final price is 20.000, then the final value is 20%.',
         'method' => 'Method',
         'notes' => 'Notes',
     ],
@@ -18,7 +19,7 @@ return [
         'id' => 'ID',
         'name' => 'Name',
         'months' => 'Useful life (months)',
-        'minimum_value' => 'Maximum depreciation (%)',
+        'minimum_value' => 'Final value (%)',
         'method' => 'Method',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
@@ -27,7 +28,7 @@ return [
     'table' => [
         'name' => 'Name',
         'months' => 'Useful life (months)',
-        'minimum_value' => 'Maximum depreciation',
+        'minimum_value' => 'Final value',
         'method' => 'Method',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',

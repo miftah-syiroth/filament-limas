@@ -1,4 +1,4 @@
-.PHONY: help install env composer-install key-generate migrate seed npm-install npm-build fresh dev test lint
+.PHONY: help install env composer-install key-generate migrate seed npm-install npm-build fresh dev test lint shield-generate storage-link clean-media
 
 help: ## Tampilkan daftar perintah yang tersedia
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -46,7 +46,15 @@ lint: ## Jalankan Laravel Pint untuk memformat kode
 	vendor/bin/pint --dirty --format agent
 
 shield-generate: ## Generate shield for README.md
-	php artisan shield:generate --panel=admin --all --option=policies_and_permissions
+	php artisan shield:generate --panel=admin --all --option=policies_and_permissions --ignore-existing-policies
 
 storage-link: ## Generate storage link
 	php artisan storage:link
+
+clean-media: ## Hapus folder storage/app/public/media-library beserta isinya
+	@if [ -d storage/app/public/media-library ]; then \
+		rm -rf storage/app/public/media-library; \
+		echo "\033[32m✓ storage/app/public/media-library berhasil dihapus\033[0m"; \
+	else \
+		echo "\033[33m• storage/app/public/media-library tidak ditemukan, dilewati\033[0m"; \
+	fi

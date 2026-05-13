@@ -1,81 +1,66 @@
 <?php
 
+use App\Enums\CategoryType;
 use App\Models\Category;
 use App\Models\Manufacture;
 use App\Models\Model as InventoryModel;
 use Database\Seeders\ModelSeeder;
 
-it('seeds 10 manufactures with 2 categories and 2 models per category', function () {
+it('seeds Apple smartphone and laptop, Swallow sandal, and Sidu kertas with expected models', function () {
     $this->seed(ModelSeeder::class);
 
-    expect(Manufacture::query()->count())->toBe(18)
-        ->and(Category::query()->count())->toBe(26)
-        ->and(InventoryModel::query()->count())->toBe(42);
+    expect(Manufacture::query()->count())->toBe(3)
+        ->and(Category::query()->count())->toBe(4)
+        ->and(InventoryModel::query()->count())->toBe(12);
 
-    // Test first 8 manufactures have 2 categories with 2 models each
-    $manufactureNamesWith2Categories = [
-        'Apple',
-        'Lenovo',
-        'HP',
-        'IKEA',
-        'Olympus',
-        'Gramedia',
-        'Nike',
-        'Adidas',
-    ];
+    $apple = Manufacture::query()->where('name', 'Apple')->first();
+    expect($apple)->not->toBeNull();
 
-    foreach ($manufactureNamesWith2Categories as $name) {
-        $manufacture = Manufacture::query()->where('name', $name)->first();
+    $smartphone = Category::query()->where('name', 'smartphone')->first();
+    $laptop = Category::query()->where('name', 'laptop')->first();
 
-        expect($manufacture)->not->toBeNull();
+    expect($smartphone)->not->toBeNull()
+        ->and($smartphone->type)->toBe(CategoryType::Asset)
+        ->and($laptop)->not->toBeNull()
+        ->and($laptop->type)->toBe(CategoryType::Asset);
 
-        $categoryIds = InventoryModel::query()
-            ->where('manufacture_id', $manufacture->id)
-            ->distinct()
-            ->pluck('category_id');
+    expect(InventoryModel::query()
+        ->where('manufacture_id', $apple->id)
+        ->where('category_id', $smartphone->id)
+        ->count())->toBe(4);
 
-        expect($categoryIds)->toHaveCount(2);
+    expect(InventoryModel::query()
+        ->where('manufacture_id', $apple->id)
+        ->where('category_id', $laptop->id)
+        ->count())->toBe(4);
 
-        foreach ($categoryIds as $categoryId) {
-            $modelCount = InventoryModel::query()
-                ->where('manufacture_id', $manufacture->id)
-                ->where('category_id', $categoryId)
-                ->count();
+    $swallow = Manufacture::query()->where('name', 'Swallow')->first();
+    $sandal = Category::query()->where('name', 'sandal')->first();
 
-            expect($modelCount)->toBe(2);
-        }
-    }
+    expect($swallow)->not->toBeNull()
+        ->and($sandal)->not->toBeNull()
+        ->and($sandal->type)->toBe(CategoryType::Accessory);
 
-    // Test last 10 manufactures have 1 category with 1 model each
-    $manufactureNamesWith1Category = [
-        'Manduka',
-        'Dr. Martens',
-        'Pyrex',
-        'Schott Duran',
-        'Maspion',
-        'Thermos',
-        'Omron Healthcare',
-        'B. Braun',
-        'Philips',
-        'Dräger',
-    ];
+    expect(InventoryModel::query()
+        ->where('manufacture_id', $swallow->id)
+        ->where('category_id', $sandal->id)
+        ->pluck('name')
+        ->sort()
+        ->values()
+        ->all())->toBe(['sandal batik', 'sandal polos']);
 
-    foreach ($manufactureNamesWith1Category as $name) {
-        $manufacture = Manufacture::query()->where('name', $name)->first();
+    $sidu = Manufacture::query()->where('name', 'Sidu')->first();
+    $kertas = Category::query()->where('name', 'kertas')->first();
 
-        expect($manufacture)->not->toBeNull();
+    expect($sidu)->not->toBeNull()
+        ->and($kertas)->not->toBeNull()
+        ->and($kertas->type)->toBe(CategoryType::Consumable);
 
-        $categoryIds = InventoryModel::query()
-            ->where('manufacture_id', $manufacture->id)
-            ->distinct()
-            ->pluck('category_id');
+    $kertasNames = InventoryModel::query()
+        ->where('manufacture_id', $sidu->id)
+        ->where('category_id', $kertas->id)
+        ->pluck('name');
 
-        expect($categoryIds)->toHaveCount(1);
-
-        $modelCount = InventoryModel::query()
-            ->where('manufacture_id', $manufacture->id)
-            ->count();
-
-        expect($modelCount)->toBe(1);
-    }
+    expect($kertasNames)->toHaveCount(2)
+        ->and($kertasNames)->toContain('kertas A4', 'Kertas F4');
 });
