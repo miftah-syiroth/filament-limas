@@ -16,6 +16,7 @@ return [
         'min_amount' => 'Minimum stock',
         'min_amount_helper' => 'Minimum quantity that must be kept in stock.',
         'end_of_life' => 'Useful life',
+        'end_of_life_helper' => 'If depreciation is selected, will follow the depreciation value.',
         'depreciation' => 'Depreciation',
         'audit_interval' => 'Audit interval',
         'months_suffix' => ' months',

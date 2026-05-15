@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Models\Tables;
 
 use App\Enums\CategoryType;
 use App\Filament\Imports\ModelImporter;
-use App\Models\Depreciation;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,7 +14,9 @@ use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Number;
 
@@ -42,15 +43,17 @@ class ModelsTable
                 TextColumn::make('category.type')
                     ->label(__('model.table.category_type'))
                     ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
-                    ->badge(),
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('manufacture.name')
                     ->label(__('model.table.manufacturer')),
                 TextColumn::make('depreciation')
                     ->label(__('model.table.depreciation'))
-                    ->state(function(Model $model): string | null {
+                    ->state(function (Model $model): ?string {
                         if ($depreciation = $model->depreciation) {
-                            return $depreciation->months . ' | ' . Number::format($depreciation->minimum_value, 0) . '%';
+                            return $depreciation->months.' | '.Number::format($depreciation->minimum_value, 0).'%';
                         }
+
                         return null;
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -76,7 +79,32 @@ class ModelsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('type')
+                    ->label(__('model.table.category_type'))
+                    ->multiple()
+                    ->options(CategoryType::class)
+                    ->query(function (Builder $query, array $data): Builder {
+                        $types = $data['values'] ?? [];
+                        if (empty($types)) {
+                            return $query;
+                        }
 
+                        return $query->whereHas('category', function (Builder $query) use ($types): Builder {
+                            return $query->whereIn('type', $types);
+                        });
+                    }),
+                SelectFilter::make('category_name')
+                    ->label(__('model.table.category'))
+                    ->relationship('category', 'name')
+                    ->multiple(),
+                SelectFilter::make('manufacture_name')
+                    ->label(__('model.table.manufacturer'))
+                    ->relationship('manufacture', 'name')
+                    ->multiple(),
+                SelectFilter::make('depreciation_name')
+                    ->label(__('model.table.depreciation'))
+                    ->relationship('depreciation', 'name')
+                    ->multiple(),
             ])
             ->recordActions([
                 ViewAction::make()

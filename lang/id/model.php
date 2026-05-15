@@ -16,6 +16,7 @@ return [
         'min_amount' => 'Stok minimal',
         'min_amount_helper' => 'Jumlah stok minimal yang harus ada.',
         'end_of_life' => 'Masa pakai',
+        'end_of_life_helper' => 'Jika depresiasi dipilih, akan mengikuti nilai bulan pada depresiasi.',
         'depreciation' => 'Depresiasi',
         'audit_interval' => 'Interval audit',
         'months_suffix' => ' bulan',
