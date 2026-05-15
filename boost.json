@@ -3,10 +3,10 @@
         "cursor",
         "copilot"
     ],
-    "cloud": false,
+    "cloud": true,
     "guidelines": true,
     "mcp": true,
-    "nightwatch_mcp": false,
+    "nightwatch": false,
     "packages": [
         "filament/filament"
     ],
@@ -17,6 +17,7 @@
         "fluxui-development",
         "livewire-development",
         "pest-testing",
-        "tailwindcss-development"
+        "tailwindcss-development",
+        "deploying-laravel-cloud"
     ]
 }

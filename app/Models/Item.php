@@ -27,6 +27,7 @@ class Item extends BaseModel implements HasMedia
         'department_id',
         'supplier_id',
         'user_id',
+        'room_id',
         'name',
         'serial_number',
         'quantity',
@@ -184,11 +185,6 @@ class Item extends BaseModel implements HasMedia
         return $this->hasMany(StockMovement::class, 'item_id');
     }
 
-    // public function unit(): BelongsTo
-    // {
-    //     return $this->belongsTo(Unit::class);
-    // }
-
     public function stateLogs(): HasMany
     {
         return $this->hasMany(ItemStateLog::class, 'item_id');
@@ -223,5 +219,10 @@ class Item extends BaseModel implements HasMedia
     {
         return $this->hasMany(BorrowingItem::class, 'item_id')
             ->whereNull('checked_in_at');
+    }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
     }
 }

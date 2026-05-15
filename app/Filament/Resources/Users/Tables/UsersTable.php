@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
@@ -18,9 +19,6 @@ class UsersTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label(__('user.table.id'))
-                    ->hidden(),
                 TextColumn::make('name')
                     ->label(__('user.table.name'))
                     ->searchable(),
@@ -34,7 +32,7 @@ class UsersTable
                     ->label(__('user.table.email_verified'))
                     ->disabled(fn ($record) => Gate::denies('update', $record))
                     ->alignCenter()
-                    ->getStateUsing(fn($record): bool => $record->email_verified_at !== null)
+                    ->getStateUsing(fn ($record): bool => $record->email_verified_at !== null)
                     ->updateStateUsing(function ($record, bool $state): void {
                         Gate::authorize('update', $record);
                         $record->update([
@@ -57,7 +55,25 @@ class UsersTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('roles_name')
+                    ->label(__('user.table.roles'))
+                    ->relationship('roles', 'name', hasEmptyOption: true)
+                    ->emptyRelationshipOptionLabel(__('user.table.no_role'))
+                    ->multiple(),
+                // SelectFilter::make('role_name')
+                //     ->label(__('user.table.roles'))
+                //     ->multiple()
+                //     ->options(Role::get()->pluck('name', 'id')),
+                    // ->query(function (Builder $query, array $data): Builder {
+                    //     $types = $data['values'] ?? [];
+                    //     if (empty($types)) {
+                    //         return $query;
+                    //     }
+
+                    //     return $query->whereHas('category', function (Builder $query) use ($types): Builder {
+                    //         return $query->whereIn('type', $types);
+                    //     });
+                    // }),
             ])
             ->recordActions([
                 ViewAction::make()
@@ -69,7 +85,7 @@ class UsersTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
-                        ->action(fn(Collection $records) => $records->each->delete()),
+                        ->action(fn (Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

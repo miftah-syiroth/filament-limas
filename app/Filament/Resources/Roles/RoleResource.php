@@ -17,8 +17,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Support\Enums\FontWeight;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -43,14 +43,16 @@ class RoleResource extends ShieldRoleResource
                             ->schema([
                                 TextInput::make('name')
                                     ->label(__('filament-shield::filament-shield.field.name'))
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(function (Set $set, ?string $state): void {
+                                        $set('name', mb_strtolower($state ?? ''));
+                                    })
                                     ->unique(
                                         ignoreRecord: true,
                                         /** @phpstan-ignore-next-line */
-                                        modifyRuleUsing: fn(Unique $rule): Unique => Utils::isTenancyEnabled() ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id) : $rule
-                                   )
-                                    ->disabled()
+                                        modifyRuleUsing: fn (Unique $rule): Unique => Utils::isTenancyEnabled() ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id) : $rule
+                                    )
                                     ->maxLength(255),
-
                                 TextInput::make('guard_name')
                                     ->label(__('filament-shield::filament-shield.field.guard_name'))
                                     ->default(Utils::getFilamentAuthGuard())
@@ -62,9 +64,9 @@ class RoleResource extends ShieldRoleResource
                                     ->placeholder(__('filament-shield::filament-shield.field.team.placeholder'))
                                     /** @phpstan-ignore-next-line */
                                     ->default(Filament::getTenant()?->id)
-                                    ->options(fn(): array => in_array(Utils::getTenantModel(), [null, '', '0'], true) ? [] : Utils::getTenantModel()::pluck('name', 'id')->toArray())
-                                    ->visible(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
-                                    ->dehydrated(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
+                                    ->options(fn (): array => in_array(Utils::getTenantModel(), [null, '', '0'], true) ? [] : Utils::getTenantModel()::pluck('name', 'id')->toArray())
+                                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
+                                    ->dehydrated(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
                                 static::getSelectAllFormComponent(),
 
                             ])
@@ -91,7 +93,7 @@ class RoleResource extends ShieldRoleResource
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
-                        ->action(fn(Collection $records) => $records->each->delete()),
+                        ->action(fn (Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

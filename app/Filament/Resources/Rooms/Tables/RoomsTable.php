@@ -15,9 +15,6 @@ class RoomsTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label(__('room.table.id'))
-                    ->hidden(),
                 TextColumn::make('location.name')
                     ->label(__('room.table.location'))
                     ->searchable(),
@@ -28,6 +25,10 @@ class RoomsTable
                     ->label(__('room.table.capacity'))
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('items_count')
+                    ->label(__('room.table.items_count'))
+                    ->counts('items')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('room.table.created_at'))
                     ->dateTime()

@@ -23,9 +23,6 @@ class CategoriesTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label(__('category.table.id'))
-                    ->hidden(),
                 TextColumn::make('name')
                     ->label(__('category.table.name'))
                     ->searchable(),

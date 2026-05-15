@@ -36,5 +36,6 @@ return [
         'updated_at' => 'Updated at',
         'two_factor_confirmed_at' => 'Two-factor confirmed at',
         'roles' => 'Roles',
+        'no_role' => 'Without Role',
     ],
 ];

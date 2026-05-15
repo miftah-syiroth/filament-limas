@@ -8,5 +8,12 @@ return [
 
     'table' => [
         'name' => 'Nama',
+        'users_count' => 'Pengguna',
+        'no_role' => 'Tanpa Peran',
+    ],
+
+    'infolist' => [
+        'name' => 'Nama',
+        'users_count' => 'Pengguna',
     ],
 ];

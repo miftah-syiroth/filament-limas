@@ -18,9 +18,6 @@ class LocationsTable
         return $table
             // ->recordUrl(null)
             ->columns([
-                TextColumn::make('id')
-                    ->hidden()
-                    ->label(__('location.table.id')),
                 TextColumn::make('name')
                     ->label(__('location.table.name'))
                     ->searchable(),
@@ -29,10 +26,10 @@ class LocationsTable
                     ->searchable(),
                 TextColumn::make('address')
                     ->label(__('location.table.address'))
-                    ->searchable(),
+                    ->limit(50),
                 TextColumn::make('address2')
                     ->label(__('location.table.address2'))
-                    ->searchable()
+                    ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('relationCity.name')
                     ->label(__('location.table.city'))

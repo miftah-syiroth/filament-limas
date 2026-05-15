@@ -57,6 +57,7 @@ return [
         'min_amount' => 'Jumlah minimal',
         'end_of_life' => 'Masa pakai',
         'items_count' => 'Jumlah item',
+        'no_depreciation' => 'Tanpa depresiasi',
     ],
 
     'actions' => [

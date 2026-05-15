@@ -30,6 +30,7 @@ return [
         'location' => 'Lokasi',
         'name' => 'Nama',
         'capacity' => 'Kapasitas',
+        'items_count' => 'Barang',
         'notes' => 'Catatan',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',

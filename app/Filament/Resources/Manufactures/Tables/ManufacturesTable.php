@@ -20,9 +20,6 @@ class ManufacturesTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label(__('manufacture.table.id'))
-                    ->hidden(),
                 TextColumn::make('name')
                     ->label(__('manufacture.table.name'))
                     ->searchable(),

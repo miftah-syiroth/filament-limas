@@ -103,7 +103,8 @@ class ModelsTable
                     ->multiple(),
                 SelectFilter::make('depreciation_name')
                     ->label(__('model.table.depreciation'))
-                    ->relationship('depreciation', 'name')
+                    ->relationship('depreciation', 'name', hasEmptyOption: true)
+                    ->emptyRelationshipOptionLabel(__('model.table.no_depreciation'))
                     ->multiple(),
             ])
             ->recordActions([

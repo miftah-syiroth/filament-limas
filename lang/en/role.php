@@ -8,5 +8,6 @@ return [
 
     'table' => [
         'name' => 'Name',
+        'users_count' => 'Users',
     ],
 ];

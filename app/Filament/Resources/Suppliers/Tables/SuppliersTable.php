@@ -16,21 +16,17 @@ class SuppliersTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->recordUrl(null)
             ->defaultSort('name', 'asc')
             ->columns([
-                TextColumn::make('id')
-                    ->label(__('supplier.table.id'))
-                    ->hidden(),
                 TextColumn::make('name')
                     ->label(__('supplier.table.name'))
                     ->searchable(),
                 TextColumn::make('address')
                     ->label(__('supplier.table.address'))
-                    ->searchable(),
+                    ->limit(50),
                 TextColumn::make('address2')
                     ->label(__('supplier.table.address2'))
-                    ->searchable()
+                    ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('city')
                     ->label(__('supplier.table.city'))

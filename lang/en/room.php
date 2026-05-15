@@ -30,6 +30,7 @@ return [
         'location' => 'Location',
         'name' => 'Name',
         'capacity' => 'Capacity',
+        'items_count' => 'Items',
         'notes' => 'Notes',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
