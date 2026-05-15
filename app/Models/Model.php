@@ -58,4 +58,9 @@ class Model extends EloquentModel implements HasMedia
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
 }

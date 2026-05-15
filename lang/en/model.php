@@ -45,6 +45,9 @@ return [
         'name' => 'Name',
         'unit' => 'Unit',
         'manufacturer' => 'Manufacturer',
+        'depreciation' => 'Depreciation',
+        'depreciation_period' => 'Depreciation period',
+        'minimum_value' => 'Minimum value',
         'category' => 'Category',
         'category_type' => 'Type',
         'audit_interval' => 'Audit interval',
@@ -52,6 +55,7 @@ return [
         'model_number' => 'Model number',
         'min_amount' => 'Minimum quantity',
         'end_of_life' => 'End of life',
+        'items_count' => 'Items count',
     ],
 
     'actions' => [

@@ -45,6 +45,9 @@ return [
         'name' => 'Nama',
         'unit' => 'Satuan',
         'manufacturer' => 'Pabrikan',
+        'depreciation' => 'Depresiasi',
+        'depreciation_period' => 'Masa depresiasi',
+        'minimum_value' => 'Nilai minimum',
         'category' => 'Kategori',
         'category_type' => 'Tipe',
         'audit_interval' => 'Interval audit',
@@ -52,6 +55,7 @@ return [
         'model_number' => 'Nomor model',
         'min_amount' => 'Jumlah minimal',
         'end_of_life' => 'Masa pakai',
+        'items_count' => 'Jumlah item',
     ],
 
     'actions' => [

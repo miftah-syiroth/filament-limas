@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Models\Tables;
 
 use App\Enums\CategoryType;
 use App\Filament\Imports\ModelImporter;
+use App\Models\Depreciation;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,6 +16,8 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Number;
 
 class ModelsTable
 {
@@ -30,24 +33,32 @@ class ModelsTable
                 TextColumn::make('name')
                     ->label(__('model.table.name'))
                     ->searchable(),
-                TextColumn::make('unit.name')
-                    ->label(__('model.table.unit'))
+                TextColumn::make('model_number')
+                    ->label(__('model.table.model_number'))
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('manufacture.name')
-                    ->label(__('model.table.manufacturer')),
                 TextColumn::make('category.name')
                     ->label(__('model.table.category')),
                 TextColumn::make('category.type')
                     ->label(__('model.table.category_type'))
                     ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
                     ->badge(),
+                TextColumn::make('manufacture.name')
+                    ->label(__('model.table.manufacturer')),
+                TextColumn::make('depreciation')
+                    ->label(__('model.table.depreciation'))
+                    ->state(function(Model $model): string | null {
+                        if ($depreciation = $model->depreciation) {
+                            return $depreciation->months . ' | ' . Number::format($depreciation->minimum_value, 0) . '%';
+                        }
+                        return null;
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('audit_interval')
                     ->label(__('model.table.audit_interval'))
                     ->numeric()
+                    ->sortable()
                     ->suffix(__('model.table.months_suffix')),
-                TextColumn::make('model_number')
-                    ->label(__('model.table.model_number'))
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('min_amount')
                     ->label(__('model.table.min_amount'))
                     ->numeric()
@@ -55,7 +66,13 @@ class ModelsTable
                 TextColumn::make('end_of_life')
                     ->label(__('model.table.end_of_life'))
                     ->numeric()
-                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('unit.name')
+                    ->label(__('model.table.unit'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('items_count')
+                    ->label(__('model.table.items_count'))
+                    ->counts('items')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
