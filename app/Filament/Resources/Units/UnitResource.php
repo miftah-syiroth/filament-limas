@@ -44,8 +44,6 @@ class UnitResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Master Data';
 
-    protected static ?int $navigationSort = 4;
-
     public static function form(Schema $schema): Schema
     {
         return $schema

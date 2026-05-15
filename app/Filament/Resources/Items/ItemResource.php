@@ -50,8 +50,6 @@ class ItemResource extends Resource
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
-    protected static ?int $navigationSort = 1;
-
     public static function form(Schema $schema): Schema
     {
         return ItemForm::configure($schema);

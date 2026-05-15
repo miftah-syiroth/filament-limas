@@ -49,8 +49,6 @@ class ItemAuditResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Reports';
 
-    protected static ?int $navigationSort = 2;
-
     public static function infolist(Schema $schema): Schema
     {
         return $schema
@@ -77,15 +75,6 @@ class ItemAuditResource extends Resource
                     ->label(__('item-audit.infolist.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->label(__('item-audit.infolist.updated_at'))
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->label(__('item-audit.infolist.deleted_at'))
-                    ->dateTime()
-                    ->placeholder('-')
-                    ->visible(fn (ItemAudit $record): bool => $record->trashed()),
                 TextEntry::make('next_audit_at')
                     ->label(__('item-audit.infolist.next_audit_at'))
                     ->dateTime()

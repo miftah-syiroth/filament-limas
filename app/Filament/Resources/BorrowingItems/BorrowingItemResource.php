@@ -46,8 +46,6 @@ class BorrowingItemResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Reports';
 
-    protected static ?int $navigationSort = 1;
-
     public static function infolist(Schema $schema): Schema
     {
         return $schema
@@ -83,15 +81,6 @@ class BorrowingItemResource extends Resource
                     ->label(__('borrowing-item.infolist.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->label(__('borrowing-item.infolist.updated_at'))
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->label(__('borrowing-item.infolist.deleted_at'))
-                    ->dateTime()
-                    ->placeholder('-')
-                    ->visible(fn (BorrowingItem $record): bool => $record->trashed()),
             ]);
     }
 

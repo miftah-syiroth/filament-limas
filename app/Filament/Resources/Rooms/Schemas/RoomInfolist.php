@@ -30,14 +30,6 @@ class RoomInfolist
                     ->label(__('room.infolist.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->label(__('room.infolist.updated_at'))
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->label(__('room.infolist.deleted_at'))
-                    ->dateTime()
-                    ->visible(fn (Room $record): bool => $record->trashed()),
             ]);
     }
 }

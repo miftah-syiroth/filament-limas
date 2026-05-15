@@ -40,35 +40,6 @@ class ActivityLogResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Reports';
 
-    protected static ?int $navigationSort = 10;
-
-    // public static function form(Schema $schema): Schema
-    // {
-    //     return $schema
-    //         ->components([
-    //             TextInput::make('log_name')
-    //                 ->label(__('activitylog.form.log_name')),
-    //             Textarea::make('description')
-    //                 ->label(__('activitylog.form.description'))
-    //                 ->required()
-    //                 ->columnSpanFull(),
-    //             TextInput::make('subject_type')
-    //                 ->label(__('activitylog.form.subject_type')),
-    //             TextInput::make('subject_id')
-    //                 ->label(__('activitylog.form.subject_id')),
-    //             TextInput::make('causer_type')
-    //                 ->label(__('activitylog.form.causer_type')),
-    //             TextInput::make('causer_id')
-    //                 ->label(__('activitylog.form.causer_id')),
-    //             TextInput::make('properties')
-    //                 ->label(__('activitylog.form.properties')),
-    //             TextInput::make('event')
-    //                 ->label(__('activitylog.form.event')),
-    //             TextInput::make('batch_uuid')
-    //                 ->label(__('activitylog.form.batch_uuid')),
-    //         ]);
-    // }
-
     public static function infolist(Schema $schema): Schema
     {
         return $schema

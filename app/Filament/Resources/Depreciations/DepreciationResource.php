@@ -43,8 +43,6 @@ class DepreciationResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Master Data';
 
-    protected static ?int $navigationSort = 8;
-
     public static function form(Schema $schema): Schema
     {
         return DepreciationForm::configure($schema);

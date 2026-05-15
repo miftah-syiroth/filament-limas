@@ -17,7 +17,7 @@ class Model extends EloquentModel implements HasMedia
         'name',
         'model_number',
         'min_amount', // jumlah minimal yang harus ada di inventory untuk pembatasan stock, peminjaman dan alert
-        'end_of_life', // int in months
+        'end_of_life', // int in months, mengikuti depreciation months jika ada relasi depreciation
         'manufacture_id',
         'category_id',
         'depreciation_id',

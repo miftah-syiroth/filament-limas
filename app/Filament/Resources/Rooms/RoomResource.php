@@ -27,8 +27,6 @@ class RoomResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Master Data';
 
-    protected static ?int $navigationSort = 5;
-
     public static function getModelLabel(): string
     {
         return __('room.model_label');

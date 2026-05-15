@@ -22,25 +22,13 @@ class DepreciationsTable
                     ->searchable(),
                 TextColumn::make('months')
                     ->label(__('depreciation.table.months'))
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 TextColumn::make('minimum_value')
                     ->label(__('depreciation.table.minimum_value'))
                     ->numeric()
-                    ->suffix('%')
-                    ->sortable(),
+                    ->suffix('%'),
                 TextColumn::make('method')
                     ->label(__('depreciation.table.method')),
-                TextColumn::make('created_at')
-                    ->label(__('depreciation.table.created_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label(__('depreciation.table.updated_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

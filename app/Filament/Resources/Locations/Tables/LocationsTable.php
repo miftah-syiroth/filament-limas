@@ -16,7 +16,7 @@ class LocationsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->recordUrl(null)
+            // ->recordUrl(null)
             ->columns([
                 TextColumn::make('id')
                     ->hidden()
@@ -55,16 +55,6 @@ class LocationsTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('location.table.created_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label(__('location.table.updated_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->label(__('location.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

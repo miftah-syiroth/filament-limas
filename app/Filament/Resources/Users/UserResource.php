@@ -39,8 +39,6 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?int $navigationSort = 3;
-
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

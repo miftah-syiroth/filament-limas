@@ -44,8 +44,6 @@ class DepartmentResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Master Data';
 
-    protected static ?int $navigationSort = 6;
-
     public static function form(Schema $schema): Schema
     {
         return DepartmentForm::configure($schema);

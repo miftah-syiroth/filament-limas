@@ -25,16 +25,6 @@ class CompanyInfolist
                             ->label(__('company.infolist.phone')),
                         TextEntry::make('notes')
                             ->label(__('company.infolist.notes')),
-                        TextEntry::make('created_at')
-                            ->label(__('company.infolist.created_at'))
-                            ->dateTime(),
-                        TextEntry::make('updated_at')
-                            ->label(__('company.infolist.updated_at'))
-                            ->dateTime(),
-                        TextEntry::make('deleted_at')
-                            ->label(__('company.infolist.deleted_at'))
-                            ->dateTime()
-                            ->visible(fn(Company $record): bool => $record->trashed()),
 
                     ])
             ]);
