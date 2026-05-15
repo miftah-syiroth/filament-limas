@@ -13,7 +13,9 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CategoriesTable
 {
@@ -29,8 +31,10 @@ class CategoriesTable
                     ->searchable(),
                 TextColumn::make('type')
                     ->label(__('category.table.type'))
-                    ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
-                    ->searchable(),
+                    ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : ''),
+                TextColumn::make('models_count')
+                    ->label(__('category.table.models_count'))
+                    ->counts('models'),
                 TextColumn::make('created_at')
                     ->label(__('category.table.created_at'))
                     ->dateTime()
@@ -38,7 +42,18 @@ class CategoriesTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('type')
+                    ->label(__('category.table.type'))
+                    ->multiple()
+                    ->options(CategoryType::class)
+                    ->query(function (Builder $query, array $data): Builder {
+                        $types = $data['values'] ?? [];
+                        if (empty($types)) {
+                            return $query;
+                        }
 
+                        return $query->whereIn('type', $types);
+                    }),
             ])
             ->recordActions([
                 ViewAction::make()

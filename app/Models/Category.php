@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Enums\CategoryType;
+use App\Models\Model as ModelCategory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Category extends Model
 {
@@ -33,5 +34,9 @@ class Category extends Model
             ->dontLogIfAttributesChangedOnly(['notes'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
+    }
+
+    public function models(): HasMany {
+        return $this->hasMany(ModelCategory::class);
     }
 }

@@ -34,6 +34,7 @@ return [
         'id' => 'ID',
         'name' => 'Name',
         'type' => 'Type',
+        'models_count' => 'Models count',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
         'deleted_at' => 'Deleted at',

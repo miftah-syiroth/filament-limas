@@ -34,6 +34,7 @@ return [
         'id' => 'ID',
         'name' => 'Nama',
         'type' => 'Tipe',
+        'models_count' => 'Jumlah Model',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
         'deleted_at' => 'Dihapus pada',
