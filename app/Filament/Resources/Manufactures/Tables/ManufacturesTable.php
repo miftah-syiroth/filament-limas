@@ -45,6 +45,9 @@ class ManufacturesTable
                     ->label(__('manufacture.table.warranty_lookup_url'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('models_count')
+                    ->label(__('manufacture.table.models_count'))
+                    ->counts('models'),
                 TextColumn::make('created_at')
                     ->label(__('manufacture.table.created_at'))
                     ->dateTime()

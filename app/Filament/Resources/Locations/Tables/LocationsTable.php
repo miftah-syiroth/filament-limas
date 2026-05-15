@@ -53,6 +53,9 @@ class LocationsTable
                     ->label(__('location.table.phone'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('items_count')
+                    ->label(__('location.table.items_count'))
+                    ->counts('items'),
                 TextColumn::make('created_at')
                     ->label(__('location.table.created_at'))
                     ->dateTime()

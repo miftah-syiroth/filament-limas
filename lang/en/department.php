@@ -33,6 +33,7 @@ return [
         'company' => 'Company',
         'location' => 'Location',
         'phone' => 'Phone',
+        'items_count' => 'Items count',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
         'deleted_at' => 'Deleted at',

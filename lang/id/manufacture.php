@@ -39,6 +39,7 @@ return [
         'support_phone' => 'Telepon dukungan',
         'support_email' => 'Email dukungan',
         'warranty_lookup_url' => 'URL cek garansi',
+        'models_count' => 'Jumlah Model',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
         'deleted_at' => 'Dihapus pada',

@@ -33,6 +33,7 @@ return [
         'company' => 'Perusahaan',
         'location' => 'Lokasi',
         'phone' => 'Telepon',
+        'items_count' => 'Jumlah Item',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
         'deleted_at' => 'Dihapus pada',

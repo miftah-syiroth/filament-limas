@@ -9,7 +9,9 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class DepartmentsTable
 {
@@ -18,22 +20,19 @@ class DepartmentsTable
         return $table
             ->recordUrl(null)
             ->columns([
-                TextColumn::make('id')
-                    ->label(__('department.table.id'))
-                    ->hidden(),
                 TextColumn::make('name')
                     ->label(__('department.table.name'))
                     ->searchable(),
                 TextColumn::make('company.name')
-                    ->label(__('department.table.company'))
-                    ->searchable(),
+                    ->label(__('department.table.company')),
                 TextColumn::make('location.name')
                     ->label(__('department.table.location'))
                     ->searchable(),
                 TextColumn::make('phone')
-                    ->label(__('department.table.phone'))
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label(__('department.table.phone')),
+                TextColumn::make('items_count')
+                    ->label(__('department.table.items_count'))
+                    ->counts('items'),
                 TextColumn::make('created_at')
                     ->label(__('department.table.created_at'))
                     ->dateTime()
@@ -41,7 +40,10 @@ class DepartmentsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-
+                SelectFilter::make('location_id')
+                    ->label(__('department.table.location'))
+                    ->relationship('location', 'name')
+                    ->multiple()
             ])
             ->recordActions([
                 ViewAction::make()->label(''),

@@ -39,6 +39,7 @@ return [
         'support_phone' => 'Support phone',
         'support_email' => 'Support email',
         'warranty_lookup_url' => 'Warranty lookup URL',
+        'models_count' => 'Models count',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
         'deleted_at' => 'Deleted at',

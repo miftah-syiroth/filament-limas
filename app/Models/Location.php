@@ -65,4 +65,9 @@ class Location extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
+    }
 }
