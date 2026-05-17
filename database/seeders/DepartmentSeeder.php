@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
 use App\Models\Department;
 use App\Models\Location;
+use App\Models\Organization;
 use App\Models\Room;
 use Illuminate\Database\Seeder;
 
@@ -15,19 +15,19 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a company
-        $company = Company::updateOrCreate(
+        // Create a organization
+        $organization = Organization::updateOrCreate(
             ['name' => 'Universitas Harapan Bangsa'],
             [
                 'email' => 'pmb@uhb.ac.id',
                 'phone' => '021-1234567',
-                'notes' => 'Main company',
+                'notes' => 'Main organization',
             ]
         );
 
         // Create locations
         $location1 = Location::updateOrCreate(
-            ['name' => 'Kampus 1', 'company_id' => $company->id],
+            ['name' => 'Kampus 1', 'organization_id' => $organization->id],
             [
                 'address' => 'Jl. Raden Patah No.100',
                 'address2' => 'Kedunglongsir, Ledug, Kec. Kembaran',
@@ -41,7 +41,7 @@ class DepartmentSeeder extends Seeder
         );
 
         $location2 = Location::updateOrCreate(
-            ['name' => 'Kampus 2', 'company_id' => $company->id],
+            ['name' => 'Kampus 2', 'organization_id' => $organization->id],
             [
                 'address' => 'Jl. KH. Wahid Hasyim No.274-A',
                 'address2' => 'Windusara, Karangklesem, Kec. Purwokerto Selatan',
@@ -64,7 +64,7 @@ class DepartmentSeeder extends Seeder
 
         foreach ($departments as $department) {
             Department::updateOrCreate(
-                ['name' => $department['name'], 'company_id' => $company->id],
+                ['name' => $department['name'], 'organization_id' => $organization->id],
                 [
                     'location_id' => $department['location']->id,
                     'phone' => $department['location']->phone,

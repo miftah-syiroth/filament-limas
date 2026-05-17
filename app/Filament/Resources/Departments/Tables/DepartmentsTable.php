@@ -22,8 +22,8 @@ class DepartmentsTable
                 TextColumn::make('name')
                     ->label(__('department.table.name'))
                     ->searchable(),
-                TextColumn::make('company.name')
-                    ->label(__('department.table.company')),
+                TextColumn::make('oranization.name')
+                    ->label(__('department.table.oranization')),
                 TextColumn::make('location.name')
                     ->label(__('department.table.location'))
                     ->searchable(),
@@ -42,7 +42,7 @@ class DepartmentsTable
                 SelectFilter::make('location_id')
                     ->label(__('department.table.location'))
                     ->relationship('location', 'name')
-                    ->multiple()
+                    ->multiple(),
             ])
             ->recordActions([
                 ViewAction::make()->label(''),

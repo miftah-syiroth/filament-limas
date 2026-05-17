@@ -8,7 +8,7 @@ return [
 
     'form' => [
         'add' => 'Add Location',
-        'company' => 'Company',
+        'organization' => 'Organization',
         'name' => 'Name',
         'country' => 'Country',
         'province' => 'Province',
@@ -22,7 +22,7 @@ return [
 
     'infolist' => [
         'id' => 'ID',
-        'company' => 'Company',
+        'organization' => 'Organization',
         'name' => 'Name',
         'address' => 'Address',
         'address2' => 'Address line 2',
@@ -40,7 +40,7 @@ return [
     'table' => [
         'id' => 'ID',
         'name' => 'Name',
-        'company' => 'Company',
+        'organization' => 'Organization',
         'address' => 'Address',
         'address2' => 'Address line 2',
         'city' => 'City',

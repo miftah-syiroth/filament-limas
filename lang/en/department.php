@@ -9,7 +9,7 @@ return [
     'form' => [
         'add' => 'Add Department',
         'location' => 'Location',
-        'company' => 'Company',
+        'organization' => 'Organization',
         'name' => 'Name',
         'phone' => 'Phone',
         'notes' => 'Notes',
@@ -17,7 +17,7 @@ return [
 
     'infolist' => [
         'id' => 'ID',
-        'company' => 'Company',
+        'organization' => 'Organization',
         'location' => 'Location',
         'name' => 'Name',
         'phone' => 'Phone',
@@ -30,7 +30,7 @@ return [
     'table' => [
         'id' => 'ID',
         'name' => 'Name',
-        'company' => 'Company',
+        'organization' => 'Organization',
         'location' => 'Location',
         'phone' => 'Phone',
         'items_count' => 'Items count',

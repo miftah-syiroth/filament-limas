@@ -8,7 +8,7 @@ return [
 
     'form' => [
         'add' => 'Tambah Lokasi',
-        'company' => 'Perusahaan',
+        'organization' => 'Organisasi',
         'name' => 'Nama',
         'country' => 'Negara',
         'province' => 'Provinsi',
@@ -22,7 +22,7 @@ return [
 
     'infolist' => [
         'id' => 'ID',
-        'company' => 'Perusahaan',
+        'organization' => 'Organisasi',
         'name' => 'Nama',
         'address' => 'Alamat',
         'address2' => 'Alamat baris 2',
@@ -40,7 +40,7 @@ return [
     'table' => [
         'id' => 'ID',
         'name' => 'Nama',
-        'company' => 'Perusahaan',
+        'organization' => 'Organisasi',
         'address' => 'Alamat',
         'address2' => 'Alamat baris 2',
         'city' => 'Kota',

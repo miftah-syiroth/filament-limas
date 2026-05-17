@@ -20,32 +20,32 @@ class DepartmentForm
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                Select::make('location_id')
-                    ->label(__('department.form.location'))
-                    ->relationship('location', 'name')
-                    ->required()
-                    ->native(false)
-                    ->live()
-                    ->afterStateUpdated(function (Set $set, $state): void {
-                        $location = Location::find($state);
-                        $set('company_id', $location?->company_id);
-                    }),
-                Select::make('company_id')
-                    ->label(__('department.form.company'))
-                    ->relationship('company', 'name')
-                    ->disabled()
-                    ->dehydrated()
-                    ->native(false),
-                TextInput::make('name')
-                    ->label(__('department.form.name'))
-                    ->required(),
-                TextInput::make('phone')
-                    ->label(__('department.form.phone'))
-                    ->tel(),
-                Textarea::make('notes')
-                    ->label(__('department.form.notes'))
-                    ->columnSpanFull(),
-                ]),
+                        Select::make('location_id')
+                            ->label(__('department.form.location'))
+                            ->relationship('location', 'name')
+                            ->required()
+                            ->native(false)
+                            ->live()
+                            ->afterStateUpdated(function (Set $set, $state): void {
+                                $location = Location::find($state);
+                                $set('oranization_id', $location?->oranization_id);
+                            }),
+                        Select::make('oranization_id')
+                            ->label(__('department.form.oranization'))
+                            ->relationship('oranization', 'name')
+                            ->disabled()
+                            ->dehydrated()
+                            ->native(false),
+                        TextInput::make('name')
+                            ->label(__('department.form.name'))
+                            ->required(),
+                        TextInput::make('phone')
+                            ->label(__('department.form.phone'))
+                            ->tel(),
+                        Textarea::make('notes')
+                            ->label(__('department.form.notes'))
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }

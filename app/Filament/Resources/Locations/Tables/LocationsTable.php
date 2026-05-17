@@ -21,8 +21,8 @@ class LocationsTable
                 TextColumn::make('name')
                     ->label(__('location.table.name'))
                     ->searchable(),
-                TextColumn::make('company.name')
-                    ->label(__('location.table.company'))
+                TextColumn::make('organization.name')
+                    ->label(__('location.table.organization'))
                     ->searchable(),
                 TextColumn::make('address')
                     ->label(__('location.table.address'))

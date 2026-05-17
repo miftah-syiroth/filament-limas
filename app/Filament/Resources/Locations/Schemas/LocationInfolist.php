@@ -16,8 +16,8 @@ class LocationInfolist
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        TextEntry::make('company.name')
-                            ->label(__('location.infolist.company'))
+                        TextEntry::make('organization.name')
+                            ->label(__('location.infolist.organization'))
                             ->placeholder('-'),
                         TextEntry::make('name')
                             ->label(__('location.infolist.name')),

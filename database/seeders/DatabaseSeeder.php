@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DepartmentSeeder::class,
             SupplierSeeder::class,
-            ModelSeeder::class,
             DepreciationSeeder::class,
+            ModelSeeder::class,
             UnitSeeder::class,
         ]);
     }

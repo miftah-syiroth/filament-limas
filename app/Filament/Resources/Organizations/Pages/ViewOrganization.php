@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\Companies\Pages;
+namespace App\Filament\Resources\Organizations\Pages;
 
-use App\Filament\Resources\Companies\CompanyResource;
+use App\Filament\Resources\Organizations\OrganizationResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
 
-class ViewCompany extends ViewRecord
+class ViewOrganization extends ViewRecord
 {
-    protected static string $resource = CompanyResource::class;
+    protected static string $resource = OrganizationResource::class;
 
     protected function getHeaderActions(): array
     {

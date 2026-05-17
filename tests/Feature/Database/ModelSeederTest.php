@@ -4,9 +4,11 @@ use App\Enums\CategoryType;
 use App\Models\Category;
 use App\Models\Manufacture;
 use App\Models\Model as InventoryModel;
+use Database\Seeders\DepreciationSeeder;
 use Database\Seeders\ModelSeeder;
 
 it('seeds Apple smartphone and laptop, Swallow sandal, and Sidu kertas with expected models', function () {
+    $this->seed(DepreciationSeeder::class);
     $this->seed(ModelSeeder::class);
 
     expect(Manufacture::query()->count())->toBe(3)

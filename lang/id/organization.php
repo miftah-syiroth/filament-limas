@@ -2,14 +2,14 @@
 
 return [
 
-    'model_label' => 'Perusahaan',
-    'plural_model_label' => 'Perusahaan',
-    'navigation_label' => 'Perusahaan',
+    'model_label' => 'Organisasi',
+    'plural_model_label' => 'Organisasi',
+    'navigation_label' => 'Organisasi',
 
     'form' => [
-        'add' => 'Tambah Perusahaan',
+        'add' => 'Tambah Organisasi',
         'name' => 'Nama',
-        'email' => 'Email',
+        'email' => 'Alamat email',
         'phone' => 'Telepon',
         'notes' => 'Catatan',
     ],
@@ -17,7 +17,7 @@ return [
     'infolist' => [
         'id' => 'ID',
         'name' => 'Nama',
-        'email' => 'Email',
+        'email' => 'Alamat email',
         'phone' => 'Telepon',
         'notes' => 'Catatan',
         'created_at' => 'Dibuat pada',
@@ -27,7 +27,7 @@ return [
 
     'table' => [
         'name' => 'Nama',
-        'email' => 'Email',
+        'email' => 'Alamat email',
         'phone' => 'Telepon',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',

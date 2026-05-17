@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\CategoryType;
 use App\Models\Category;
+use App\Models\Depreciation;
 use App\Models\Manufacture;
 use App\Models\Model as InventoryModel;
 use Illuminate\Database\Seeder;
@@ -15,6 +16,14 @@ class ModelSeeder extends Seeder
      */
     public function run(): void
     {
+        $iphoneDepreciation = Depreciation::query()
+            ->where('name', 'Depresiasi iPhone')
+            ->first();
+
+        $macbookDepreciation = Depreciation::query()
+            ->where('name', 'Depresiasi MacBook')
+            ->first();
+
         $apple = Manufacture::updateOrCreate(
             ['name' => 'Apple'],
             [
@@ -192,11 +201,11 @@ class ModelSeeder extends Seeder
         ];
 
         foreach ($smartphoneModels as $modelData) {
-            $this->upsertInventoryModel($apple, $smartphone, $modelData);
+            $this->upsertInventoryModel($apple, $smartphone, $modelData, $iphoneDepreciation?->id);
         }
 
         foreach ($laptopModels as $modelData) {
-            $this->upsertInventoryModel($apple, $laptop, $modelData);
+            $this->upsertInventoryModel($apple, $laptop, $modelData, $macbookDepreciation?->id);
         }
 
         foreach ($sandalModels as $modelData) {
@@ -211,8 +220,12 @@ class ModelSeeder extends Seeder
     /**
      * @param  array{name: string, model_number: string, min_amount: int, end_of_life: int|null, audit_interval: int, notes: string}  $modelData
      */
-    private function upsertInventoryModel(Manufacture $manufacture, Category $category, array $modelData): void
-    {
+    private function upsertInventoryModel(
+        Manufacture $manufacture,
+        Category $category,
+        array $modelData,
+        ?string $depreciationId = null,
+    ): void {
         InventoryModel::updateOrCreate(
             [
                 'name' => $modelData['name'],
@@ -223,6 +236,7 @@ class ModelSeeder extends Seeder
                 'model_number' => $modelData['model_number'],
                 'min_amount' => $modelData['min_amount'],
                 'end_of_life' => $modelData['end_of_life'],
+                'depreciation_id' => $depreciationId,
                 'audit_interval' => $modelData['audit_interval'],
                 'notes' => $modelData['notes'],
             ]

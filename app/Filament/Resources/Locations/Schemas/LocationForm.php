@@ -22,9 +22,9 @@ class LocationForm
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        Select::make('company_id')
-                            ->label(__('location.form.company'))
-                            ->relationship('company', 'name')
+                        Select::make('organization_id')
+                            ->label(__('location.form.organization'))
+                            ->relationship('organization', 'name')
                             ->required()
                             ->native(false),
                         TextInput::make('name')

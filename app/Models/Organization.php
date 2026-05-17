@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Company extends Model
+class Organization extends Model
 {
     use HasUuids, LogsActivity;
 
@@ -28,6 +27,7 @@ class Company extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+
     public function locations(): HasMany
     {
         return $this->hasMany(Location::class);

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Companies\Schemas;
+namespace App\Filament\Resources\Organizations\Schemas;
 
-use App\Models\Company;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
-class CompanyInfolist
+class OrganizationInfolist
 {
     public static function configure(Schema $schema): Schema
     {
@@ -18,15 +17,15 @@ class CompanyInfolist
                     ->columns(2)
                     ->schema([
                         TextEntry::make('name')
-                            ->label(__('company.infolist.name')),
+                            ->label(__('organization.infolist.name')),
                         TextEntry::make('email')
-                            ->label(__('company.infolist.email')),
+                            ->label(__('organization.infolist.email')),
                         TextEntry::make('phone')
-                            ->label(__('company.infolist.phone')),
+                            ->label(__('organization.infolist.phone')),
                         TextEntry::make('notes')
-                            ->label(__('company.infolist.notes')),
+                            ->label(__('organization.infolist.notes')),
 
-                    ])
+                    ]),
             ]);
     }
 }

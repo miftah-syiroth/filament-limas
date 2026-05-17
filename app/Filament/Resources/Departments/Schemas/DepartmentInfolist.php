@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Departments\Schemas;
 
-use App\Models\Department;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -17,8 +16,8 @@ class DepartmentInfolist
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        TextEntry::make('company.name')
-                            ->label(__('department.infolist.company'))
+                        TextEntry::make('oranization.name')
+                            ->label(__('department.infolist.oranization'))
                             ->placeholder('-'),
                         TextEntry::make('location.name')
                             ->label(__('department.infolist.location'))

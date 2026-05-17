@@ -9,7 +9,7 @@ return [
     'form' => [
         'add' => 'Tambah Departemen',
         'location' => 'Lokasi',
-        'company' => 'Perusahaan',
+        'organization' => 'Organisasi',
         'name' => 'Nama',
         'phone' => 'Telepon',
         'notes' => 'Catatan',
@@ -17,7 +17,7 @@ return [
 
     'infolist' => [
         'id' => 'ID',
-        'company' => 'Perusahaan',
+        'organization' => 'Organisasi',
         'location' => 'Lokasi',
         'name' => 'Nama',
         'phone' => 'Telepon',
@@ -30,7 +30,7 @@ return [
     'table' => [
         'id' => 'ID',
         'name' => 'Nama',
-        'company' => 'Perusahaan',
+        'organization' => 'Organisasi',
         'location' => 'Lokasi',
         'phone' => 'Telepon',
         'items_count' => 'Jumlah Item',

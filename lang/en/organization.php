@@ -2,12 +2,12 @@
 
 return [
 
-    'model_label' => 'Company',
-    'plural_model_label' => 'Companies',
-    'navigation_label' => 'Companies',
+    'model_label' => 'Organization',
+    'plural_model_label' => 'Organizations',
+    'navigation_label' => 'Organizations',
 
     'form' => [
-        'add' => 'Add Company',
+        'add' => 'Add Organization',
         'name' => 'Name',
         'email' => 'Email address',
         'phone' => 'Phone',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Companies\Tables;
+namespace App\Filament\Resources\Organizations\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -11,23 +11,23 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CompaniesTable
+class OrganizationsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('company.table.name'))
+                    ->label(__('organization.table.name'))
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label(__('company.table.email'))
+                    ->label(__('organization.table.email'))
                     ->searchable(),
                 TextColumn::make('phone')
-                    ->label(__('company.table.phone'))
+                    ->label(__('organization.table.phone'))
                     ->searchable(),
                 TextColumn::make('created_at')
-                    ->label(__('company.table.created_at'))
+                    ->label(__('organization.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

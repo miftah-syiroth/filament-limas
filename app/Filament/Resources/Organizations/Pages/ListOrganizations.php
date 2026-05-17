@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Filament\Resources\Companies\Pages;
+namespace App\Filament\Resources\Organizations\Pages;
 
-use App\Filament\Resources\Companies\CompanyResource;
+use App\Filament\Resources\Organizations\OrganizationResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Icons\Heroicon;
 
-class ListCompanies extends ListRecords
+class ListOrganizations extends ListRecords
 {
-    protected static string $resource = CompanyResource::class;
+    protected static string $resource = OrganizationResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             CreateAction::make()
-                ->label(__('company.form.add'))
+                ->label(__('organization.form.add'))
                 ->icon(Heroicon::OutlinedPlus),
         ];
     }

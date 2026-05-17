@@ -11,8 +11,8 @@ class DepreciationSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * Menyisipkan dua kebijakan penyusutan (iPhone & MacBook) dan mengaitkannya ke
-     * model inventaris Apple pada kategori smartphone dan laptop dari {@see ModelSeeder}.
+     * Menyisipkan kebijakan penyusutan iPhone dan MacBook. Pengaitan ke model inventaris
+     * dilakukan oleh {@see ModelSeeder} untuk kategori smartphone dan laptop.
      */
     public function run(): void
     {
