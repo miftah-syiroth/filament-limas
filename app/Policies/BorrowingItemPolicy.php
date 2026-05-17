@@ -14,6 +14,7 @@ class BorrowingItemPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
+        return false;
         return $authUser->can('ViewAny:BorrowingItem');
     }
 

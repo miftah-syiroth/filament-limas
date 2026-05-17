@@ -27,6 +27,8 @@ class ItemStateLog extends Model
         'to_department_id',
         'from_user_id',
         'to_user_id',
+        'from_room_id',
+        'to_room_id',
         'from_status',
         'to_status',
         'notes',
@@ -71,6 +73,10 @@ class ItemStateLog extends Model
             }
             if ($this->to_department_id !== null) {
                 $updates['department_id'] = $this->to_department_id;
+            }
+
+            if ($this->to_room_id !== null) {
+                $updates['room_id'] = $this->to_room_id;
             }
         }
 
@@ -131,5 +137,15 @@ class ItemStateLog extends Model
     public function toUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'to_user_id');
+    }
+
+    public function fromRoom(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'from_room_id');
+    }
+
+    public function toRoom(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'to_room_id');
     }
 }

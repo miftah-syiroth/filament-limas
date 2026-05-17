@@ -19,6 +19,6 @@ enum ItemStatus: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return $this->name;
+        return __('items.statuses.'.$this->value);
     }
 }
