@@ -14,16 +14,8 @@ it('validates purchase_date as nullable date', function (): void {
         ->not->toContain('datetime');
 });
 
-it('generates an eight character uppercase alphanumeric serial number', function (): void {
-    $serial = ItemImporter::generateSerialNumber();
-
-    expect($serial)->toHaveLength(8)
-        ->and($serial)->toBe(mb_strtoupper($serial))
-        ->and(ctype_alnum($serial))->toBeTrue();
-});
-
 it('fills blank serial_number during castData', function (): void {
-    $import = \Mockery::mock(Import::class);
+    $import = Mockery::mock(Import::class);
     $importer = new ItemImporter($import, [], []);
 
     $reflection = new ReflectionClass($importer);
@@ -42,7 +34,7 @@ it('fills blank serial_number during castData', function (): void {
 });
 
 it('fills missing serial_number key during castData', function (): void {
-    $import = \Mockery::mock(Import::class);
+    $import = Mockery::mock(Import::class);
     $importer = new ItemImporter($import, [], []);
 
     $reflection = new ReflectionClass($importer);
@@ -59,7 +51,7 @@ it('fills missing serial_number key during castData', function (): void {
 });
 
 it('preserves non-blank serial_number during castData', function (): void {
-    $import = \Mockery::mock(Import::class);
+    $import = Mockery::mock(Import::class);
     $importer = new ItemImporter($import, [], []);
 
     $reflection = new ReflectionClass($importer);

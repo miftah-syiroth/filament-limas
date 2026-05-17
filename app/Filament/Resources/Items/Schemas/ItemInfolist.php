@@ -90,7 +90,6 @@ class ItemInfolist
                                 QrCodeEntry::make('serial_number')
                                     ->hiddenLabel(),
                                 SpatieMediaLibraryImageEntry::make('images')
-                                    ->collection('images')
                                     ->hiddenLabel(),
                             ]),
                     ]),

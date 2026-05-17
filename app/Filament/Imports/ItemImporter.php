@@ -5,11 +5,11 @@ namespace App\Filament\Imports;
 use App\Enums\ItemStatus;
 use App\Models\Department;
 use App\Models\Item;
+use App\Support\ItemSerialNumber;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Support\Number;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ItemImporter extends Importer
@@ -86,13 +86,8 @@ class ItemImporter extends Importer
         parent::castData();
 
         if (! array_key_exists('serial_number', $this->data) || blank($this->data['serial_number'])) {
-            $this->data['serial_number'] = static::generateSerialNumber();
+            $this->data['serial_number'] = ItemSerialNumber::generate();
         }
-    }
-
-    public static function generateSerialNumber(): string
-    {
-        return strtoupper(substr(str_replace('-', '', Str::uuid()->toString()), 0, 8));
     }
 
     public function resolveRecord(): Item

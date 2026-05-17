@@ -1,13 +1,21 @@
 <?php
 
 use App\Enums\CategoryType;
+use App\Enums\ItemStatus;
 use App\Models\Category;
+use App\Models\Item;
 use App\Models\Manufacture;
 use App\Models\Model as InventoryModel;
+use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DepreciationSeeder;
 use Database\Seeders\ModelSeeder;
+use Database\Seeders\SupplierSeeder;
+use Database\Seeders\UserSeeder;
 
 it('seeds Apple smartphone and laptop, Swallow sandal, and Sidu kertas with expected models', function () {
+    $this->seed(DepartmentSeeder::class);
+    $this->seed(UserSeeder::class);
+    $this->seed(SupplierSeeder::class);
     $this->seed(DepreciationSeeder::class);
     $this->seed(ModelSeeder::class);
 
@@ -65,4 +73,64 @@ it('seeds Apple smartphone and laptop, Swallow sandal, and Sidu kertas with expe
 
     expect($kertasNames)->toHaveCount(2)
         ->and($kertasNames)->toContain('kertas A4', 'Kertas F4');
+});
+
+it('seeds items per model with tracked assets and bulk stock', function () {
+    $this->seed(DepartmentSeeder::class);
+    $this->seed(UserSeeder::class);
+    $this->seed(SupplierSeeder::class);
+    $this->seed(DepreciationSeeder::class);
+    $this->seed(ModelSeeder::class);
+
+    expect(Item::query()->count())->toBe(28);
+
+    $smartphoneModel = InventoryModel::query()
+        ->where('name', 'iPhone 14 128GB')
+        ->first();
+
+    expect($smartphoneModel)->not->toBeNull()
+        ->and($smartphoneModel->items()->count())->toBe(3);
+
+    $smartphoneItems = $smartphoneModel->items()->get();
+
+    foreach ($smartphoneItems as $item) {
+        expect($item->is_individual_tracking)->toBeTrue()
+            ->and($item->quantity)->toBe(1)
+            ->and($item->order_quantity)->toBe(1)
+            ->and($item->status)->toBe(ItemStatus::Active)
+            ->and($item->name)->toBeNull()
+            ->and($item->serial_number)->toHaveLength(8)
+            ->and($item->serial_number)->toBe(mb_strtoupper($item->serial_number))
+            ->and(ctype_alnum($item->serial_number))->toBeTrue()
+            ->and($item->purchase_date?->year)->toBe(2025)
+            ->and($item->department->location_id)->toBe($item->location_id)
+            ->and($item->room->location_id)->toBe($item->location_id);
+    }
+
+    $sandalModel = InventoryModel::query()
+        ->where('name', 'sandal batik')
+        ->first();
+
+    expect($sandalModel)->not->toBeNull()
+        ->and($sandalModel->items()->count())->toBe(1);
+
+    $sandalItem = $sandalModel->items()->first();
+
+    expect($sandalItem->is_individual_tracking)->toBeFalse()
+        ->and($sandalItem->quantity)->toBe(20)
+        ->and($sandalItem->order_quantity)->toBe(20)
+        ->and($sandalItem->eol_date)->toBeNull();
+
+    $kertasModel = InventoryModel::query()
+        ->where('name', 'kertas A4')
+        ->first();
+
+    expect($kertasModel)->not->toBeNull()
+        ->and($kertasModel->items()->count())->toBe(1);
+
+    $kertasItem = $kertasModel->items()->first();
+
+    expect($kertasItem->is_individual_tracking)->toBeFalse()
+        ->and($kertasItem->quantity)->toBe(20)
+        ->and($kertasItem->eol_date)->toBeNull();
 });

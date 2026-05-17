@@ -5,10 +5,10 @@ namespace App\Filament\Resources\Items\Pages;
 use App\Enums\CategoryType;
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
-use App\Filament\Resources\Items\Schemas\ItemForm;
 use App\Models\Item;
 use App\Models\Model as ItemModel;
 use App\Models\StockMovement;
+use App\Support\ItemSerialNumber;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,7 +38,7 @@ class CreateItem extends CreateRecord
             }
 
             return $first ?? Item::create(array_merge($baseData, [
-                'serial_number' => ItemForm::generateSerialNumber(),
+                'serial_number' => ItemSerialNumber::generate(),
                 'user_id' => null,
             ]));
         }

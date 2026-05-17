@@ -6,9 +6,8 @@ use App\Enums\StockMovementType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class StockMovement extends Model
 {
@@ -36,6 +35,7 @@ class StockMovement extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class, 'item_id');
@@ -46,7 +46,6 @@ class StockMovement extends Model
         static::created(fn (StockMovement $stockMovement) => $stockMovement->recalculateItemQuantity());
         static::updated(fn (StockMovement $stockMovement) => $stockMovement->recalculateItemQuantity());
         static::deleted(fn (StockMovement $stockMovement) => $stockMovement->recalculateItemQuantity());
-        static::restored(fn (StockMovement $stockMovement) => $stockMovement->recalculateItemQuantity());
     }
 
     protected function recalculateItemQuantity(): void

@@ -84,6 +84,7 @@ return [
         'user' => 'User',
         'category_type' => 'Category type',
         'import' => 'Import',
+        'status_updated_at' => 'Status updated',
     ],
 
     'pages' => [

@@ -85,6 +85,7 @@ return [
         'user' => 'Pengguna',
         'category_type' => 'Tipe kategori',
         'import' => 'Impor',
+        'status_updated_at' => 'Status diperbarui',
     ],
 
     'pages' => [

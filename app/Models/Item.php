@@ -23,13 +23,13 @@ class Item extends BaseModel implements HasMedia
 
     protected $fillable = [
         'model_id',
+        'serial_number',
         'location_id',
         'department_id',
+        'room_id',
         'supplier_id',
         'user_id',
-        'room_id',
         'name',
-        'serial_number',
         'quantity',
         'order_quantity',
         'purchase_date',

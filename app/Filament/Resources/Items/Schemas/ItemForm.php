@@ -7,6 +7,7 @@ use App\Enums\ItemStatus;
 use App\Models\Category;
 use App\Models\Model as ItemModel;
 use App\Models\User;
+use App\Support\ItemSerialNumber;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -23,15 +24,9 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class ItemForm
 {
-    public static function generateSerialNumber(): string
-    {
-        return strtoupper(substr(str_replace('-', '', Str::uuid()->toString()), 0, 8));
-    }
-
     public static function isCategoryConsumable(Get $get): bool
     {
         return Category::find($get('category_id'))?->type === CategoryType::Consumable;
@@ -206,7 +201,7 @@ class ItemForm
                                     ->unique(table: 'items', column: 'serial_number', ignoreRecord: true)
                                     ->disabled()
                                     ->dehydrated()
-                                    ->default(fn () => self::generateSerialNumber()),
+                                    ->default(fn () => ItemSerialNumber::generate()),
                                 Select::make('user_id')
                                     ->label(__('items.form.responsible_person'))
                                     ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
@@ -228,7 +223,7 @@ class ItemForm
                             ->unique(table: 'items', column: 'serial_number', ignoreRecord: true)
                             ->disabled()
                             ->dehydrated()
-                            ->default(fn () => self::generateSerialNumber()),
+                            ->default(fn () => ItemSerialNumber::generate()),
                         Select::make('user_id')
                             ->label(__('items.form.responsible_person'))
                             ->options(fn (): array => User::query()->pluck('name', 'id')->toArray())
@@ -247,7 +242,6 @@ class ItemForm
                         SpatieMediaLibraryFileUpload::make('images')
                             ->disk('public')
                             ->hiddenLabel()
-                            ->collection('images')
                             ->multiple()
                             ->image()
                             ->maxSize(1024)

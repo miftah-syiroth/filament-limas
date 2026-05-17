@@ -4,11 +4,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    if (Auth::check() && Auth::user()?->hasRole(['admin', 'super_admin'])) {
+    if (Auth::check() && Auth::user()->hasAnyRole(['admin', 'super_admin'])) {
         return redirect('/admin');
     }
 
-    return redirect('/app');
+    abort(403, 'Unauthorized action.');
 })->name('home');
 
 require __DIR__.'/settings.php';

@@ -10,7 +10,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // add citext extension
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::statement('CREATE EXTENSION IF NOT EXISTS citext');
     }
 
@@ -19,7 +22,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // drop citext extension
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::statement('DROP EXTENSION IF EXISTS citext');
     }
 };
