@@ -45,7 +45,40 @@ test('item form translation keys resolve in English and Indonesian', function ()
         ->and(trans('items.infolist.depreciated_price', [], 'id'))->toBe('Nilai depresiasi');
 });
 
+test('item table translation keys resolve in English and Indonesian', function (): void {
+    $keys = [
+        'serial_number' => ['Serial number', 'Nomor seri'],
+        'model' => ['Model', 'Model'],
+        'category' => ['Category', 'Kategori'],
+        'type' => ['Type', 'Tipe'],
+        'name' => ['Name', 'Nama'],
+        'location' => ['Location', 'Lokasi'],
+        'department' => ['Department', 'Departemen'],
+        'room' => ['Room', 'Ruangan'],
+        'supplier' => ['Supplier', 'Pemasok'],
+        'user' => ['Responsible person', 'Penanggung jawab'],
+        'status' => ['Status', 'Status'],
+        'quantity' => ['Quantity', 'Kuantitas'],
+        'order_quantity' => ['Order quantity', 'Kuantitas pesanan'],
+        'purchase_date' => ['Purchase date', 'Tanggal pembelian'],
+        'purchase_price' => ['Purchase price', 'Harga pembelian'],
+        'eol_date' => ['Expiry date', 'Tanggal kadaluarsa'],
+        'warranty_months' => ['Warranty (months)', 'Garansi (bulan)'],
+        'warranty_suffix' => ['months', 'bulan'],
+        'individual' => ['Individual tracking', 'Pelacakan individu'],
+        'category_type' => ['Category type', 'Tipe kategori'],
+        'import' => ['Import', 'Impor'],
+    ];
+
+    foreach ($keys as $key => [$en, $id]) {
+        expect(trans('items.table.'.$key, [], 'en'))->toBe($en)
+            ->and(trans('items.table.'.$key, [], 'id'))->toBe($id);
+    }
+});
+
 test('item status enum labels use translation keys', function (): void {
+    app()->setLocale('en');
+
     expect(ItemStatus::Active->getLabel())->toBe('Active')
         ->and(ItemStatus::UnderDiagnosis->getLabel())->toBe('Under diagnosis')
         ->and(ItemStatus::Disposed->getLabel())->toBe('Disposed');

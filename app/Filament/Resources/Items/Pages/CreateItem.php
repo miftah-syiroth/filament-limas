@@ -24,6 +24,10 @@ class CreateItem extends CreateRecord
 
         $baseData = collect($data)->except(['tracking_entries', 'serial_number'])->toArray();
 
+        if ($nextAuditDate = $model?->computeInitialNextAuditDate()) {
+            $baseData['next_audit_date'] = $nextAuditDate;
+        }
+
         if ($isIndividualTracking) {
             $entries = $data['tracking_entries'] ?? [];
             $first = null;

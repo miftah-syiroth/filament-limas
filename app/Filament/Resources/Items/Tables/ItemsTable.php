@@ -29,15 +29,16 @@ class ItemsTable
             ->defaultSort('created_at', direction: 'desc')
             ->columns([
                 SpatieMediaLibraryImageColumn::make('image')
+                    ->label('')
                     ->limit(1),
                 TextColumn::make('serial_number')
                     ->label(__('items.table.serial_number'))
                     ->searchable(),
                 TextColumn::make('model.name')
-                    ->label(__('items.form.model'))
+                    ->label(__('items.table.model'))
                     ->searchable(),
                 TextColumn::make('model.category.name')
-                    ->label(__('items.form.category'))
+                    ->label(__('items.table.category'))
                     ->searchable(),
                 TextColumn::make('model.category.type')
                     ->label(__('items.table.type'))
@@ -48,49 +49,49 @@ class ItemsTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('location.name')
-                    ->label(__('items.form.location'))
+                    ->label(__('items.table.location'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('department.name')
-                    ->label(__('items.form.department'))
+                    ->label(__('items.table.department'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('room.name')
-                    ->label(__('items.form.room'))
+                    ->label(__('items.table.room'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('supplier.name')
-                    ->label(__('items.form.supplier'))
+                    ->label(__('items.table.supplier'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('user.name')
                     ->label(__('items.table.user'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
-                    ->label(__('items.form.status'))
+                    ->label(__('items.table.status'))
                     ->badge(),
                 TextColumn::make('quantity')
-                    ->label(__('items.form.quantity'))
+                    ->label(__('items.table.quantity'))
                     ->numeric()
                     ->alignCenter(),
                 TextColumn::make('order_quantity')
-                    ->label(__('items.form.order_quantity'))
+                    ->label(__('items.table.order_quantity'))
                     ->numeric()
                     ->alignCenter()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('purchase_date')
-                    ->label(__('items.form.purchase_date'))
+                    ->label(__('items.table.purchase_date'))
                     ->date()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('purchase_price')
-                    ->label(__('items.form.purchase_price'))
+                    ->label(__('items.table.purchase_price'))
                     ->money('IDR', locale: 'id', decimalPlaces: 0)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('eol_date')
-                    ->label(__('items.form.eol_date'))
+                    ->label(__('items.table.eol_date'))
                     ->date()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('warranty_months')
-                    ->label(__('items.form.warranty_months'))
+                    ->label(__('items.table.warranty_months'))
                     ->numeric()
                     ->alignCenter()
-                    ->suffix(__('items.infolist.warranty_suffix'))
+                    ->suffix(__('items.table.warranty_suffix'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('is_individual_tracking')
                     ->label(__('items.table.individual'))
@@ -113,11 +114,29 @@ class ItemsTable
                         }
 
                         return $query->whereHas('model', function (Builder $q) use ($types): Builder {
-                            return $q->whereHas('category', fn (Builder $q): Builder => $q->whereIn('type', $types));
+                            return $q->whereHas('category', fn(Builder $q): Builder => $q->whereIn('type', $types));
                         });
                     }),
-                TernaryFilter::make('is_individual_tracking')
-                    ->label(__('items.table.individual')),
+                SelectFilter::make('model_name')
+                    ->label(__('items.table.model'))
+                    ->relationship('model', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('location_name')
+                    ->label(__('items.table.location'))
+                    ->relationship('location', 'name')
+                    ->multiple(),
+                SelectFilter::make('department_name')
+                    ->label(__('items.table.department'))
+                    ->relationship('department', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('supplier_name')
+                    ->label(__('items.table.supplier'))
+                    ->relationship('supplier', 'name')
+                    ->multiple(),
 
             ])
             ->recordActions([

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -37,6 +38,15 @@ class Model extends EloquentModel implements HasMedia
             ->dontLogIfAttributesChangedOnly(['notes'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
+    }
+
+    public function computeInitialNextAuditDate(): ?Carbon
+    {
+        if ($this->audit_interval === null || $this->audit_interval <= 0) {
+            return null;
+        }
+
+        return now()->addMonths($this->audit_interval);
     }
 
     public function category()
