@@ -126,6 +126,7 @@ return [
                 'quantity_not_zero' => 'Kuantitas tidak boleh 0.',
                 'in_must_positive' => 'Kuantitas harus positif untuk tipe In.',
                 'out_must_negative' => 'Kuantitas harus negatif untuk tipe Out.',
+                'would_cause_negative_stock' => 'Pergerakan ini akan membuat stok negatif. Stok saat ini: :balance.',
             ],
         ],
         'maintenance' => [

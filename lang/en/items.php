@@ -125,6 +125,7 @@ return [
                 'quantity_not_zero' => 'Quantity cannot be zero.',
                 'in_must_positive' => 'Quantity must be positive for In movements.',
                 'out_must_negative' => 'Quantity must be negative for Out movements.',
+                'would_cause_negative_stock' => 'This movement would result in negative stock. Current stock: :balance.',
             ],
         ],
         'maintenance' => [

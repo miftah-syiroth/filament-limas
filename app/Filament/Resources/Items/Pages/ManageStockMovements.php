@@ -15,6 +15,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\Summarizers\Sum;
 
 class ManageStockMovements extends ManageRelatedRecords
 {
@@ -66,6 +67,11 @@ class ManageStockMovements extends ManageRelatedRecords
                             if ($typeValue === StockMovementType::Out->value && $value > 0) {
                                 $fail(__('items.pages.stock_movements.validation.out_must_negative'));
                             }
+                            if (! $this->getOwnerRecord()->canApplyStockMovement($value)) {
+                                $fail(__('items.pages.stock_movements.validation.would_cause_negative_stock', [
+                                    'balance' => $this->getOwnerRecord()->stockMovementBalance(),
+                                ]));
+                            }
                         },
                     ]),
                 Textarea::make('notes'),
@@ -81,7 +87,8 @@ class ManageStockMovements extends ManageRelatedRecords
                     ->badge(),
                 TextColumn::make('quantity')
                     ->numeric()
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->summarize(Sum::make()->hiddenLabel()),
                 TextColumn::make('notes')
                     ->limit(50),
                 TextColumn::make('created_at')

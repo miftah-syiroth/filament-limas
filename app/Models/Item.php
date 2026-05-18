@@ -189,6 +189,16 @@ class Item extends BaseModel implements HasMedia
         return $this->hasMany(StockMovement::class, 'item_id');
     }
 
+    public function stockMovementBalance(): int
+    {
+        return (int) $this->stockMovements()->sum('quantity');
+    }
+
+    public function canApplyStockMovement(int $quantity): bool
+    {
+        return $this->stockMovementBalance() + $quantity >= 0;
+    }
+
     public function stateLogs(): HasMany
     {
         return $this->hasMany(ItemStateLog::class, 'item_id');
