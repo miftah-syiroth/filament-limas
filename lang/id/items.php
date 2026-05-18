@@ -113,6 +113,9 @@ return [
         'warranty_suffix' => 'bulan',
         'import' => 'Impor',
         'status_updated_at' => 'Status diperbarui',
+        'no_department' => 'Tidak ada departemen',
+        'no_room' => 'Tidak ada ruangan',
+        'no_supplier' => 'Tidak ada pemasok',
     ],
 
     'pages' => [
@@ -158,6 +161,8 @@ return [
             'location_to' => 'Lokasi ke',
             'department_from' => 'Departemen dari',
             'department_to' => 'Departemen ke',
+            'room_from' => 'Ruangan dari',
+            'room_to' => 'Ruangan ke',
             'user_from' => 'Pengguna dari',
             'user_to' => 'Pengguna ke',
             'responsible_from' => 'PJ dari',
@@ -170,6 +175,14 @@ return [
             'modal_section' => 'Informasi transfer & status',
             'created_at' => 'Dibuat',
             'modal_heading' => 'Detail log — :type',
+            'validation' => [
+                'transfer_destination_required' => 'Minimal satu lokasi, departemen, atau ruangan tujuan harus diisi.',
+                'location_same' => 'Lokasi tujuan harus berbeda dari lokasi saat ini.',
+                'department_same' => 'Departemen tujuan harus berbeda dari departemen saat ini.',
+                'room_same' => 'Ruangan tujuan harus berbeda dari ruangan saat ini.',
+                'department_location_mismatch' => 'Departemen tidak termasuk dalam lokasi tujuan.',
+                'room_location_mismatch' => 'Ruangan tidak termasuk dalam lokasi tujuan.',
+            ],
         ],
         'borrowing' => [
             'navigation_label' => 'Peminjaman',

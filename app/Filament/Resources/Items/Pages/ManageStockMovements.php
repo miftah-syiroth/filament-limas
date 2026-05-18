@@ -82,18 +82,11 @@ class ManageStockMovements extends ManageRelatedRecords
                 TextColumn::make('quantity')
                     ->numeric()
                     ->alignCenter(),
-                TextColumn::make('item.model.unit.name')
-                    ->label(__('items.pages.stock_movements.unit'))
-                    ->alignCenter(),
                 TextColumn::make('notes')
                     ->limit(50),
                 TextColumn::make('created_at')
                     ->dateTime('j M Y H:i')
                     ->sortable(),
-                TextColumn::make('updated_at')
-                    ->dateTime('j M Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
 

@@ -17,7 +17,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -114,7 +113,7 @@ class ItemsTable
                         }
 
                         return $query->whereHas('model', function (Builder $q) use ($types): Builder {
-                            return $q->whereHas('category', fn(Builder $q): Builder => $q->whereIn('type', $types));
+                            return $q->whereHas('category', fn (Builder $q): Builder => $q->whereIn('type', $types));
                         });
                     }),
                 SelectFilter::make('model_name')
@@ -130,13 +129,21 @@ class ItemsTable
                 SelectFilter::make('department_name')
                     ->label(__('items.table.department'))
                     ->relationship('department', 'name')
-                    ->multiple()
+                    ->emptyRelationshipOptionLabel(__('items.table.no_department'))
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->multiple(),
+                SelectFilter::make('room_name')
+                    ->label(__('items.table.room'))
+                    ->relationship('room', 'name')
+                    ->emptyRelationshipOptionLabel(__('items.table.no_room'))
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
                 SelectFilter::make('supplier_name')
                     ->label(__('items.table.supplier'))
                     ->relationship('supplier', 'name')
-                    ->multiple(),
+                    ->emptyRelationshipOptionLabel(__('items.table.no_supplier')),
 
             ])
             ->recordActions([

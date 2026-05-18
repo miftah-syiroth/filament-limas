@@ -112,6 +112,9 @@ return [
         'warranty_suffix' => 'months',
         'import' => 'Import',
         'status_updated_at' => 'Status updated',
+        'no_department' => 'No department',
+        'no_room' => 'No room',
+        'no_supplier' => 'No supplier',
     ],
 
     'pages' => [
@@ -157,6 +160,8 @@ return [
             'location_to' => 'Location to',
             'department_from' => 'Department from',
             'department_to' => 'Department to',
+            'room_from' => 'Room from',
+            'room_to' => 'Room to',
             'user_from' => 'User from',
             'user_to' => 'User to',
             'responsible_from' => 'Responsible from',
@@ -169,6 +174,14 @@ return [
             'modal_section' => 'Transfer & status',
             'created_at' => 'Created',
             'modal_heading' => 'Log details — :type',
+            'validation' => [
+                'transfer_destination_required' => 'At least one destination location, department, or room is required.',
+                'location_same' => 'The destination location must differ from the current location.',
+                'department_same' => 'The destination department must differ from the current department.',
+                'room_same' => 'The destination room must differ from the current room.',
+                'department_location_mismatch' => 'The department does not belong to the destination location.',
+                'room_location_mismatch' => 'The room does not belong to the destination location.',
+            ],
         ],
         'borrowing' => [
             'navigation_label' => 'Borrowing',
