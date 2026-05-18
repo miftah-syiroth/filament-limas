@@ -3,12 +3,20 @@
 namespace Database\Seeders;
 
 use App\Enums\CategoryType;
+use App\Enums\ItemAuditCondition;
+use App\Enums\ItemAuditResult;
+use App\Enums\ItemStateEventType;
 use App\Enums\ItemStatus;
+use App\Enums\MaintenanceStatus;
+use App\Enums\MaintenanceType;
 use App\Enums\StockMovementType;
 use App\Models\Category;
 use App\Models\Depreciation;
 use App\Models\Item;
+use App\Models\ItemAudit;
+use App\Models\ItemStateLog;
 use App\Models\Location;
+use App\Models\Maintenance;
 use App\Models\Manufacture;
 use App\Models\Model as InventoryModel;
 use App\Models\StockMovement;
@@ -269,6 +277,11 @@ class ModelSeeder extends Seeder
             $model = $this->upsertInventoryModel($sidu, $kertas, $modelData);
             $this->seedBulkItems($model, $modelData, $kertasSupplier?->id);
         }
+
+        $this->seedStockMovementsForBulkItems();
+        $this->seedItemAuditsForAllItems();
+        $this->seedMaintenanceForTrackedItems();
+        $this->seedItemStateLogsForTrackedItems();
     }
 
     /**
@@ -444,12 +457,285 @@ class ModelSeeder extends Seeder
             'notes' => null,
             'status_updated_at' => null,
         ]);
+    }
 
-        StockMovement::create([
+    private function seedStockMovementsForBulkItems(): void
+    {
+        Item::query()
+            ->where('is_individual_tracking', false)
+            ->each(fn (Item $item) => $this->seedStockMovementsForItem($item));
+    }
+
+    private function seedStockMovementsForItem(Item $item): void
+    {
+        $existingCount = $item->stockMovements()->count();
+
+        if ($existingCount >= 10) {
+            return;
+        }
+
+        $initialQty = (int) $item->order_quantity;
+        $movements = $this->stockMovementSequence($initialQty);
+
+        if ($existingCount === 1) {
+            $movements = array_slice($movements, 1);
+        }
+
+        foreach ($movements as $movement) {
+            if (! $item->canApplyStockMovement($movement['quantity'])) {
+                continue;
+            }
+
+            StockMovement::create([
+                'item_id' => $item->id,
+                'type' => $movement['type'],
+                'quantity' => $movement['quantity'],
+                'notes' => $movement['notes'],
+            ]);
+
+            $item->refresh();
+        }
+    }
+
+    /**
+     * @return list<array{type: StockMovementType, quantity: int, notes: string|null}>
+     */
+    private function stockMovementSequence(int $initialQty): array
+    {
+        return [
+            [
+                'type' => StockMovementType::In,
+                'quantity' => $initialQty,
+                'notes' => __('items.create.initial_stock_notes'),
+            ],
+            [
+                'type' => StockMovementType::Out,
+                'quantity' => -3,
+                'notes' => 'Pengeluaran stok operasional',
+            ],
+            [
+                'type' => StockMovementType::Out,
+                'quantity' => -2,
+                'notes' => 'Pengeluaran stok operasional',
+            ],
+            [
+                'type' => StockMovementType::Adjustment,
+                'quantity' => -2,
+                'notes' => 'Penyesuaian stok setelah audit',
+            ],
+            [
+                'type' => StockMovementType::In,
+                'quantity' => 7,
+                'notes' => 'Restock dari supplier',
+            ],
+            [
+                'type' => StockMovementType::Out,
+                'quantity' => -4,
+                'notes' => 'Pengeluaran stok operasional',
+            ],
+            [
+                'type' => StockMovementType::In,
+                'quantity' => 2,
+                'notes' => 'Restock dari supplier',
+            ],
+            [
+                'type' => StockMovementType::Adjustment,
+                'quantity' => 2,
+                'notes' => 'Penyesuaian stok setelah audit',
+            ],
+            [
+                'type' => StockMovementType::Out,
+                'quantity' => -3,
+                'notes' => 'Pengeluaran stok operasional',
+            ],
+            [
+                'type' => StockMovementType::In,
+                'quantity' => 3,
+                'notes' => 'Restock dari supplier',
+            ],
+        ];
+    }
+
+    private function seedItemAuditsForAllItems(): void
+    {
+        $auditSchedules = [
+            [
+                'audited_at' => Carbon::create(2025, 1, 1, 9, 0, 0),
+                'condition' => ItemAuditCondition::Good,
+                'result' => ItemAuditResult::Ok,
+            ],
+            [
+                'audited_at' => Carbon::create(2025, 7, 1, 9, 0, 0),
+                'condition' => ItemAuditCondition::Fair,
+                'result' => ItemAuditResult::NeedsMaintenance,
+            ],
+            [
+                'audited_at' => Carbon::create(2026, 1, 1, 9, 0, 0),
+                'condition' => ItemAuditCondition::Good,
+                'result' => ItemAuditResult::Ok,
+            ],
+        ];
+
+        Item::query()
+            ->with('model')
+            ->each(function (Item $item) use ($auditSchedules): void {
+                if ($item->audits()->count() >= 3) {
+                    return;
+                }
+
+                foreach ($auditSchedules as $schedule) {
+                    $auditedAt = $schedule['audited_at']->copy();
+
+                    ItemAudit::create([
+                        'item_id' => $item->id,
+                        'location_verified' => true,
+                        'audited_at' => $auditedAt,
+                        'next_audit_at' => $auditedAt->copy()->addMonths((int) $item->model->audit_interval),
+                        'condition' => $schedule['condition'],
+                        'result' => $schedule['result'],
+                        'notes' => null,
+                    ]);
+                }
+            });
+    }
+
+    private function seedMaintenanceForTrackedItems(): void
+    {
+        $maintenanceTypes = [
+            MaintenanceType::Preventive,
+            MaintenanceType::Repair,
+            MaintenanceType::Upgrade,
+            MaintenanceType::Inspection,
+        ];
+
+        $costsByType = [
+            MaintenanceType::Preventive->value => 500_000,
+            MaintenanceType::Repair->value => 2_500_000,
+            MaintenanceType::Upgrade->value => 5_000_000,
+            MaintenanceType::Inspection->value => 750_000,
+        ];
+
+        Item::query()
+            ->where('is_individual_tracking', true)
+            ->each(function (Item $item) use ($maintenanceTypes, $costsByType): void {
+                if ($item->maintenances()->count() >= 4) {
+                    return;
+                }
+
+                $base = $item->purchase_date?->copy()->startOfDay() ?? Carbon::create(2025, 6, 1);
+
+                foreach ($maintenanceTypes as $index => $type) {
+                    $reportedAt = $base->copy()->addDays($index * 18);
+                    $startedAt = $reportedAt->copy()->addDay();
+                    $completedAt = $startedAt->copy()->addDays(3);
+
+                    Maintenance::create([
+                        'item_id' => $item->id,
+                        'type' => $type,
+                        'reported_at' => $reportedAt,
+                        'started_at' => $startedAt,
+                        'completed_at' => $completedAt,
+                        'item_audit_id' => null,
+                        'status' => MaintenanceStatus::Completed,
+                        'cost' => $costsByType[$type->value],
+                        'notes' => null,
+                    ]);
+                }
+            });
+    }
+
+    private function seedItemStateLogsForTrackedItems(): void
+    {
+        Item::query()
+            ->where('is_individual_tracking', true)
+            ->each(fn (Item $item) => $this->seedItemStateLogsForItem($item));
+    }
+
+    private function seedItemStateLogsForItem(Item $item): void
+    {
+        if ($item->stateLogs()->count() >= 3) {
+            return;
+        }
+
+        $transferPlacement = $this->randomDifferentPlacement($item);
+
+        if ($transferPlacement !== null) {
+            ItemStateLog::create([
+                'item_id' => $item->id,
+                'item_audit_id' => null,
+                'maintenance_id' => null,
+                'event_type' => ItemStateEventType::Transfer,
+                'from_location_id' => $item->location_id,
+                'to_location_id' => $transferPlacement['location_id'],
+                'from_department_id' => $item->department_id,
+                'to_department_id' => $transferPlacement['department_id'],
+                'from_room_id' => $item->room_id,
+                'to_room_id' => $transferPlacement['room_id'],
+                'notes' => null,
+            ]);
+
+            $item->refresh();
+        }
+
+        ItemStateLog::create([
             'item_id' => $item->id,
-            'type' => StockMovementType::In,
-            'quantity' => $quantity,
-            'notes' => __('items.create.initial_stock_notes'),
+            'item_audit_id' => null,
+            'maintenance_id' => null,
+            'event_type' => ItemStateEventType::Assignment,
+            'from_user_id' => $item->user_id,
+            'to_user_id' => $this->randomDifferentEligibleUserId($item->user_id),
+            'notes' => null,
         ]);
+
+        $item->refresh();
+
+        ItemStateLog::create([
+            'item_id' => $item->id,
+            'item_audit_id' => null,
+            'maintenance_id' => null,
+            'event_type' => ItemStateEventType::StatusChange,
+            'from_status' => ItemStatus::UnderRepair,
+            'to_status' => ItemStatus::Active,
+            'notes' => null,
+        ]);
+    }
+
+    /**
+     * @return array{location_id: string, department_id: string, room_id: string}|null
+     */
+    private function randomDifferentPlacement(Item $item): ?array
+    {
+        for ($attempt = 0; $attempt < 20; $attempt++) {
+            $placement = $this->randomPlacement();
+
+            if ($placement === null) {
+                return null;
+            }
+
+            if ($placement['location_id'] !== $item->location_id
+                || $placement['department_id'] !== $item->department_id
+                || $placement['room_id'] !== $item->room_id) {
+                return $placement;
+            }
+        }
+
+        return $this->randomPlacement();
+    }
+
+    private function randomDifferentEligibleUserId(?string $currentUserId): ?string
+    {
+        if ($this->eligibleUserIds->isEmpty()) {
+            return null;
+        }
+
+        $candidates = $this->eligibleUserIds->filter(
+            fn (string $id): bool => $id !== $currentUserId,
+        );
+
+        if ($candidates->isEmpty()) {
+            return $this->eligibleUserIds->random();
+        }
+
+        return $candidates->random();
     }
 }

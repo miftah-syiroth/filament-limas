@@ -10,6 +10,7 @@ use App\Filament\Resources\Items\ItemResource;
 use App\Models\ItemStateLog;
 use BackedEnum;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -111,6 +112,9 @@ class ManageItemAudits extends ManageRelatedRecords
                 TextColumn::make('notes')
                     ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->recordActions([
+                ViewAction::make()->hiddenLabel(),
             ])
             ->filters([
 

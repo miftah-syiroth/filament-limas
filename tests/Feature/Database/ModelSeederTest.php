@@ -1,11 +1,19 @@
 <?php
 
 use App\Enums\CategoryType;
+use App\Enums\ItemStateEventType;
 use App\Enums\ItemStatus;
+use App\Enums\MaintenanceStatus;
+use App\Enums\MaintenanceType;
+use App\Enums\StockMovementType;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\ItemAudit;
+use App\Models\ItemStateLog;
+use App\Models\Maintenance;
 use App\Models\Manufacture;
 use App\Models\Model as InventoryModel;
+use App\Models\StockMovement;
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DepreciationSeeder;
 use Database\Seeders\ModelSeeder;
@@ -133,4 +141,73 @@ it('seeds items per model with tracked assets and bulk stock', function () {
     expect($kertasItem->is_individual_tracking)->toBeFalse()
         ->and($kertasItem->quantity)->toBe(20)
         ->and($kertasItem->eol_date)->toBeNull();
+});
+
+it('seeds related records for items', function () {
+    $this->seed(DepartmentSeeder::class);
+    $this->seed(UserSeeder::class);
+    $this->seed(SupplierSeeder::class);
+    $this->seed(DepreciationSeeder::class);
+    $this->seed(ModelSeeder::class);
+
+    expect(StockMovement::query()->count())->toBe(40)
+        ->and(ItemAudit::query()->count())->toBe(84)
+        ->and(Maintenance::query()->count())->toBe(96)
+        ->and(ItemStateLog::query()->count())->toBe(72);
+
+    $bulkItems = Item::query()->where('is_individual_tracking', false)->get();
+
+    expect($bulkItems)->toHaveCount(4);
+
+    foreach ($bulkItems as $bulkItem) {
+        $movements = $bulkItem->stockMovements()->orderBy('created_at')->get();
+
+        expect($movements)->toHaveCount(10)
+            ->and($movements->first()->type)->toBe(StockMovementType::In)
+            ->and($movements->first()->notes)->toBe(__('items.create.initial_stock_notes'))
+            ->and($bulkItem->stockMovementBalance())->toBeGreaterThanOrEqual(0)
+            ->and($bulkItem->quantity)->toBe($bulkItem->stockMovementBalance());
+
+        $types = $movements->pluck('type')->unique()->values()->all();
+
+        expect($types)->toContain(StockMovementType::In)
+            ->and($types)->toContain(StockMovementType::Out)
+            ->and($types)->toContain(StockMovementType::Adjustment);
+    }
+
+    $sampleItem = Item::query()->where('is_individual_tracking', true)->first();
+
+    expect($sampleItem)->not->toBeNull();
+
+    $auditDates = $sampleItem->audits()
+        ->orderBy('audited_at')
+        ->pluck('audited_at')
+        ->map(fn ($date) => $date->format('Y-m-d'))
+        ->all();
+
+    expect($auditDates)->toBe(['2025-01-01', '2025-07-01', '2026-01-01']);
+
+    $trackedItems = Item::query()->where('is_individual_tracking', true)->get();
+
+    foreach ($trackedItems as $trackedItem) {
+        expect($trackedItem->maintenances()->count())->toBe(4)
+            ->and($trackedItem->maintenances()->where('status', '!=', MaintenanceStatus::Completed)->count())->toBe(0)
+            ->and($trackedItem->maintenances()->pluck('type')->unique()->count())->toBe(4)
+            ->and($trackedItem->maintenances()->pluck('type')->all())->toContain(
+                MaintenanceType::Preventive,
+                MaintenanceType::Repair,
+                MaintenanceType::Upgrade,
+                MaintenanceType::Inspection,
+            )
+            ->and($trackedItem->stateLogs()->count())->toBe(3)
+            ->and($trackedItem->stateLogs()->pluck('event_type')->unique()->count())->toBe(3)
+            ->and($trackedItem->stateLogs()->pluck('event_type')->all())->toContain(
+                ItemStateEventType::Transfer,
+                ItemStateEventType::Assignment,
+                ItemStateEventType::StatusChange,
+            )
+            ->and($trackedItem->fresh()->status)->toBe(ItemStatus::Active)
+            ->and($trackedItem->department->location_id)->toBe($trackedItem->location_id)
+            ->and($trackedItem->room->location_id)->toBe($trackedItem->location_id);
+    }
 });
