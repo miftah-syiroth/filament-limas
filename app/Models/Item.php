@@ -40,6 +40,10 @@ class Item extends BaseModel implements HasMedia
         'status',
         'notes',
         'status_updated_at',
+
+        //
+        'last_audit_date',
+        'next_audit_date',
     ];
 
     protected $appends = ['borrowable_quantity'];

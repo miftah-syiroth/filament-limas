@@ -97,7 +97,7 @@ class ItemResource extends Resource
     {
         return $page->generateNavigationItems([
             ViewItem::class,
-            EditItem::class,
+            // EditItem::class,
             ManageBorrowingItems::class,
             ManageStockMovements::class,
             ManageItemAudits::class,

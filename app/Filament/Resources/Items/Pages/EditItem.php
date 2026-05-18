@@ -6,9 +6,9 @@ use App\Enums\CategoryType;
 use App\Filament\Resources\Items\ItemResource;
 use App\Models\Model as ItemModel;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\RestoreAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Icons\Heroicon;
 
 class EditItem extends EditRecord
 {
@@ -17,9 +17,10 @@ class EditItem extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
+            ViewAction::make()
+                ->icon(Heroicon::OutlinedEye),
+            DeleteAction::make()
+                ->icon(Heroicon::OutlinedTrash),
         ];
     }
 

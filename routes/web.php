@@ -1,14 +1,15 @@
 <?php
 
+use App\Support\Auth\PostAuthenticationRedirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    if (Auth::check() && Auth::user()->hasAnyRole(['admin', 'super_admin'])) {
-        return redirect('/admin');
+    if (Auth::check()) {
+        return redirect(PostAuthenticationRedirect::pathFor(Auth::user()));
     }
 
-    abort(403, 'Unauthorized action.');
+    return redirect()->route('login');
 })->name('home');
 
 require __DIR__.'/settings.php';

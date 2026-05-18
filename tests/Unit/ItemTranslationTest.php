@@ -23,6 +23,26 @@ test('item form translation keys resolve in English and Indonesian', function ()
         ->and(trans('items.form.purchase_price', [], 'id'))->toBe('Harga pembelian')
         ->and(trans('items.form.order_quantity', [], 'id'))->toBe('Kuantitas pesanan')
         ->and(trans('items.form.room', [], 'id'))->toBe('Ruangan');
+
+    expect(trans('items.infolist.warranty_with_end', [
+        'months' => 6,
+        'suffix' => 'months',
+        'date' => '21 Jan 2027',
+    ], 'en'))->toBe('6 months (21 Jan 2027)');
+
+    expect(trans('items.infolist.warranty_with_end', [
+        'months' => 6,
+        'suffix' => 'bulan',
+        'date' => '21 Jan 2027',
+    ], 'id'))->toBe('6 bulan (21 Jan 2027)');
+
+    expect(trans('items.infolist.fieldsets.specification', [], 'en'))->toBe('Specification')
+        ->and(trans('items.infolist.fieldsets.transfer', [], 'en'))->toBe('Transfer')
+        ->and(trans('items.infolist.depreciated_price', [], 'en'))->toBe('Depreciated value');
+
+    expect(trans('items.infolist.fieldsets.specification', [], 'id'))->toBe('Spesifikasi')
+        ->and(trans('items.infolist.fieldsets.transfer', [], 'id'))->toBe('Transfer')
+        ->and(trans('items.infolist.depreciated_price', [], 'id'))->toBe('Nilai depresiasi');
 });
 
 test('item status enum labels use translation keys', function (): void {
