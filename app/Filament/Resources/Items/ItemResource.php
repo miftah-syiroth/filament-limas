@@ -23,6 +23,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ItemResource extends Resource
@@ -46,9 +47,40 @@ class ItemResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
 
+    protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
     protected static ?string $recordTitleAttribute = 'serial_number';
 
-    protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+    protected static bool $isGloballySearchable = true;
+
+    protected static int $globalSearchResultsLimit = 10;
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['serial_number', 'name', 'model.name', 'location.name', 'department.name', 'room.name', 'user.name'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        $details = [
+            'Model' => $record->model->name,
+        ];
+        if ($record->name) {
+            $details['Name'] = $record->name;
+        }
+        $details['Location'] = $record->location->name;
+        if ($record->department) {
+            $details['Department'] = $record->department->name;
+        }
+        if ($record->room) {
+            $details['Room'] = $record->room->name;
+        }
+        if ($record->user) {
+            $details['User'] = $record->user->name;
+        }
+
+        return $details;
+    }
 
     public static function form(Schema $schema): Schema
     {

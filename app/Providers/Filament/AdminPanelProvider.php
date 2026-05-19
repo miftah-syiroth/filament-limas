@@ -54,11 +54,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
-                    ->navigationGroup('Master Data') ,
+                    ->navigationGroup('Master Data')
+                    ->globallySearchable(false),
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->globalSearchResourceOptIn()
+            ->globalSearchDebounce('750ms')
             ->spa()
             ->maxContentWidth(Width::Full)
             ->databaseNotifications();
