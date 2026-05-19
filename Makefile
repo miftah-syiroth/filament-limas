@@ -3,7 +3,7 @@
 help: ## Tampilkan daftar perintah yang tersedia
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-install-reset: env composer-install key-generate fresh storage-link npm-install npm-build shield-generate ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
+install-reset: env composer-install key-generate storage-link npm-install npm-build fresh shield-generate ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
 	@echo ""
 	@echo "\033[32m✓ Instalasi selesai. Jalankan 'composer run dev' untuk memulai server pengembangan.\033[0m"
 

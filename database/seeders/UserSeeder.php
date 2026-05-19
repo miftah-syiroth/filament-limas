@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::updateOrCreate([
-            'email' => 'superadmin@limas.uhb.ac.id',
+            'email' => 'superadmin@siris.uhb.ac.id',
         ], [
             'name' => 'Super Admin',
             'email_verified_at' => now(),
