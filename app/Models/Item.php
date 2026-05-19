@@ -46,9 +46,9 @@ class Item extends BaseModel implements HasMedia
         'next_audit_date',
     ];
 
-    protected $appends = ['borrowable_quantity'];
+    // protected $appends = ['borrowable_quantity'];
 
-    protected $with = ['activeBorrowingItems'];
+    // protected $with = ['activeBorrowingItems'];
 
     protected function casts(): array
     {
