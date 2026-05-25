@@ -3,10 +3,12 @@
 namespace App\Filament\Pages;
 
 use App\Enums\ItemStatus;
+use App\Filament\Exports\DepreciationItemExporter;
 use App\Models\Item;
 use BackedEnum;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\ExportAction;
 use Filament\Pages\Page;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
@@ -113,6 +115,13 @@ class DepreciationItemsPage extends Page implements HasActions, HasSchemas, HasT
                     ->multiple()
                     ->searchable()
                     ->preload(),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(DepreciationItemExporter::class)
+                    ->label('Export')
+                    ->icon(Heroicon::OutlinedArrowDownTray)
+                    ->fileDisk('public'),
             ]);
     }
 }

@@ -138,7 +138,7 @@ class Item extends BaseModel implements HasMedia
                 $this->purchase_price -
                 ($monthlyDepreciation * $monthsPassed);
 
-            return round(max($minimumValue, $depreciatedPrice), 2);
+            return round(max($minimumValue, $depreciatedPrice), 0);
         });
     }
 
