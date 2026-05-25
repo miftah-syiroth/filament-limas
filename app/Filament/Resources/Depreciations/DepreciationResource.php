@@ -22,6 +22,8 @@ class DepreciationResource extends Resource
 {
     protected static ?string $model = Depreciation::class;
 
+    protected static ?int $navigationSort = 5;
+
     public static function getModelLabel(): string
     {
         return __('depreciation.model_label');

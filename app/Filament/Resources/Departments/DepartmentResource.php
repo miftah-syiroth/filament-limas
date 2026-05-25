@@ -23,6 +23,8 @@ class DepartmentResource extends Resource
 {
     protected static ?string $model = Department::class;
 
+    protected static ?int $navigationSort = 9;
+
     public static function getModelLabel(): string
     {
         return __('department.model_label');

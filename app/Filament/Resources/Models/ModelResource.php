@@ -23,6 +23,8 @@ class ModelResource extends Resource
 {
     protected static ?string $model = Model::class;
 
+    protected static ?int $navigationSort = 1;
+
     public static function getModelLabel(): string
     {
         return __('model.model_label');

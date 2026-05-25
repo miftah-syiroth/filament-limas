@@ -23,6 +23,8 @@ class OrganizationResource extends Resource
 {
     protected static ?string $model = Organization::class;
 
+    protected static ?int $navigationSort = 11;
+
     public static function getModelLabel(): string
     {
         return __('organization.model_label');

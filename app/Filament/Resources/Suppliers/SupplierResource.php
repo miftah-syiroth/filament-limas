@@ -23,6 +23,8 @@ class SupplierResource extends Resource
 {
     protected static ?string $model = Supplier::class;
 
+    protected static ?int $navigationSort = 3;
+
     public static function getModelLabel(): string
     {
         return __('supplier.model_label');

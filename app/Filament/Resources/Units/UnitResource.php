@@ -23,6 +23,8 @@ class UnitResource extends Resource
 {
     protected static ?string $model = Unit::class;
 
+    protected static ?int $navigationSort = 6;
+
     public static function getModelLabel(): string
     {
         return __('unit.model_label');

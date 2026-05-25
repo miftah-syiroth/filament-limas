@@ -21,6 +21,8 @@ class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
 
+    protected static ?int $navigationSort = 8;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
     protected static ?string $recordTitleAttribute = 'name';

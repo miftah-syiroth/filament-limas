@@ -23,6 +23,8 @@ class ManufactureResource extends Resource
 {
     protected static ?string $model = Manufacture::class;
 
+    protected static ?int $navigationSort = 6;
+
     public static function getModelLabel(): string
     {
         return __('manufacture.model_label');
