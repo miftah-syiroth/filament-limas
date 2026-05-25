@@ -111,6 +111,7 @@ return [
         'warranty_months' => 'Warranty (months)',
         'warranty_suffix' => 'months',
         'import' => 'Import',
+        'export' => 'Export',
         'status_updated_at' => 'Status updated',
         'no_department' => 'No department',
         'no_room' => 'No room',

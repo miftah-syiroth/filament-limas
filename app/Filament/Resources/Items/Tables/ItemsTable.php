@@ -4,10 +4,12 @@ namespace App\Filament\Resources\Items\Tables;
 
 use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
+use App\Filament\Exports\ItemExporter;
 use App\Filament\Imports\ItemImporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\ImportAction;
 use Filament\Actions\RestoreBulkAction;
@@ -113,7 +115,7 @@ class ItemsTable
                         }
 
                         return $query->whereHas('model', function (Builder $q) use ($types): Builder {
-                            return $q->whereHas('category', fn (Builder $q): Builder => $q->whereIn('type', $types));
+                            return $q->whereHas('category', fn(Builder $q): Builder => $q->whereIn('type', $types));
                         });
                     }),
                 SelectFilter::make('model_name')
@@ -151,6 +153,11 @@ class ItemsTable
                 EditAction::make()->label(''),
             ])
             ->headerActions([
+                ExportAction::make()
+                    ->exporter(ItemExporter::class)
+                    ->label(__('items.table.export'))
+                    ->icon(Heroicon::OutlinedArrowDownTray)
+                    ->fileDisk('public'),
                 ImportAction::make()
                     ->importer(ItemImporter::class)
                     ->label(__('items.table.import'))

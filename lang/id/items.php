@@ -112,6 +112,7 @@ return [
         'warranty_months' => 'Garansi (bulan)',
         'warranty_suffix' => 'bulan',
         'import' => 'Impor',
+        'export' => 'Ekspor',
         'status_updated_at' => 'Status diperbarui',
         'no_department' => 'Tidak ada departemen',
         'no_room' => 'Tidak ada ruangan',
