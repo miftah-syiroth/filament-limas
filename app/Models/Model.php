@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -46,7 +47,7 @@ class Model extends EloquentModel implements HasMedia
             return null;
         }
 
-        return now()->addMonths($this->audit_interval);
+        return Carbon::now()->addMonths($this->audit_interval);
     }
 
     public function category()
@@ -69,8 +70,13 @@ class Model extends EloquentModel implements HasMedia
         return $this->belongsTo(Unit::class);
     }
 
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(Item::class);
+    }
+
+    public function itemsInInventory(): HasMany
+    {
+        return $this->items()->inInventory();
     }
 }

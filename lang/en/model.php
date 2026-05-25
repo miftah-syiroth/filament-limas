@@ -57,6 +57,7 @@ return [
         'min_amount' => 'Minimum quantity',
         'end_of_life' => 'End of life',
         'items_count' => 'Items count',
+        'items_quantity' => 'Quantity in inventory',
         'no_depreciation' => 'No depreciation',
     ],
 

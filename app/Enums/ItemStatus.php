@@ -17,6 +17,19 @@ enum ItemStatus: string implements HasLabel
     case Archived = 'archived';
     case Disposed = 'disposed';
 
+    /**
+     * @return list<self>
+     */
+    public static function excludedFromInventory(): array
+    {
+        return [
+            self::Lost,
+            self::Stolen,
+            self::Archived,
+            self::Disposed,
+        ];
+    }
+
     public function getLabel(): string|Htmlable|null
     {
         return __('items.statuses.'.$this->value);

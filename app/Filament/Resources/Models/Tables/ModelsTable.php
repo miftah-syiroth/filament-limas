@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Models\Tables;
 
 use App\Enums\CategoryType;
 use App\Filament\Imports\ModelImporter;
+use App\Models\Model as ModelsModel;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -25,7 +26,9 @@ class ModelsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->defaultSort('name', 'asc')
+            ->query(fn (Builder $query): Builder => ModelsModel::query()
+                ->withSum('itemsInInventory as items_quantity', 'quantity')
+                ->orderBy('name'))
             ->recordUrl(null)
             ->columns([
                 SpatieMediaLibraryImageColumn::make('images')
@@ -73,6 +76,11 @@ class ModelsTable
                 TextColumn::make('unit.name')
                     ->label(__('model.table.unit'))
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('items_quantity')
+                    ->label(__('model.table.items_quantity'))
+                    ->numeric()
+                    ->sortable()
+                    ->default(0),
                 TextColumn::make('items_count')
                     ->label(__('model.table.items_count'))
                     ->counts('items')

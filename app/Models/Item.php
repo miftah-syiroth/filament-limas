@@ -143,6 +143,12 @@ class Item extends BaseModel implements HasMedia
     }
 
     #[Scope]
+    public function scopeInInventory(Builder $query): void
+    {
+        $query->whereNotIn('status', ItemStatus::excludedFromInventory());
+    }
+
+    #[Scope]
     public function scopeBorrowable(Builder $query): void
     {
         $query->where('status', ItemStatus::Active)
