@@ -45,6 +45,15 @@ test('item form translation keys resolve in English and Indonesian', function ()
         ->and(trans('items.infolist.depreciated_price', [], 'id'))->toBe('Nilai depresiasi');
 });
 
+test('depreciation items page translation keys resolve in English and Indonesian', function (): void {
+    expect(trans('items.pages.depreciation_items.navigation_label', [], 'en'))->toBe('Depreciation items')
+        ->and(trans('items.pages.depreciation_items.navigation_label', [], 'id'))->toBe('Barang depresiasi')
+        ->and(trans('items.pages.depreciation_items.minimum_value', [], 'en'))->toBe('Minimum value')
+        ->and(trans('items.pages.depreciation_items.minimum_value', [], 'id'))->toBe('Harga minimum')
+        ->and(trans('items.pages.depreciation_items.depreciated_price', [], 'en'))->toBe('Current value')
+        ->and(trans('items.pages.depreciation_items.depreciated_price', [], 'id'))->toBe('Harga sekarang');
+});
+
 test('item table translation keys resolve in English and Indonesian', function (): void {
     $keys = [
         'serial_number' => ['Serial number', 'Nomor seri'],

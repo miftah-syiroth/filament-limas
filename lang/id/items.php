@@ -185,6 +185,11 @@ return [
                 'room_location_mismatch' => 'Ruangan tidak termasuk dalam lokasi tujuan.',
             ],
         ],
+        'depreciation_items' => [
+            'navigation_label' => 'Barang depresiasi',
+            'minimum_value' => 'Harga minimum',
+            'depreciated_price' => 'Harga sekarang',
+        ],
         'borrowing' => [
             'navigation_label' => 'Peminjaman',
             'borrower' => 'Peminjam',

@@ -184,6 +184,11 @@ return [
                 'room_location_mismatch' => 'The room does not belong to the destination location.',
             ],
         ],
+        'depreciation_items' => [
+            'navigation_label' => 'Depreciation items',
+            'minimum_value' => 'Minimum value',
+            'depreciated_price' => 'Current value',
+        ],
         'borrowing' => [
             'navigation_label' => 'Borrowing',
             'borrower' => 'Borrower',

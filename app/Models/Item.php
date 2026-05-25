@@ -64,10 +64,19 @@ class Item extends BaseModel implements HasMedia
         ];
     }
 
-    public function registerMediaCollections(): void
+    protected static function booted(): void
     {
-        $this->addMediaCollection('images');
+        static::saving(function (Item $item): void {
+            if ($item->model?->category?->type === CategoryType::Consumable && $item->is_individual_tracking) {
+                $item->is_individual_tracking = false;
+            }
+        });
     }
+
+    // public function registerMediaCollections(): void
+    // {
+    //     $this->addMediaCollection('images');
+    // }
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -130,15 +139,6 @@ class Item extends BaseModel implements HasMedia
                 ($monthlyDepreciation * $monthsPassed);
 
             return round(max($minimumValue, $depreciatedPrice), 2);
-        });
-    }
-
-    protected static function booted(): void
-    {
-        static::saving(function (Item $item): void {
-            if ($item->model?->category?->type === CategoryType::Consumable && $item->is_individual_tracking) {
-                $item->is_individual_tracking = false;
-            }
         });
     }
 

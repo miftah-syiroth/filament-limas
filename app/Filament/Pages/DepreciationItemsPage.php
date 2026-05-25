@@ -7,24 +7,23 @@ use App\Models\Item;
 use BackedEnum;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
 use Filament\Pages\Page;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
-class DepreciationItemsPage extends Page implements HasActions, HasTable, HasSchemas
+class DepreciationItemsPage extends Page implements HasActions, HasSchemas, HasTable
 {
     use InteractsWithActions;
-    use InteractsWithTable;
     use InteractsWithSchemas;
+    use InteractsWithTable;
 
     protected string $view = 'filament.pages.depreciation-items-page';
 
@@ -32,7 +31,7 @@ class DepreciationItemsPage extends Page implements HasActions, HasTable, HasSch
 
     public static function getNavigationLabel(): string
     {
-        return 'Depreciation Items';
+        return __('items.pages.depreciation_items.navigation_label');
     }
 
     protected static string|UnitEnum|null $navigationGroup = 'Reports';
@@ -43,21 +42,21 @@ class DepreciationItemsPage extends Page implements HasActions, HasTable, HasSch
             ->query(function (Builder $query) {
                 return
                     Item::query()
-                    ->where(function (Builder $query) {
-                        $query->whereNotNull('purchase_date')
-                            ->whereNotNull('purchase_price')
-                            ->whereNotIn('status', [
-                                ItemStatus::Disposed,
-                                ItemStatus::Archived,
-                                ItemStatus::Lost,
-                                ItemStatus::Stolen,
-                            ]);
-                    })
-                    ->whereHas('model', function (Builder $query) {
-                        $query->whereHas('depreciation');
-                    });
+                        ->where(function (Builder $query) {
+                            $query->whereNotNull('purchase_date')
+                                ->whereNotNull('purchase_price')
+                                ->whereNotIn('status', [
+                                    ItemStatus::Disposed,
+                                    ItemStatus::Archived,
+                                    ItemStatus::Lost,
+                                    ItemStatus::Stolen,
+                                ]);
+                        })
+                        ->whereHas('model', function (Builder $query) {
+                            $query->whereHas('depreciation');
+                        });
             })
-            ->defaultSort('created_at', direction: 'desc')
+            ->defaultSort('purchase_date', direction: 'asc')
             ->columns([
                 TextColumn::make('serial_number')
                     ->label(__('items.table.serial_number'))
@@ -89,6 +88,20 @@ class DepreciationItemsPage extends Page implements HasActions, HasTable, HasSch
                 TextColumn::make('purchase_price')
                     ->label(__('items.table.purchase_price'))
                     ->money('IDR', locale: 'id', decimalPlaces: 0),
+                TextColumn::make('minimum_value')
+                    ->label(__('items.pages.depreciation_items.minimum_value'))
+                    ->state(function (Item $record): string {
+                        return round($record->purchase_price * ($record->model?->depreciation?->minimum_value / 100), 0);
+                    })
+                    ->suffix(function (Item $record): string {
+                        return ' ('.round($record->model?->depreciation?->minimum_value, 0).'%)';
+                    })
+                    ->money('IDR', locale: 'id', decimalPlaces: 0)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('depreciated_price')
+                    ->label(__('items.pages.depreciation_items.depreciated_price'))
+                    ->state(fn (Item $record) => $record->depreciated_price)
+                    ->money('IDR', locale: 'id', decimalPlaces: 0),
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -100,24 +113,6 @@ class DepreciationItemsPage extends Page implements HasActions, HasTable, HasSch
                     ->multiple()
                     ->searchable()
                     ->preload(),
-            ])
-            // ->recordActions([
-            //     ViewAction::make()->label(''),
-            //     EditAction::make()->label(''),
-            // ])
-            // ->headerActions([
-            //     ImportAction::make()
-            //         ->importer(ItemImporter::class)
-            //         ->label(__('items.table.import'))
-            //         ->icon(Heroicon::OutlinedArrowUpTray),
-            // ])
-            // ->toolbarActions([
-            //     BulkActionGroup::make([
-            //         DeleteBulkAction::make(),
-            //         ForceDeleteBulkAction::make(),
-            //         RestoreBulkAction::make(),
-            //     ]),
-            // ]);
-        ;
+            ]);
     }
 }
