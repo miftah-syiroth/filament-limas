@@ -119,7 +119,7 @@ class DepreciationItemsPage extends Page implements HasActions, HasSchemas, HasT
             ->headerActions([
                 ExportAction::make()
                     ->exporter(DepreciationItemExporter::class)
-                    ->label('Export')
+                    ->label(__('items.pages.depreciation_items.export'))
                     ->icon(Heroicon::OutlinedArrowDownTray)
                     ->fileDisk('public'),
             ]);

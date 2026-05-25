@@ -189,6 +189,9 @@ return [
             'navigation_label' => 'Barang depresiasi',
             'minimum_value' => 'Harga minimum',
             'depreciated_price' => 'Harga sekarang',
+            'export' => 'Ekspor',
+            'export_completed' => 'Ekspor barang depresiasi selesai, :count baris diekspor.',
+            'export_failed' => ':count baris gagal diekspor.',
         ],
         'borrowing' => [
             'navigation_label' => 'Peminjaman',

@@ -51,7 +51,16 @@ test('depreciation items page translation keys resolve in English and Indonesian
         ->and(trans('items.pages.depreciation_items.minimum_value', [], 'en'))->toBe('Minimum value')
         ->and(trans('items.pages.depreciation_items.minimum_value', [], 'id'))->toBe('Harga minimum')
         ->and(trans('items.pages.depreciation_items.depreciated_price', [], 'en'))->toBe('Current value')
-        ->and(trans('items.pages.depreciation_items.depreciated_price', [], 'id'))->toBe('Harga sekarang');
+        ->and(trans('items.pages.depreciation_items.depreciated_price', [], 'id'))->toBe('Harga sekarang')
+        ->and(trans('items.pages.depreciation_items.export', [], 'en'))->toBe('Export')
+        ->and(trans('items.pages.depreciation_items.export', [], 'id'))->toBe('Ekspor');
+});
+
+test('filament export modal select and deselect all labels resolve in Indonesian', function (): void {
+    expect(trans('filament-actions::export.modal.form.columns.actions.select_all.label', [], 'id'))
+        ->toBe('Pilih semua')
+        ->and(trans('filament-actions::export.modal.form.columns.actions.deselect_all.label', [], 'id'))
+        ->toBe('Batalkan semua');
 });
 
 test('item table translation keys resolve in English and Indonesian', function (): void {
