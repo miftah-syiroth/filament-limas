@@ -49,10 +49,11 @@ class ManageItemStateLogs extends ManageRelatedRecords
                 Select::make('from_location_id')
                     ->label(__('items.pages.state_logs.location_from'))
                     ->relationship('fromLocation', 'name')
-                    ->dehydrated()
                     ->default(fn (): ?string => $this->getOwnerRecord()->location_id)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
-                    ->disabled(),
+                    ->disabled()
+                    ->dehydrated()
+                    ->saved(),
                 Select::make('to_location_id')
                     ->label(__('items.pages.state_logs.location_to'))
                     ->relationship(
@@ -75,10 +76,11 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         name: 'fromDepartment',
                         titleAttribute: 'name'
                     )
-                    ->dehydrated()
                     ->default(fn (): ?string => $this->getOwnerRecord()->department_id)
                     ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
-                    ->disabled(),
+                    ->disabled()
+                    ->dehydrated()
+                    ->saved(),
                 Select::make('to_department_id')
                     ->label(__('items.pages.state_logs.department_to'))
                     ->relationship(
@@ -87,7 +89,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         modifyQueryUsing: function (Builder $query, Get $get): Builder {
                             return $query->when(
                                 $locationId = $get('to_location_id') ?? $this->getOwnerRecord()->location_id,
-                                fn (Builder $q): Builder => $q->where('location_id', $locationId)
+                                fn (Builder $q): Builder => $q->whereHas('locations', fn(Builder $q): Builder => $q->where('location_id', $locationId))
                             )->when(
                                 $departmentId = $this->getOwnerRecord()->department_id,
                                 fn (Builder $q): Builder => $q->where('id', '!=', $departmentId)
@@ -106,10 +108,11 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         name: 'fromRoom',
                         titleAttribute: 'name'
                     )
-                    ->dehydrated()
                     ->default(fn (): ?string => $this->getOwnerRecord()->room_id)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->disabled()
-                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value),
+                    ->dehydrated()
+                    ->saved(),
                 Select::make('to_room_id')
                     ->label(__('items.pages.state_logs.room_to'))
                     ->relationship(
@@ -135,9 +138,10 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->label(__('items.pages.state_logs.user_from'))
                     ->relationship('fromUser', 'name')
                     ->default(fn (): ?string => $this->getOwnerRecord()->user_id)
-                    ->dehydrated()
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value)
                     ->disabled()
-                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value),
+                    ->dehydrated()
+                    ->saved(),
                 Select::make('to_user_id')
                     ->label(__('items.pages.state_logs.user_to'))
                     ->relationship(
@@ -158,9 +162,10 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->label(__('items.pages.state_logs.status_from'))
                     ->options(ItemStatus::class)
                     ->default(fn (): ?string => $this->getOwnerRecord()->status->value)
-                    ->dehydrated()
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value)
                     ->disabled()
-                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value),
+                    ->dehydrated()
+                    ->saved(),
                 Select::make('to_status')
                     ->label(__('items.pages.state_logs.status_to'))
                     ->options(function (): array {

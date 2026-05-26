@@ -19,18 +19,18 @@ class CategoryForm
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                TextInput::make('name')
-                    ->label(__('category.form.name'))
-                    ->required(),
-                Select::make('type')
-                    ->label(__('category.form.type'))
-                    ->options(CategoryType::class)
-                    ->native(false)
-                    ->required(),
-                Textarea::make('notes')
-                    ->label(__('category.form.notes'))
-                    ->columnSpanFull(),
-                ]),
+                        TextInput::make('name')
+                            ->label(__('category.form.name'))
+                            ->required(),
+                        Select::make('type')
+                            ->label(__('category.form.type'))
+                            ->options(CategoryType::class)
+                            ->native(false)
+                            ->required(),
+                        Textarea::make('notes')
+                            ->label(__('category.form.notes'))
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }

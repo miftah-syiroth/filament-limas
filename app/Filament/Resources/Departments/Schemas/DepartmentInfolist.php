@@ -16,12 +16,14 @@ class DepartmentInfolist
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        TextEntry::make('oranization.name')
-                            ->label(__('department.infolist.oranization'))
+                        TextEntry::make('organization.name')
+                            ->label(__('department.infolist.organization'))
                             ->placeholder('-'),
-                        TextEntry::make('location.name')
+                        TextEntry::make('locations.name')
                             ->label(__('department.infolist.location'))
-                            ->placeholder('-'),
+                            ->placeholder('-')
+                            ->separator(',')
+                            ->badge(),
                         TextEntry::make('name')
                             ->label(__('department.infolist.name')),
                         TextEntry::make('phone')

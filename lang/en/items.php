@@ -106,7 +106,7 @@ return [
         'quantity' => 'Quantity',
         'order_quantity' => 'Order quantity',
         'purchase_date' => 'Purchase date',
-        'purchase_price' => 'Purchase price',
+        'purchase_price' => 'Unit price',
         'eol_date' => 'Expiry date',
         'warranty_months' => 'Warranty (months)',
         'warranty_suffix' => 'months',

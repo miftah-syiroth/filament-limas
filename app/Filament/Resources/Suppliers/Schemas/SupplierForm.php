@@ -30,18 +30,8 @@ class SupplierForm
                             ->options(Country::query()->pluck('name', 'code'))
                             ->default('ID')
                             ->disabled()
-                            ->dehydrated()
-                            ->searchable()
-                            ->native(false)
-                            ->live()
-                            ->afterStateUpdated(function (Select $component) {
-                                $component->getContainer()
-                                    ->getComponent('province')
-                                    ->state(null);
-                                $component->getContainer()
-                                    ->getComponent('city')
-                                    ->state(null);
-                            }),
+                            ->saved()
+                            ->required(),
                         Select::make('province')
                             ->label(__('supplier.form.province'))
                             ->options(fn(Get $get): array => Province::query()

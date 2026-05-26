@@ -2,12 +2,11 @@
 
 namespace App\Filament\Resources\Departments\Schemas;
 
-use App\Models\Location;
+use App\Models\Organization;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class DepartmentForm
@@ -20,22 +19,20 @@ class DepartmentForm
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        Select::make('location_id')
-                            ->label(__('department.form.location'))
-                            ->relationship('location', 'name')
-                            ->required()
-                            ->native(false)
-                            ->live()
-                            ->afterStateUpdated(function (Set $set, $state): void {
-                                $location = Location::find($state);
-                                $set('oranization_id', $location?->oranization_id);
-                            }),
-                        Select::make('oranization_id')
-                            ->label(__('department.form.oranization'))
-                            ->relationship('oranization', 'name')
+                        Select::make('organization_id')
+                            ->label(__('department.form.organization'))
+                            ->options(Organization::query()->pluck('name', 'id'))
+                            ->default(function(): string {
+                                return Organization::query()->first()->id;
+                            })
                             ->disabled()
-                            ->dehydrated()
-                            ->native(false),
+                            ->dehydrated(),
+                        Select::make('locations')
+                            ->label(__('department.form.location'))
+                            ->relationship('locations', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->required(),
                         TextInput::make('name')
                             ->label(__('department.form.name'))
                             ->required(),

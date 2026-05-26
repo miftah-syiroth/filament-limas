@@ -36,7 +36,7 @@ return [
         'notes' => 'Catatan',
         'supplier' => 'Pemasok',
         'purchase_date' => 'Tanggal pembelian',
-        'purchase_price' => 'Harga pembelian',
+        'purchase_price' => 'Harga Satuan',
         'order_quantity' => 'Kuantitas pesanan',
         'individual_tracking' => 'Pelacakan individu',
         'quantity' => 'Kuantitas',

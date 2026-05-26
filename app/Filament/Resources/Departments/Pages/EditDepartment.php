@@ -9,6 +9,7 @@ use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Model;
 
 class EditDepartment extends EditRecord
 {
@@ -20,7 +21,11 @@ class EditDepartment extends EditRecord
             ViewAction::make()
                 ->icon(Heroicon::OutlinedEye),
             DeleteAction::make()
-                ->icon(Heroicon::OutlinedTrash),
+                ->icon(Heroicon::OutlinedTrash)
+                ->action(function (Model $record): void {
+                    $record->locations()->detach();
+                    $record->delete();
+                }),
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];

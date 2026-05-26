@@ -22,11 +22,12 @@ class DepartmentsTable
                 TextColumn::make('name')
                     ->label(__('department.table.name'))
                     ->searchable(),
-                TextColumn::make('oranization.name')
-                    ->label(__('department.table.oranization')),
-                TextColumn::make('location.name')
+                TextColumn::make('organization.name')
+                    ->label(__('department.table.organization')),
+                TextColumn::make('locations.name')
                     ->label(__('department.table.location'))
-                    ->searchable(),
+                    ->badge()
+                    ->separator(','),
                 TextColumn::make('phone')
                     ->label(__('department.table.phone')),
                 TextColumn::make('items_count')
@@ -39,10 +40,10 @@ class DepartmentsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('location_id')
-                    ->label(__('department.table.location'))
-                    ->relationship('location', 'name')
-                    ->multiple(),
+                // SelectFilter::make('location_id')
+                //     ->label(__('department.table.location'))
+                //     ->relationship('location', 'name')
+                //     ->multiple(),
             ])
             ->recordActions([
                 ViewAction::make()->label(''),

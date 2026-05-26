@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -41,9 +42,11 @@ class Location extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function departments(): HasMany
+    public function departments(): BelongsToMany
     {
-        return $this->hasMany(Department::class);
+        return $this->belongsToMany(Department::class, 'department_locations')
+            ->using(DepartmentLocation::class)
+            ->withTimestamps();
     }
 
     public function relationCountry(): BelongsTo
