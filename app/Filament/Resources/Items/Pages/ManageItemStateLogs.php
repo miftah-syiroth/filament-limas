@@ -269,7 +269,6 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
             ->headerActions([
                 CreateAction::make()
                     ->label(__('items.pages.state_logs.add_transfer'))

@@ -157,9 +157,6 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-
-            ])
             ->headerActions([
                 CreateAction::make()
                     ->authorize('create', $this->getOwnerRecord())

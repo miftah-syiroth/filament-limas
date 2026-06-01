@@ -116,9 +116,6 @@ class ManageItemAudits extends ManageRelatedRecords
             ->recordActions([
                 ViewAction::make()->hiddenLabel(),
             ])
-            ->filters([
-
-            ])
             ->headerActions([
                 CreateAction::make()
                     ->authorize('create', $this->getOwnerRecord())

@@ -95,9 +95,6 @@ class ManageStockMovements extends ManageRelatedRecords
                     ->dateTime('j M Y H:i')
                     ->sortable(),
             ])
-            ->filters([
-
-            ])
             ->headerActions([
                 CreateAction::make()
                     ->authorize('create', $this->getOwnerRecord()),

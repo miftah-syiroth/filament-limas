@@ -68,9 +68,6 @@ class ManageBorrowingItems extends ManageRelatedRecords
                     ->label(__('items.pages.borrowing.view_borrowing'))
                     ->icon('heroicon-o-eye')
                     ->url(fn (BorrowingItem $record): string => BorrowingResource::getUrl('view', ['record' => $record->borrowing->id])),
-            ])
-            ->filters([
-
             ]);
     }
 }
