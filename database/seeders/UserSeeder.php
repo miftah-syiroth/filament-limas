@@ -15,15 +15,21 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        if (DB::table('users')->exists()) {
-            $this->command->info('Users table is not empty, skipping seeding.');
-
-            return;
-        }
-
         // updateOrCreate super admin role
-        $superAdminRole = Role::updateOrCreate([
+        $superAdminRole = Role::firstOrCreate([
             'name' => 'super_admin',
+        ], [
+            'guard_name' => 'web',
+        ]);
+
+        Role::firstOrCreate([
+            'name' => 'admin',
+        ], [
+            'guard_name' => 'web',
+        ]);
+
+        Role::firstOrCreate([
+            'name' => 'operator',
         ], [
             'guard_name' => 'web',
         ]);
@@ -36,6 +42,6 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
         ])->assignRole($superAdminRole);
-        User::factory(50)->create();
+        User::factory(5)->create();
     }
 }

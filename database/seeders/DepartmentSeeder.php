@@ -63,14 +63,14 @@ class DepartmentSeeder extends Seeder
         ];
 
         foreach ($departments as $department) {
-            Department::updateOrCreate(
+            $dept = Department::updateOrCreate(
                 ['name' => $department['name'], 'organization_id' => $organization->id],
                 [
-                    'location_id' => $department['location']->id,
                     'phone' => $department['location']->phone,
                     'notes' => $department['name'],
                 ]
             );
+            $dept->locations()->attach($department['location']->id);
 
             Room::updateOrCreate(
                 [

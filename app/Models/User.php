@@ -17,6 +17,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Panel;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -58,6 +59,16 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return $this->hasAnyRole(['admin', 'super_admin', 'operator']);
+        }
+
+        return false;
     }
 
     public function getActivitylogOptions(): LogOptions

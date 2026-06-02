@@ -24,8 +24,7 @@ class RolePolicy
 
     public function create(AuthUser $authUser): bool
     {
-        return true;
-        // return $authUser->can('Create:Role');
+        return $authUser->can('Create:Role');
     }
 
     public function update(AuthUser $authUser, Role $role): bool
