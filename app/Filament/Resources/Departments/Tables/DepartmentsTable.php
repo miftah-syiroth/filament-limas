@@ -39,12 +39,6 @@ class DepartmentsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                // SelectFilter::make('location_id')
-                //     ->label(__('department.table.location'))
-                //     ->relationship('location', 'name')
-                //     ->multiple(),
-            ])
             ->recordActions([
                 ViewAction::make()->label(''),
                 EditAction::make()->label(''),

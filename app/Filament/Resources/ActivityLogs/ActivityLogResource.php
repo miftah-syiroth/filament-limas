@@ -89,9 +89,6 @@ class ActivityLogResource extends Resource
                     ->dateTime('j M Y H:i')
                     ->sortable(),
             ])
-            ->filters([
-                //
-            ])
             ->recordActions([
                 ViewAction::make()
                     ->label(''),

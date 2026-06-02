@@ -60,20 +60,6 @@ class UsersTable
                     ->relationship('roles', 'name', hasEmptyOption: true)
                     ->emptyRelationshipOptionLabel(__('user.table.no_role'))
                     ->multiple(),
-                // SelectFilter::make('role_name')
-                //     ->label(__('user.table.roles'))
-                //     ->multiple()
-                //     ->options(Role::get()->pluck('name', 'id')),
-                    // ->query(function (Builder $query, array $data): Builder {
-                    //     $types = $data['values'] ?? [];
-                    //     if (empty($types)) {
-                    //         return $query;
-                    //     }
-
-                    //     return $query->whereHas('category', function (Builder $query) use ($types): Builder {
-                    //         return $query->whereIn('type', $types);
-                    //     });
-                    // }),
             ])
             ->recordActions([
                 ViewAction::make()

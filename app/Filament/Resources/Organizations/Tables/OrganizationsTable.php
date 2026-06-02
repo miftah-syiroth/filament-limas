@@ -32,9 +32,7 @@ class OrganizationsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
 
-            ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),

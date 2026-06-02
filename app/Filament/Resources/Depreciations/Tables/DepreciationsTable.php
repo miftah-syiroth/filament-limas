@@ -30,9 +30,7 @@ class DepreciationsTable
                 TextColumn::make('method')
                     ->label(__('depreciation.table.method')),
             ])
-            ->filters([
-                //
-            ])
+
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),

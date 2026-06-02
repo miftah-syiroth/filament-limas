@@ -35,9 +35,7 @@ class RoomsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+
             ->recordActions([
                 ViewAction::make()->label(''),
                 EditAction::make()->label(''),
