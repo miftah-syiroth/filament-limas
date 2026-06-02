@@ -38,6 +38,9 @@ class UserPolicy
         if ($user->hasRole('super_admin')) {
             return false;
         }
+        if ($user->hasRole('admin') && !$authUser->hasRole('super_admin')) {
+            return false;
+        }
 
         return $authUser->can('Delete:User');
     }
@@ -55,6 +58,9 @@ class UserPolicy
     public function forceDelete(AuthUser $authUser, User $user): bool
     {
         if ($user->hasRole('super_admin')) {
+            return false;
+        }
+        if ($user->hasRole('admin') && !$authUser->hasRole('super_admin')) {
             return false;
         }
 

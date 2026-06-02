@@ -8,6 +8,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -36,11 +38,21 @@ class UserForm
                             ->relationship(
                                 name: 'roles',
                                 titleAttribute: 'name',
+                                modifyQueryUsing: function (Builder $query, ?User $record, string $operation) {
+                                    if (($operation === 'create') || $record && !$record->hasRole('super_admin')) {
+                                        return $query->where('name', '!=', 'super_admin');
+                                    }
+                                    return $query;
+                                },
                             )
-                            // ->disabled(fn (string $operation, ?User $record): bool => self::rolesSelectIsLocked($operation, $record))
                             ->disabled(function (string $operation, ?User $record): bool {
-                                if ($operation === 'edit' && $record?->hasAnyRole(['super_admin', 'admin'])) {
-                                    return true;
+                                if ($operation === 'edit') {
+                                    if ($record?->hasRole('super_admin')) {
+                                        return true;
+                                    }
+                                    if ($record?->hasRole('admin') && !Auth::user()->hasRole('super_admin')) {
+                                        return true;
+                                    }
                                 }
                                 return false;
                             })
@@ -55,9 +67,9 @@ class UserForm
                             ->label(__('user.form.password'))
                             ->password()
                             ->default(null)
-                            ->dehydrateStateUsing(fn (?string $state): ?string => filled($state) ? Hash::make($state) : null)
-                            ->dehydrated(fn (?string $state): bool => filled($state))
-                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->dehydrateStateUsing(fn(?string $state): ?string => filled($state) ? Hash::make($state) : null)
+                            ->dehydrated(fn(?string $state): bool => filled($state))
+                            ->required(fn(string $operation): bool => $operation === 'create')
                             ->confirmed()
                             ->rule(Password::default())
                             ->maxLength(255),
@@ -66,7 +78,7 @@ class UserForm
                             ->password()
                             ->default(null)
                             ->dehydrated(false)
-                            ->required(fn (string $operation): bool => $operation === 'create'),
+                            ->required(fn(string $operation): bool => $operation === 'create'),
 
                     ]),
             ]);
