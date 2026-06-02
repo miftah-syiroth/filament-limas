@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Reports',
-                'Master Data'
+                'Master Data',
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -65,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->profile(isSimple: false)
             ->globalSearchResourceOptIn()
             ->globalSearchDebounce('750ms')
             ->spa()

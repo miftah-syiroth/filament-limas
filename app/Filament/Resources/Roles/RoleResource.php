@@ -20,7 +20,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\Rules\Unique;
@@ -43,6 +42,15 @@ class RoleResource extends ShieldRoleResource
                             ->schema([
                                 TextInput::make('name')
                                     ->label(__('filament-shield::filament-shield.field.name'))
+                                    // jika operator edit role harus disabled
+                                    ->disabled(function (string $operation, $state): bool {
+                                        // jika $operation === 'edit' dan $state adalah ['super_admin', 'admin', 'operator'] maka return true
+                                        if ($operation === 'edit' && in_array($state, ['super_admin', 'admin', 'operator'])) {
+                                            return true;
+                                        }
+
+                                        return false;
+                                    })
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(function (Set $set, ?string $state): void {
                                         $set('name', mb_strtolower($state ?? ''));

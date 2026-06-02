@@ -4,7 +4,6 @@ declare(strict_types=1);
 // use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 
 use App\Filament\Resources\Roles\RoleResource;
-use App\Filament\Pages\DepreciationItemsPage;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -200,7 +199,7 @@ return [
         'subject' => 'class',
         'prefix' => 'view',
         'exclude' => [
-            Dashboard::class
+            Dashboard::class,
         ],
     ],
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoleName;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Spatie\Permission\Models\Role as SpatieRole;
 

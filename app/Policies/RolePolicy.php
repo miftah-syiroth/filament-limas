@@ -29,7 +29,7 @@ class RolePolicy
 
     public function update(AuthUser $authUser, Role $role): bool
     {
-        if ($role->name === 'super_admin') {
+        if (in_array($role->name, ['super_admin', 'admin'])) {
             return false;
         }
 
@@ -38,7 +38,7 @@ class RolePolicy
 
     public function delete(AuthUser $authUser, Role $role): bool
     {
-        if ($role->name === 'super_admin') {
+        if (in_array($role->name, ['super_admin', 'admin', 'operator'])) {
             return false;
         }
 
@@ -57,8 +57,7 @@ class RolePolicy
 
     public function forceDelete(AuthUser $authUser, Role $role): bool
     {
-        // tidak boleh jika role adalah super admin
-        if ($role->name === 'super_admin') {
+        if (in_array($role->name, ['super_admin', 'admin', 'operator'])) {
             return false;
         }
 

@@ -6,11 +6,15 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class UsersTable
@@ -21,6 +25,15 @@ class UsersTable
             ->columns([
                 TextColumn::make('name')
                     ->label(__('user.table.name'))
+                    ->icon(function (Model $record) {
+                        // jika record->id == Auth::user()->id maka return Heroicon::OutlinedUser
+                        if ($record->id == Auth::user()->id) {
+                            return Heroicon::OutlinedUser;
+                        }
+
+                    })
+                    ->iconPosition(IconPosition::After)
+                    ->iconColor('primary')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label(__('user.table.email'))
@@ -28,17 +41,17 @@ class UsersTable
                 TextColumn::make('roles.name')
                     ->label(__('user.table.roles'))
                     ->badge(),
-                ToggleColumn::make('email_verified_at')
-                    ->label(__('user.table.email_verified'))
-                    ->disabled(fn ($record) => Gate::denies('update', $record))
-                    ->alignCenter()
-                    ->getStateUsing(fn ($record): bool => $record->email_verified_at !== null)
-                    ->updateStateUsing(function ($record, bool $state): void {
-                        Gate::authorize('update', $record);
-                        $record->update([
-                            'email_verified_at' => $state ? now() : null,
-                        ]);
-                    }),
+                // ToggleColumn::make('email_verified_at')
+                //     ->label(__('user.table.email_verified'))
+                //     ->disabled(fn ($record) => Gate::denies('update', $record))
+                //     ->alignCenter()
+                //     ->getStateUsing(fn ($record): bool => $record->email_verified_at !== null)
+                //     ->updateStateUsing(function ($record, bool $state): void {
+                //         Gate::authorize('update', $record);
+                //         $record->update([
+                //             'email_verified_at' => $state ? now() : null,
+                //         ]);
+                //     }),
                 TextColumn::make('created_at')
                     ->label(__('user.table.created_at'))
                     ->dateTime()
