@@ -3,7 +3,11 @@
 help: ## Tampilkan daftar perintah yang tersedia
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-install-reset: env composer-install key-generate storage-link npm-install npm-build fresh shield-generate ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
+install-dummy: env composer-install key-generate storage-link npm-install npm-build fresh seed-dummy shield-generate seed-role ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
+	@echo ""
+	@echo "\033[32m✓ Instalasi selesai. Jalankan 'composer run dev' untuk memulai server pengembangan.\033[0m"
+
+install: env composer-install key-generate storage-link npm-install npm-build fresh seed shield-generate seed-role ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
 	@echo ""
 	@echo "\033[32m✓ Instalasi selesai. Jalankan 'composer run dev' untuk memulai server pengembangan.\033[0m"
 
@@ -27,8 +31,14 @@ migrate: ## Jalankan migrasi database
 seed: ## Jalankan database seeder
 	php artisan db:seed --force
 
-fresh: ## Drop semua tabel lalu migrate ulang dan seed
-	php artisan migrate:fresh --seed --force
+seed-dummy: ## Jalankan database seeder dummy
+	php artisan db:seed --class=DummySeeder
+
+seed-role: ## Jalankan database seeder role
+	php artisan db:seed --class=RoleSeeder
+
+fresh: ## Drop semua tabel lalu migrate ulang
+	php artisan migrate:fresh
 
 npm-install: ## Install dependensi JavaScript
 	npm install

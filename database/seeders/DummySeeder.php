@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class DummySeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
@@ -18,6 +16,10 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             CitySeeder::class,
             UserSeeder::class,
+            DepartmentSeeder::class,
+            SupplierSeeder::class,
+            DepreciationSeeder::class,
+            ModelSeeder::class,
             UnitSeeder::class,
         ]);
     }

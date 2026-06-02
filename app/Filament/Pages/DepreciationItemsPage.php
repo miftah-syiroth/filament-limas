@@ -20,12 +20,14 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 
 class DepreciationItemsPage extends Page implements HasActions, HasSchemas, HasTable
 {
     use InteractsWithActions;
     use InteractsWithSchemas;
     use InteractsWithTable;
+    use HasPageShield;
 
     protected string $view = 'filament.pages.depreciation-items-page';
 

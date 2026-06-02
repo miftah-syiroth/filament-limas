@@ -23,7 +23,7 @@ class UnitSeeder extends Seeder
         ];
 
         foreach ($units as $unit) {
-            Unit::create([
+            Unit::firstOrCreate([
                 'name' => $unit,
             ]);
         }

@@ -22,13 +22,13 @@ class UserSeeder extends Seeder
             'guard_name' => 'web',
         ]);
 
-        Role::firstOrCreate([
+        $adminRole = Role::firstOrCreate([
             'name' => 'admin',
         ], [
             'guard_name' => 'web',
         ]);
 
-        Role::firstOrCreate([
+        $operatorRole = Role::firstOrCreate([
             'name' => 'operator',
         ], [
             'guard_name' => 'web',
@@ -39,9 +39,28 @@ class UserSeeder extends Seeder
         ], [
             'name' => 'Super Admin',
             'email_verified_at' => now(),
-            'password' => bcrypt('password'),
+            'password' => bcrypt('MvY%BVbAq#XTQFHd9aH1'),
             'remember_token' => Str::random(10),
         ])->assignRole($superAdminRole);
-        User::factory(5)->create();
+        
+        // create admin user
+        User::updateOrCreate([
+            'email' => 'admin@siris.uhb.ac.id',
+        ], [
+            'name' => 'Admin',
+            'email_verified_at' => now(),
+            'password' => bcrypt('ASDqwe123!@#'),
+            'remember_token' => Str::random(10),
+        ])->assignRole($adminRole);
+
+        // create operator user
+        User::updateOrCreate([
+            'email' => 'operator@siris.uhb.ac.id',
+        ], [
+            'name' => 'Operator',
+            'email_verified_at' => now(),
+            'password' => bcrypt('ASDqwe123!@#'),
+            'remember_token' => Str::random(10),
+        ])->assignRole($operatorRole);
     }
 }
