@@ -71,6 +71,7 @@ class AdminPanelProvider extends PanelProvider
             ->globalSearchDebounce('750ms')
             ->spa()
             ->maxContentWidth(Width::Full)
-            ->databaseNotifications();
+            ->databaseNotifications()
+            ->favicon(asset('logo.webp'));
     }
 }
