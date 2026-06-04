@@ -34,7 +34,7 @@
         class="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/70 p-4"
     >
         <div
-            class="w-full max-w-lg overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10"
+            class="mx-auto w-full max-w-sm overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10"
             x-on:click.outside="stopCamera()"
         >
             <div class="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-white/10">
@@ -51,14 +51,10 @@
             </div>
 
             <div class="space-y-4 p-4">
-                <p class="text-sm text-gray-600 dark:text-gray-300">
-                    {{ __('barcode_scanner.scanner_instructions') }}
-                </p>
-
                 <div
                     id="barcode-scanner-reader"
                     wire:ignore
-                    class="overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"
+                    class="mx-auto aspect-[4/3] w-full max-w-[260px] overflow-hidden rounded-lg bg-gray-950 dark:bg-gray-950 [&_video]:object-cover"
                 ></div>
 
                 <p

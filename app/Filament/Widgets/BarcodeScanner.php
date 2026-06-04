@@ -21,7 +21,7 @@ class BarcodeScanner extends Widget implements HasActions, HasSchemas
 
     public const SERIAL_NUMBER_LENGTH = 8;
 
-    protected static ?int $sort = 2;
+    protected static ?int $sort = -4;
 
     protected string $view = 'filament.widgets.barcode-scanner';
 

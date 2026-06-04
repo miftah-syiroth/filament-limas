@@ -28,8 +28,10 @@ class ItemInfolist
                                 'lg' => 1,
                             ])
                             ->columns(2)
+                            ->compact()
                             ->schema([
                                 Fieldset::make(__('items.infolist.fieldsets.specification'))
+                                    ->dense()
                                     ->columns([
                                         'default' => 1,
                                         'md' => 2,
@@ -62,6 +64,7 @@ class ItemInfolist
                                             ->label(__('items.form.notes')),
                                     ]),
                                 Fieldset::make(__('items.infolist.fieldsets.transfer'))
+                                    ->dense()
                                     ->columns([
                                         'default' => 1,
                                         'md' => 2,
@@ -96,6 +99,7 @@ class ItemInfolist
 
                             ]),
                         Section::make('')
+                            ->compact()
                             ->columnOrder([
                                 'default' => 1,
                                 'lg' => 2,
@@ -108,6 +112,7 @@ class ItemInfolist
                             ]),
                     ]),
                 Section::make(__('items.infolist.sections.purchase'))
+                    ->compact()
                     ->columnSpanFull()
                     ->columns([
                         'default' => 1,

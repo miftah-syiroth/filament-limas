@@ -21,8 +21,11 @@ export default function barcodeScanner({ serialNumberLength }) {
                     { facingMode: 'environment' },
                     {
                         fps: 10,
-                        qrbox: { width: 250, height: 120 },
-                        aspectRatio: 1.777778,
+                        aspectRatio: 1.333334,
+                        qrbox: (viewfinderWidth, viewfinderHeight) => ({
+                            width: Math.floor(Math.min(viewfinderWidth * 0.9, 220)),
+                            height: Math.floor(Math.min(viewfinderHeight * 0.4, 64)),
+                        }),
                         formatsToSupport: [
                             Html5QrcodeSupportedFormats.CODE_128,
                             Html5QrcodeSupportedFormats.CODE_39,
