@@ -4,6 +4,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "build:filament": "node bin/build.js",
         "dev": "vite"
     },
     "dependencies": {
@@ -19,5 +20,9 @@
         "@rollup/rollup-linux-x64-gnu": "4.9.5",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
         "lightningcss-linux-x64-gnu": "^1.29.1"
+    },
+    "devDependencies": {
+        "esbuild": "^0.28.0",
+        "html5-qrcode": "^2.3.8"
     }
 }

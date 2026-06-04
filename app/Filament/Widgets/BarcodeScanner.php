@@ -35,17 +35,54 @@ class BarcodeScanner extends Widget implements HasActions, HasSchemas
             return;
         }
 
-        if (strlen($serialNumber) > self::SERIAL_NUMBER_LENGTH) {
-            $this->serial_number = substr($serialNumber, 0, self::SERIAL_NUMBER_LENGTH);
+        $normalizedSerialNumber = $this->normalizeSerialNumber($serialNumber);
+
+        if ($normalizedSerialNumber !== $serialNumber) {
+            $this->serial_number = $normalizedSerialNumber;
+
+            if (strlen($normalizedSerialNumber) !== self::SERIAL_NUMBER_LENGTH) {
+                return;
+            }
+
+            $this->searchSerialNumber();
 
             return;
         }
 
-        if (strlen($serialNumber) !== self::SERIAL_NUMBER_LENGTH) {
+        if (strlen($normalizedSerialNumber) !== self::SERIAL_NUMBER_LENGTH) {
             return;
         }
 
         $this->searchSerialNumber();
+    }
+
+    public function applyScannedSerialNumber(string $scannedValue): void
+    {
+        $normalizedSerialNumber = $this->normalizeSerialNumber($scannedValue);
+
+        $this->serial_number = $normalizedSerialNumber;
+
+        if (strlen($normalizedSerialNumber) !== self::SERIAL_NUMBER_LENGTH) {
+            Notification::make()
+                ->title(__('barcode_scanner.invalid_serial_number'))
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $this->searchSerialNumber();
+    }
+
+    protected function normalizeSerialNumber(string $serialNumber): string
+    {
+        $normalizedSerialNumber = strtoupper(trim($serialNumber));
+
+        if (strlen($normalizedSerialNumber) > self::SERIAL_NUMBER_LENGTH) {
+            return substr($normalizedSerialNumber, 0, self::SERIAL_NUMBER_LENGTH);
+        }
+
+        return $normalizedSerialNumber;
     }
 
     public function searchSerialNumber(): void

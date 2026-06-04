@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Carbon\CarbonImmutable;
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -26,9 +28,13 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
 
+        FilamentAsset::register([
+            AlpineComponent::make('barcode-scanner', resource_path('js/dist/components/barcode-scanner.js')),
+        ]);
+
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
-                ->locales(['id','en']);
+                ->locales(['id', 'en']);
         });
     }
 
