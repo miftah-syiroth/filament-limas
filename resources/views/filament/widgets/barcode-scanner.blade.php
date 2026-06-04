@@ -38,10 +38,6 @@
             x-on:click.outside="stopCamera()"
         >
             <div class="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-white/10">
-                <h3 class="text-base font-semibold text-gray-950 dark:text-white">
-                    {{ __('barcode_scanner.scan_barcode') }}
-                </h3>
-
                 <x-filament::icon-button
                     :tooltip="__('barcode_scanner.close_scanner')"
                     type="button"
@@ -54,7 +50,7 @@
                 <div
                     id="barcode-scanner-reader"
                     wire:ignore
-                    class="mx-auto aspect-[4/3] w-full max-w-[260px] overflow-hidden rounded-lg bg-gray-950 dark:bg-gray-950 [&_video]:object-cover"
+                    class="mx-auto aspect-square w-full max-w-[260px] overflow-hidden rounded-lg bg-gray-950 dark:bg-gray-950 [&_video]:object-cover"
                 ></div>
 
                 <p
