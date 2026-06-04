@@ -3,6 +3,7 @@
         <x-filament::input.wrapper :inline-prefix="true">
             <x-slot name="prefix">
                 <x-filament::icon-button
+                    tooltip="Scan barcode"
                     type="button"
                     size="lg"
                     icon="heroicon-o-camera"
