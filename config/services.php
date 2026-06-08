@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'sso' => [
+        'url'           => config('oauth.url'),
+        'client_id'     => config('oauth.client_id'),
+        'client_secret' => config('oauth.client_secret'),
+        'redirect'      => config('app.url') . '/oauth/callback',
+        'user_agent'    => config('oauth.user_agent'),
+    ],
+
 ];

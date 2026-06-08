@@ -49,6 +49,12 @@
             </div>
         </form>
 
+        {{-- jika env production --}}
+        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
+            <span>{{ __('SSO Login') }}</span>
+            <flux:link href="https://google.com" target="_blank">{{ __('My UHB') }}</flux:link>
+        </div>
+
         @if (Route::has('register'))
             <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
                 <span>{{ __('Don\'t have an account?') }}</span>
