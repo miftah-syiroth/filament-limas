@@ -58,7 +58,7 @@
                 :href="route('oauth.redirect')"
                 data-test="sso-login-button"
             >
-                {{ __('auth.oauth_login', ['provider' => config('oauth.name')]) }}
+                {{ __('auth.oauth_login', ['provider' => 'My UHB']) }}
             </flux:button>
         @endif
 
