@@ -8,7 +8,7 @@ Route::middleware('guest')->group(function () {
         return redirect()->route('login');
     })->name('home');
 
-    Route::get('/oauth/redirect', [SsoController::class, 'redirect'])->name('oauth.redirect');
+    Route::get('/oauth', [SsoController::class, 'redirect'])->name('oauth.login');
     Route::get('/oauth/callback', [SsoController::class, 'callback'])->name('oauth.callback');
 });
 

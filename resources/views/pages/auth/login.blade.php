@@ -49,13 +49,13 @@
             </div>
         </form>
 
-        @if (filled(config('oauth.client_id')) && Route::has('oauth.redirect'))
+        @if (filled(config('oauth.client_id')) && Route::has('oauth.login'))
             <flux:separator :text="__('auth.oauth_or')" />
 
             <flux:button
                 variant="outline"
                 class="w-full"
-                :href="route('oauth.redirect')"
+                :href="route('oauth.login')"
                 data-test="sso-login-button"
             >
                 {{ __('auth.oauth_login', ['provider' => 'My UHB']) }}
