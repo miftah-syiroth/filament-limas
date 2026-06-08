@@ -49,11 +49,18 @@
             </div>
         </form>
 
-        {{-- jika env production --}}
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('SSO Login') }}</span>
-            <flux:link href="https://google.com" target="_blank">{{ __('My UHB') }}</flux:link>
-        </div>
+        @if (filled(config('oauth.client_id')) && Route::has('oauth.redirect'))
+            <flux:separator :text="__('auth.oauth_or')" />
+
+            <flux:button
+                variant="outline"
+                class="w-full"
+                :href="route('oauth.redirect')"
+                data-test="sso-login-button"
+            >
+                {{ __('auth.oauth_login', ['provider' => config('oauth.name')]) }}
+            </flux:button>
+        @endif
 
         @if (Route::has('register'))
             <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">

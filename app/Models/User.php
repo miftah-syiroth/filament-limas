@@ -7,6 +7,8 @@ namespace App\Models;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,7 +19,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
-use Filament\Panel;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -34,6 +36,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'email_verified_at',
+        'oauth',
     ];
 
     /**
@@ -58,9 +61,9 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'oauth' => SchemalessAttributes::class,
         ];
     }
-
 
     public function canAccessPanel(Panel $panel): bool
     {
@@ -69,6 +72,11 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return false;
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->oauth->modelScope();
     }
 
     public function getActivitylogOptions(): LogOptions

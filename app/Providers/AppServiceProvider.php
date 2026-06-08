@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Socialite\SsoProvider;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Carbon\CarbonImmutable;
 use Filament\Support\Assets\AlpineComponent;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Socialite\Contracts\Factory as SocialiteFactory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureSocialite();
 
         FilamentAsset::register([
             AlpineComponent::make('barcode-scanner', resource_path('js/dist/components/barcode-scanner.js')),
@@ -41,6 +44,22 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Configure default behaviors for production-ready applications.
      */
+    protected function configureSocialite(): void
+    {
+        $socialite = $this->app->make(SocialiteFactory::class);
+
+        $socialite->extend('sso', function () use ($socialite) {
+            $config = config('services.sso');
+
+            /** @var SsoProvider $provider */
+            $provider = $socialite->buildProvider(SsoProvider::class, $config);
+
+            return $provider
+                ->setBaseUrl($config['url'])
+                ->setUserAgent($config['user_agent']);
+        });
+    }
+
     protected function configureDefaults(): void
     {
         Date::use(CarbonImmutable::class);

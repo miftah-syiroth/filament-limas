@@ -13,8 +13,16 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Kredensial tidak cocok dengan data kami.',
+    'password' => 'Kata sandi yang diberikan salah.',
+    'throttle' => 'Terlalu banyak percobaan masuk. Silakan coba lagi dalam :seconds detik.',
+
+    'oauth_or' => 'atau',
+    'oauth_login' => 'Masuk dengan :provider',
+    'oauth_denied' => 'Masuk SSO dibatalkan.',
+    'oauth_failed' => 'Tidak dapat masuk dengan SSO. Silakan coba lagi.',
+    'oauth_invalid_state' => 'Sesi SSO kedaluwarsa. Silakan coba lagi.',
+    'oauth_missing_email' => 'Akun SSO tidak mengembalikan alamat email.',
+    'oauth_unauthorized' => 'Akun Anda tidak diizinkan mengakses aplikasi ini.',
 
 ];

@@ -21,7 +21,8 @@
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^13.1",
         "novadaemon/filament-pretty-json": "^4.2",
-        "spatie/laravel-activitylog": "^4.12"
+        "spatie/laravel-activitylog": "^4.12",
+        "spatie/laravel-schemaless-attributes": "^2.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
