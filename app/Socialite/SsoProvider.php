@@ -5,6 +5,7 @@ namespace App\Socialite;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Arr;
 use Laravel\Socialite\Two\AbstractProvider;
+use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\ProviderInterface;
 use Laravel\Socialite\Two\User;
 
@@ -30,6 +31,31 @@ class SsoProvider extends AbstractProvider implements ProviderInterface
         return $this;
     }
 
+    public function resolveUserFromCallback(): User
+    {
+        if ($this->hasInvalidState()) {
+            throw new InvalidStateException;
+        }
+
+        $tokenResponse = $this->getAccessTokenResponse($this->getCode());
+
+        return $this->fetchProfile(
+            Arr::get($tokenResponse, 'access_token'),
+            $tokenResponse,
+        );
+    }
+
+    public function fetchProfile(string $accessToken, ?array $tokenResponse = null): User
+    {
+        $profile = $this->getUserByToken($accessToken);
+
+        if ($tokenResponse !== null) {
+            return $this->userInstance($tokenResponse, $profile);
+        }
+
+        return $this->mapUserToObject($profile)->setToken($accessToken);
+    }
+
     protected function getAuthUrl($state): string
     {
         return $this->buildAuthUrlFromBase($this->baseUrl.'/oauth/authorize', $state);
@@ -43,33 +69,31 @@ class SsoProvider extends AbstractProvider implements ProviderInterface
     protected function getUserByToken($token): array
     {
         $response = $this->getHttpClient()->get(
-            $this->baseUrl.'/api/v1/user',
-            $this->getRequestOptions($token),
+            $this->baseUrl.'/api/v1/profile',
+            [
+                RequestOptions::HEADERS => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer '.$token,
+                    'Cache-Control' => 'no-cache',
+                    'User-Agent' => $this->userAgent,
+                ],
+            ],
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        $user = json_decode($response->getBody()->getContents(), true);
+
+        return Arr::get($user, 'data', $user) ?? [];
     }
 
     protected function mapUserToObject(array $user): User
     {
         return (new User)->setRaw($user)->map([
             'id' => Arr::get($user, 'id'),
-            'nickname' => Arr::get($user, 'username', Arr::get($user, 'email')),
-            'name' => Arr::get($user, 'name'),
             'email' => Arr::get($user, 'email'),
-            'avatar' => Arr::get($user, 'avatar'),
+            'nickname' => Arr::get($user, 'username'),
+            'name' => Arr::get($user, 'full_name', Arr::get($user, 'name')),
+            'avatar' => Arr::get($user, 'profile_photo_url', Arr::get($user, 'avatar')),
         ]);
-    }
-
-    protected function getRequestOptions($token): array
-    {
-        return [
-            RequestOptions::HEADERS => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer '.$token,
-                'User-Agent' => $this->userAgent,
-            ],
-        ];
     }
 
     protected function getTokenHeaders($code): array

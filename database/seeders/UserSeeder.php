@@ -34,17 +34,17 @@ class UserSeeder extends Seeder
         ]);
 
         User::updateOrCreate([
-            'email' => 'superadmin@siris.uhb.ac.id',
+            'email' => 'administrator@uhb.ac.id',
         ], [
             'name' => 'Super Admin',
             'email_verified_at' => now(),
             'password' => bcrypt('MvY%BVbAq#XTQFHd9aH1'),
             'remember_token' => Str::random(10),
         ])->assignRole($superAdminRole);
-        
+
         // create admin user
         User::updateOrCreate([
-            'email' => 'admin@siris.uhb.ac.id',
+            'email' => 'admin@uhb.ac.id',
         ], [
             'name' => 'Admin',
             'email_verified_at' => now(),
@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
 
         // create operator user
         User::updateOrCreate([
-            'email' => 'operator@siris.uhb.ac.id',
+            'email' => 'operator@uhb.ac.id',
         ], [
             'name' => 'Operator',
             'email_verified_at' => now(),

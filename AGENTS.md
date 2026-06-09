@@ -13,6 +13,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - filament/filament (FILAMENT) - v5
 - laravel/fortify (FORTIFY) - v1
 - laravel/framework (LARAVEL) - v12
+- laravel/passport (PASSPORT) - v13
 - laravel/prompts (PROMPTS) - v0
 - laravel/socialite (SOCIALITE) - v5
 - livewire/flux (FLUXUI_FREE) - v2

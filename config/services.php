@@ -37,9 +37,9 @@ return [
 
     'sso' => [
         'url' => config('oauth.url'),
+        'redirect' => env('APP_URL').'/oauth/callback',
         'client_id' => config('oauth.client_id'),
         'client_secret' => config('oauth.client_secret'),
-        'redirect' => '/oauth/callback',
         'user_agent' => config('oauth.user_agent'),
     ],
 

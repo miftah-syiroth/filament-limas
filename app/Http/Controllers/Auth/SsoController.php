@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\AuthenticateOAuthUser;
 use App\Http\Controllers\Controller;
+use App\Socialite\SsoProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +29,9 @@ class SsoController extends Controller
         }
 
         try {
-            $oauthUser = Socialite::driver('sso')->user();
+            /** @var SsoProvider $provider */
+            $provider = Socialite::driver('sso');
+            $oauthUser = $provider->resolveUserFromCallback();
         } catch (InvalidStateException) {
             return redirect()
                 ->route('login')
