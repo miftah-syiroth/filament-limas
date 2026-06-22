@@ -31,6 +31,8 @@ class AuthenticateOAuthUser
         //     ],
         // ])->save();
 
+        session(['auth_login_method' => 'sso']);
+
         Auth::login($user);
 
         return $user;

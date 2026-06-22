@@ -30,6 +30,15 @@ return [
         'created_at' => 'Created at',
     ],
 
+    'auth' => [
+        'login' => 'Logged in via :method',
+        'logout' => 'Logged out',
+        'methods' => [
+            'password' => 'password',
+            'sso' => 'SSO',
+        ],
+    ],
+
     'table' => [
         'causer_name' => 'Name',
         'causer_email' => 'Email',

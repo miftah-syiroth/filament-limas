@@ -30,6 +30,15 @@ return [
         'created_at' => 'Dibuat pada',
     ],
 
+    'auth' => [
+        'login' => 'Masuk melalui :method',
+        'logout' => 'Keluar',
+        'methods' => [
+            'password' => 'kata sandi',
+            'sso' => 'SSO',
+        ],
+    ],
+
     'table' => [
         'causer_name' => 'Nama',
         'causer_email' => 'Email',
