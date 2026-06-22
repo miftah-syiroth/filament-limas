@@ -2,17 +2,13 @@
 
 namespace App\Providers;
 
-use App\Listeners\LogAuthenticationActivity;
 use App\Socialite\SsoProvider;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Carbon\CarbonImmutable;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Facades\FilamentAsset;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Socialite\Contracts\Factory as SocialiteFactory;
@@ -34,7 +30,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureSocialite();
-        $this->configureAuthenticationActivityLogging();
 
         FilamentAsset::register([
             AlpineComponent::make('barcode-scanner', resource_path('js/dist/components/barcode-scanner.js')),
@@ -49,12 +44,6 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Configure default behaviors for production-ready applications.
      */
-    protected function configureAuthenticationActivityLogging(): void
-    {
-        Event::listen(Login::class, [LogAuthenticationActivity::class, 'handleLogin']);
-        Event::listen(Logout::class, [LogAuthenticationActivity::class, 'handleLogout']);
-    }
-
     protected function configureSocialite(): void
     {
         $socialite = $this->app->make(SocialiteFactory::class);

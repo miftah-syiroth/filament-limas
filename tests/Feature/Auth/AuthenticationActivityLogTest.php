@@ -30,6 +30,8 @@ test('password login is recorded in activity log', function () {
     expect($log)->not->toBeNull()
         ->and($log->log_name)->toBe('auth')
         ->and($log->properties->get('method'))->toBe('password');
+
+    expect(ActivityLog::query()->where('event', 'login')->where('causer_id', $user->id)->count())->toBe(1);
 });
 
 test('logout is recorded in activity log', function () {
