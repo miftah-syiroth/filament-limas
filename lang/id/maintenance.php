@@ -38,7 +38,9 @@ return [
     ],
 
     'table' => [
-        'item' => 'Item',
+        'item' => 'Nomor Seri',
+        'model' => 'Model',
+        'category' => 'Kategori',
         'type' => 'Tipe',
         'reported_at' => 'Laporan',
         'started_at' => 'Mulai',

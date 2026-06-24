@@ -38,7 +38,9 @@ return [
     ],
 
     'table' => [
-        'item' => 'Item',
+        'item' => 'Serial number',
+        'model' => 'Model',
+        'category' => 'Category',
         'type' => 'Type',
         'reported_at' => 'Report',
         'started_at' => 'Started',

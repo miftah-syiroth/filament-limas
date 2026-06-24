@@ -6,6 +6,7 @@ use App\Enums\MaintenanceStatus;
 use App\Enums\MaintenanceType;
 use App\Enums\NavigationGroup;
 use App\Filament\Exports\MaintenanceExporter;
+use App\Filament\Resources\Items\ItemResource;
 use App\Filament\Resources\Maintenances\Pages\ManageMaintenances;
 use App\Models\Maintenance;
 use BackedEnum;
@@ -95,7 +96,14 @@ class MaintenanceResource extends Resource
             ->columns([
                 TextColumn::make('item.serial_number')
                     ->label(__('maintenance.table.item'))
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn (Maintenance $record): string => ItemResource::getUrl('view', ['record' => $record->item])),
+                TextColumn::make('item.model.name')
+                    ->label(__('maintenance.table.model'))
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('item.model.category.name')
+                    ->label(__('maintenance.table.category'))
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('type')
                     ->label(__('maintenance.table.type'))
                     ->badge(),
@@ -133,8 +141,18 @@ class MaintenanceResource extends Resource
                     ->label(__('maintenance.filters.type'))
                     ->multiple()
                     ->options(MaintenanceType::class),
-
+                SelectFilter::make('category_name')
+                    ->label(__('maintenance.table.category'))
+                    ->relationship('item.model.category', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('model_name')
+                    ->label(__('maintenance.table.model'))
+                    ->relationship('item.model', 'name')
+                    ->searchable()
+                    ->preload(),
             ])
+            ->filtersFormColumns(3)
             ->recordActions([
                 ViewAction::make(),
             ])

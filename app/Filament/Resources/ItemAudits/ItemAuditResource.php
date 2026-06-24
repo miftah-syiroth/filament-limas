@@ -55,7 +55,7 @@ class ItemAuditResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('item.name')
+                TextEntry::make('item.serial_number')
                     ->label(__('item-audit.infolist.item')),
                 TextEntry::make('item.status')
                     ->label(__('item-audit.infolist.status'))
@@ -102,7 +102,8 @@ class ItemAuditResource extends Resource
                     ->searchable()
                     ->url(fn (ItemAudit $record): string => ItemResource::getUrl('view', ['record' => $record->item])),
                 TextColumn::make('item.model.name')
-                    ->label(__('item-audit.table.model')),
+                    ->label(__('item-audit.table.model'))
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('item.model.category.name')
                     ->label(__('item-audit.table.category'))
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -143,7 +144,6 @@ class ItemAuditResource extends Resource
                     ->relationship('item.model', 'name')
                     ->searchable()
                     ->preload(),
-
             ])
             ->filtersFormColumns(3)
             ->recordActions([
