@@ -44,7 +44,7 @@ class SupplierResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+    protected static string | UnitEnum | null $navigationGroup = 'Reference';
 
     public static function form(Schema $schema): Schema
     {

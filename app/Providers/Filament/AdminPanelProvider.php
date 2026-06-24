@@ -41,7 +41,9 @@ class AdminPanelProvider extends PanelProvider
                 // FilamentInfoWidget::class,
             ])
             ->navigationGroups([
+                'Reference',
                 'Reports',
+                'Administration',
                 'Master Data',
             ])
             ->middleware([
@@ -57,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
-                    ->navigationGroup('Master Data')
+                    ->navigationGroup('Administration')
                     ->navigationSort(7)
                     ->globallySearchable(false),
             ])
