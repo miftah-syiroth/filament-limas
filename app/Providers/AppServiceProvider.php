@@ -6,7 +6,9 @@ use App\Socialite\SsoProvider;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Carbon\CarbonImmutable;
 use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Facades\FilamentColor;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +35,15 @@ class AppServiceProvider extends ServiceProvider
 
         FilamentAsset::register([
             AlpineComponent::make('barcode-scanner', resource_path('js/dist/components/barcode-scanner.js')),
+        ]);
+
+        FilamentColor::register([
+            'danger' => Color::Red,
+            'gray' => Color::Zinc,
+            'info' => Color::Blue,
+            'primary' => Color::Amber,
+            'success' => Color::Green,
+            'warning' => Color::Amber,
         ]);
 
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
@@ -68,14 +79,15 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
-        Password::defaults(fn (): ?Password => app()->isProduction()
-            ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-            : null
+        Password::defaults(
+            fn (): ?Password => app()->isProduction()
+                ? Password::min(12)
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+                : null
         );
     }
 }
