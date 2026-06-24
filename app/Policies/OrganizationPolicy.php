@@ -24,6 +24,10 @@ class OrganizationPolicy
 
     public function create(AuthUser $authUser): bool
     {
+        // kalau sudah ada organization, maka tidak bisa create
+        if (Organization::count() > 0) {
+            return false;
+        }
         return $authUser->can('Create:Organization');
     }
 
@@ -34,11 +38,19 @@ class OrganizationPolicy
 
     public function delete(AuthUser $authUser, Organization $organization): bool
     {
+        // kalau hanya 1 tidak boleh dihapus
+        if (Organization::count() == 1) {
+            return false;
+        }
         return $authUser->can('Delete:Organization');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
+        // kalau hanya 1 tidak boleh dihapus
+        if (Organization::count() == 1) {
+            return false;
+        }
         return $authUser->can('DeleteAny:Organization');
     }
 
@@ -49,11 +61,19 @@ class OrganizationPolicy
 
     public function forceDelete(AuthUser $authUser, Organization $organization): bool
     {
+        // kalau hanya 1 tidak boleh dihapus
+        if (Organization::count() == 1) {
+            return false;
+        }
         return $authUser->can('ForceDelete:Organization');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
+        // kalau hanya 1 tidak boleh dihapus
+        if (Organization::count() == 1) {
+            return false;
+        }
         return $authUser->can('ForceDeleteAny:Organization');
     }
 

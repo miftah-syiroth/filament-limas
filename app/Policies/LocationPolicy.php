@@ -11,7 +11,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class LocationPolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Location');
@@ -34,6 +34,16 @@ class LocationPolicy
 
     public function delete(AuthUser $authUser, Location $location): bool
     {
+        // tidak boleh hapus jika ada room atau item
+        if ($location->rooms->count() > 0) {
+            return false;
+        }
+
+        // tidak boleh hapus jika ada item
+        if ($location->items->count() > 0) {
+            return false;
+        }
+
         return $authUser->can('Delete:Location');
     }
 
@@ -49,6 +59,16 @@ class LocationPolicy
 
     public function forceDelete(AuthUser $authUser, Location $location): bool
     {
+        // tidak boleh hapus jika ada room atau item
+        if ($location->rooms->count() > 0) {
+            return false;
+        }
+
+        // tidak boleh hapus jika ada item
+        if ($location->items->count() > 0) {
+            return false;
+        }
+
         return $authUser->can('ForceDelete:Location');
     }
 
@@ -71,5 +91,4 @@ class LocationPolicy
     {
         return $authUser->can('Reorder:Location');
     }
-
 }

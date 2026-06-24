@@ -34,6 +34,10 @@ class DepartmentPolicy
 
     public function delete(AuthUser $authUser, Department $department): bool
     {
+        // jika ada item, maka tidak boleh dihapus
+        if ($department->items->count() > 0) {
+            return false;
+        }
         return $authUser->can('Delete:Department');
     }
 
@@ -49,6 +53,9 @@ class DepartmentPolicy
 
     public function forceDelete(AuthUser $authUser, Department $department): bool
     {
+        if ($department->items->count() > 0) {
+            return false;
+        }
         return $authUser->can('ForceDelete:Department');
     }
 

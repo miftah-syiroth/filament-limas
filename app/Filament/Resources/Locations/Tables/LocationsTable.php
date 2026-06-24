@@ -10,6 +10,8 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class LocationsTable
 {
@@ -59,16 +61,19 @@ class LocationsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-
             ->recordActions([
                 ViewAction::make()->label(''),
                 EditAction::make()->label(''),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->action(function (Collection $records): void {
+                            $records->each(function ($record) {
+                                Gate::authorize('delete', $record);
+                                $record->delete();
+                            });
+                        })
                 ]),
             ]);
     }

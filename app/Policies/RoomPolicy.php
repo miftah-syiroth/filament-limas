@@ -34,6 +34,10 @@ class RoomPolicy
 
     public function delete(AuthUser $authUser, Room $room): bool
     {
+        // tidak boleh hapus jika ada item
+        if ($room->items->count() > 0) {
+            return false;
+        }
         return $authUser->can('Delete:Room');
     }
 
@@ -49,6 +53,9 @@ class RoomPolicy
 
     public function forceDelete(AuthUser $authUser, Room $room): bool
     {
+        if ($room->items->count() > 0) {
+            return false;
+        }
         return $authUser->can('ForceDelete:Room');
     }
 

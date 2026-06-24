@@ -8,6 +8,8 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class RoomsTable
 {
@@ -35,14 +37,19 @@ class RoomsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-
             ->recordActions([
                 ViewAction::make()->label(''),
                 EditAction::make()->label(''),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->action(function (Collection $records): void {
+                            $records->each(function ($record) {
+                                Gate::authorize('delete', $record);
+                                $record->delete();
+                            });
+                        })
                 ]),
             ]);
     }
