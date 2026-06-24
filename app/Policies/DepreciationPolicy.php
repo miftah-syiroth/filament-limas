@@ -34,6 +34,9 @@ class DepreciationPolicy
 
     public function delete(AuthUser $authUser, Depreciation $depreciation): bool
     {
+        if ($depreciation->models->count() > 0) {
+            return false;
+        }
         return $authUser->can('Delete:Depreciation');
     }
 
@@ -49,6 +52,9 @@ class DepreciationPolicy
 
     public function forceDelete(AuthUser $authUser, Depreciation $depreciation): bool
     {
+        if ($depreciation->models->count() > 0) {
+            return false;
+        }
         return $authUser->can('ForceDelete:Depreciation');
     }
 

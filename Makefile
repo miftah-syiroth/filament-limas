@@ -3,11 +3,11 @@
 help: ## Tampilkan daftar perintah yang tersedia
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-install-dummy: env composer-install key-generate storage-link npm-install npm-build fresh seed-dummy shield-generate seed-role ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
+install-dummy: fresh seed-dummy shield-generate seed-role ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
 	@echo ""
 	@echo "\033[32m✓ Instalasi selesai. Jalankan 'composer run dev' untuk memulai server pengembangan.\033[0m"
 
-install: env composer-install key-generate storage-link npm-install npm-build fresh seed shield-generate seed-role ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
+install: fresh seed shield-generate seed-role ## Instalasi awal proyek (env, composer, key, migrate, seed, npm build, shield generate)
 	@echo ""
 	@echo "\033[32m✓ Instalasi selesai. Jalankan 'composer run dev' untuk memulai server pengembangan.\033[0m"
 

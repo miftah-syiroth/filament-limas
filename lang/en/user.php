@@ -10,6 +10,7 @@ return [
         'add' => 'Add User',
         'name' => 'Name',
         'email' => 'Email address',
+        'roles' => 'Roles',
         'password' => 'Password',
         'password_confirmation' => 'Confirm password',
         'email_verified' => 'Email verified',

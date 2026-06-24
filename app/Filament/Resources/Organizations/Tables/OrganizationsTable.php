@@ -42,12 +42,8 @@ class OrganizationsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->action(function (Collection $records): void {
-                            $records->each(function ($record) {
-                                Gate::authorize('delete', $record);
-                                $record->delete();
-                            });
-                        })
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

@@ -13,6 +13,7 @@ use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class ManufacturesTable
 {
@@ -64,9 +65,9 @@ class ManufacturesTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn (Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

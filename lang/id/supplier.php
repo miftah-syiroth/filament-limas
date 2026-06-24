@@ -51,6 +51,7 @@ return [
         'phone' => 'Telepon',
         'email' => 'Email',
         'url' => 'URL situs web',
+        'items_count' => 'Jumlah Barang',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
         'deleted_at' => 'Dihapus pada',

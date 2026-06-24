@@ -18,6 +18,8 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 use UnitEnum;
 
 class UnitResource extends Resource
@@ -82,6 +84,9 @@ class UnitResource extends Resource
                 TextColumn::make('name')
                     ->label(__('unit.table.name'))
                     ->searchable(),
+                TextColumn::make('models_count')
+                    ->label(__('unit.table.models_count'))
+                    ->counts('models'),
                 TextColumn::make('created_at')
                     ->label(__('unit.table.created_at'))
                     ->dateTime()
@@ -93,15 +98,15 @@ class UnitResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-
             ->recordActions([
                 ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

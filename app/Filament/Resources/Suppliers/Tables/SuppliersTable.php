@@ -10,6 +10,7 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class SuppliersTable
 {
@@ -55,6 +56,9 @@ class SuppliersTable
                     ->label(__('supplier.table.url'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('items_count')
+                    ->label(__('supplier.table.items_count'))
+                    ->counts('items'),
                 TextColumn::make('created_at')
                     ->label(__('supplier.table.created_at'))
                     ->dateTime()
@@ -68,9 +72,9 @@ class SuppliersTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn (Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

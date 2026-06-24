@@ -29,6 +29,7 @@ return [
         'months' => 'Useful life (months)',
         'minimum_value' => 'Final value',
         'method' => 'Method',
+        'models_count' => 'Models Count',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
     ],

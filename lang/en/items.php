@@ -19,6 +19,7 @@ return [
     ],
 
     'form' => [
+        'add' => 'Add item',
         'sections' => [
             'serial_number' => 'Serial number',
             'images' => 'Images',

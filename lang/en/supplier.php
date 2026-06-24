@@ -51,6 +51,7 @@ return [
         'phone' => 'Phone',
         'email' => 'Email address',
         'url' => 'Website URL',
+        'items_count' => 'Items count',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
         'deleted_at' => 'Deleted at',

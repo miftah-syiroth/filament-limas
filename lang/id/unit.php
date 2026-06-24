@@ -21,6 +21,7 @@ return [
     'table' => [
         'id' => 'ID',
         'name' => 'Nama',
+        'models_count' => 'Jumlah Model',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
     ],

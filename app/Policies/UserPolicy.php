@@ -30,6 +30,9 @@ class UserPolicy
         if ($user->hasRole('super_admin')) {
             return $authUser->id == $user->id;
         }
+        if ($user->hasRole('admin')) {
+            return $authUser->id == $user->id;
+        }
         return $authUser->can('Update:User');
     }
 

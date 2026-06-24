@@ -32,6 +32,7 @@ return [
         'months' => 'Masa manfaat (bulan)',
         'minimum_value' => 'Nilai Terendah',
         'method' => 'Metode',
+        'models_count' => 'Jumlah Model',
         'created_at' => 'Dibuat pada',
         'updated_at' => 'Diperbarui pada',
     ],

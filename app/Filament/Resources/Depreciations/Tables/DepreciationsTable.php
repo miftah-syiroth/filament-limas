@@ -10,6 +10,8 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class DepreciationsTable
 {
@@ -29,17 +31,24 @@ class DepreciationsTable
                     ->suffix('%'),
                 TextColumn::make('method')
                     ->label(__('depreciation.table.method')),
+                TextColumn::make('models_count')
+                    ->label(__('depreciation.table.models_count'))
+                    ->counts('models'),
+                TextColumn::make('created_at')
+                    ->label(__('depreciation.table.created_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
-
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

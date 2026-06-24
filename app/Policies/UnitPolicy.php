@@ -34,6 +34,9 @@ class UnitPolicy
 
     public function delete(AuthUser $authUser, Unit $unit): bool
     {
+        if ($unit->models->count() > 0) {
+            return false;
+        }
         return $authUser->can('Delete:Unit');
     }
 
@@ -49,6 +52,9 @@ class UnitPolicy
 
     public function forceDelete(AuthUser $authUser, Unit $unit): bool
     {
+        if ($unit->models->count() > 0) {
+            return false;
+        }
         return $authUser->can('ForceDelete:Unit');
     }
 

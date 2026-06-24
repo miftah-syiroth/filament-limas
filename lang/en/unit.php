@@ -21,6 +21,7 @@ return [
     'table' => [
         'id' => 'ID',
         'name' => 'Name',
+        'models_count' => 'Models Count',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
     ],

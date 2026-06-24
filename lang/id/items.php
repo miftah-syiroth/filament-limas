@@ -19,7 +19,7 @@ return [
     ],
 
     'form' => [
-        'add' => 'Tambah barang',
+        'add' => 'Tambah Barang',
         'sections' => [
             'serial_number' => 'Nomor seri',
             'images' => 'Gambar',

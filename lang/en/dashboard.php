@@ -17,7 +17,7 @@ return [
     ],
     'inventory' => [
         'heading' => 'Inventory',
-        'total_items' => 'Total items',
+        'total_items' => 'Total Stock',
         'total_units' => ':count units',
         'registered_items' => ':count registered items',
         'total_asset_value' => 'Total asset value',

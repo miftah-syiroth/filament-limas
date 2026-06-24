@@ -17,7 +17,7 @@ return [
     ],
     'inventory' => [
         'heading' => 'Inventori',
-        'total_items' => 'Total Item',
+        'total_items' => 'Total Stok',
         'total_units' => ':count Unit',
         'registered_items' => ':count item terdaftar',
         'total_asset_value' => 'Total Nilai Aset',
