@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Locations;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Locations\Pages\CreateLocation;
 use App\Filament\Resources\Locations\Pages\EditLocation;
 use App\Filament\Resources\Locations\Pages\ListLocations;
@@ -44,7 +45,7 @@ class LocationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::MasterData;
 
     public static function form(Schema $schema): Schema
     {

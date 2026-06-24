@@ -192,6 +192,7 @@ return [
             'export' => 'Export',
             'export_completed' => 'Your depreciation items export has completed and :count rows exported.',
             'export_failed' => ':count rows failed to export.',
+            'title' => 'Depreciation Items',
         ],
         'borrowing' => [
             'navigation_label' => 'Borrowing',

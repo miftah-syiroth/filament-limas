@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ItemAudits;
 
 use App\Enums\ItemAuditCondition;
 use App\Enums\ItemAuditResult;
+use App\Enums\NavigationGroup;
 use App\Filament\Exports\ItemAuditExporter;
 use App\Filament\Resources\ItemAudits\Pages\ManageItemAudits;
 use App\Models\ItemAudit;
@@ -47,7 +48,7 @@ class ItemAuditResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reports;
 
     public static function infolist(Schema $schema): Schema
     {

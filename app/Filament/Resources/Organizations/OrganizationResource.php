@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Organizations;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Organizations\Pages\CreateOrganization;
 use App\Filament\Resources\Organizations\Pages\EditOrganization;
 use App\Filament\Resources\Organizations\Pages\ListOrganizations;
@@ -44,7 +45,7 @@ class OrganizationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Master Data';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::MasterData;
 
     public static function form(Schema $schema): Schema
     {

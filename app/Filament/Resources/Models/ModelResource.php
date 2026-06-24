@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Models;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Models\Pages\CreateModel;
 use App\Filament\Resources\Models\Pages\EditModel;
 use App\Filament\Resources\Models\Pages\ListModels;
@@ -44,7 +45,7 @@ class ModelResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reference';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reference;
 
     public static function form(Schema $schema): Schema
     {

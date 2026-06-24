@@ -3,9 +3,11 @@
 namespace App\Filament\Pages;
 
 use App\Enums\ItemStatus;
+use App\Enums\NavigationGroup;
 use App\Filament\Exports\DepreciationItemExporter;
 use App\Models\Item;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Actions\ExportAction;
@@ -20,30 +22,35 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
-use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Illuminate\Contracts\Support\Htmlable;
 
 class DepreciationItemsPage extends Page implements HasActions, HasSchemas, HasTable
 {
+    use HasPageShield;
     use InteractsWithActions;
     use InteractsWithSchemas;
     use InteractsWithTable;
-    use HasPageShield;
 
     protected string $view = 'filament.pages.depreciation-items-page';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
+
+    public function getTitle(): string | Htmlable
+    {
+        return __('items.pages.depreciation_items.title');
+    }
 
     public static function getNavigationLabel(): string
     {
         return __('items.pages.depreciation_items.navigation_label');
     }
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reports;
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(function (Builder $query) {
+            ->query(function () {
                 return
                     Item::query()
                         ->where(function (Builder $query) {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Rooms;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Rooms\Pages\CreateRoom;
 use App\Filament\Resources\Rooms\Pages\EditRoom;
 use App\Filament\Resources\Rooms\Pages\ListRooms;
@@ -27,7 +28,7 @@ class RoomResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Master Data';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::MasterData;
 
     public static function getModelLabel(): string
     {

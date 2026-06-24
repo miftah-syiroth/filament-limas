@@ -193,6 +193,7 @@ return [
             'export' => 'Ekspor',
             'export_completed' => 'Ekspor barang depresiasi selesai, :count baris diekspor.',
             'export_failed' => ':count baris gagal diekspor.',
+            'title' => 'Depresiasi Barang',
         ],
         'borrowing' => [
             'navigation_label' => 'Peminjaman',

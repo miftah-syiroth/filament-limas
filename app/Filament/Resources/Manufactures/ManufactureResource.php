@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Manufactures;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Manufactures\Pages\CreateManufacture;
 use App\Filament\Resources\Manufactures\Pages\EditManufacture;
 use App\Filament\Resources\Manufactures\Pages\ListManufactures;
@@ -44,7 +45,7 @@ class ManufactureResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Reference';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reference;
 
     public static function form(Schema $schema): Schema
     {

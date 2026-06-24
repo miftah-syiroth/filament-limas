@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Suppliers;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Suppliers\Pages\CreateSupplier;
 use App\Filament\Resources\Suppliers\Pages\EditSupplier;
 use App\Filament\Resources\Suppliers\Pages\ListSuppliers;
@@ -44,7 +45,7 @@ class SupplierResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Reference';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reference;
 
     public static function form(Schema $schema): Schema
     {

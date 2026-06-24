@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Pages\Auth\EditProfile;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -41,10 +42,10 @@ class AdminPanelProvider extends PanelProvider
                 // FilamentInfoWidget::class,
             ])
             ->navigationGroups([
-                'Reference',
-                'Reports',
-                'Administration',
-                'Master Data',
+                NavigationGroup::Reference->getLabel(),
+                NavigationGroup::Reports->getLabel(),
+                NavigationGroup::Administration->getLabel(),
+                NavigationGroup::MasterData->getLabel(),
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -59,7 +60,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
-                    ->navigationGroup('Administration')
+                    ->navigationGroup(NavigationGroup::Administration)
                     ->navigationSort(7)
                     ->globallySearchable(false),
             ])

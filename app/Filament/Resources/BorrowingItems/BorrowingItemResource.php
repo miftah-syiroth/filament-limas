@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BorrowingItems;
 
 use App\Enums\ItemAuditCondition;
+use App\Enums\NavigationGroup;
 use App\Filament\Exports\BorrowingItemExporter;
 use App\Filament\Resources\BorrowingItems\Pages\ManageBorrowingItems;
 use App\Models\BorrowingItem;
@@ -44,7 +45,7 @@ class BorrowingItemResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reports;
 
     public static function infolist(Schema $schema): Schema
     {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Departments;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Departments\Pages\CreateDepartment;
 use App\Filament\Resources\Departments\Pages\EditDepartment;
 use App\Filament\Resources\Departments\Pages\ListDepartments;
@@ -44,7 +45,7 @@ class DepartmentResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::MasterData;
 
     public static function form(Schema $schema): Schema
     {

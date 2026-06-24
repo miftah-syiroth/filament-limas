@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Units;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Units\Pages\ManageUnits;
 use App\Models\Unit;
 use BackedEnum;
@@ -44,7 +45,7 @@ class UnitResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Master Data';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::MasterData;
 
     public static function form(Schema $schema): Schema
     {

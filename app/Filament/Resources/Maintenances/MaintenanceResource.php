@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Maintenances;
 
 use App\Enums\MaintenanceStatus;
 use App\Enums\MaintenanceType;
+use App\Enums\NavigationGroup;
 use App\Filament\Exports\MaintenanceExporter;
 use App\Filament\Resources\Maintenances\Pages\ManageMaintenances;
 use App\Models\Maintenance;
@@ -45,7 +46,7 @@ class MaintenanceResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reports;
 
     public static function infolist(Schema $schema): Schema
     {

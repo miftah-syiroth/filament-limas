@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ActivityLogs;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\ActivityLogs\Pages\ManageActivityLogs;
 use App\Models\ActivityLog;
 use BackedEnum;
@@ -38,7 +39,7 @@ class ActivityLogResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'log_name';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reports';
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Reports;
 
     public static function infolist(Schema $schema): Schema
     {
