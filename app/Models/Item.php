@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -19,7 +20,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Item extends BaseModel implements HasMedia
 {
-    use HasUuids, InteractsWithMedia, LogsActivity;
+    use HasUuids, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'model_id',
@@ -190,6 +191,11 @@ class Item extends BaseModel implements HasMedia
         return $this->belongsTo(User::class);
     }
 
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
+
     public function stockMovements(): HasMany
     {
         return $this->hasMany(StockMovement::class, 'item_id');
@@ -239,10 +245,5 @@ class Item extends BaseModel implements HasMedia
     {
         return $this->hasMany(BorrowingItem::class, 'item_id')
             ->whereNull('checked_in_at');
-    }
-
-    public function room(): BelongsTo
-    {
-        return $this->belongsTo(Room::class);
     }
 }

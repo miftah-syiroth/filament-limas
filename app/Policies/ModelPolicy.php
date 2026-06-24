@@ -34,6 +34,9 @@ class ModelPolicy
 
     public function delete(AuthUser $authUser, Model $model): bool
     {
+        if ($model->items->count() > 0) {
+            return false;
+        }
         return $authUser->can('Delete:Model');
     }
 
@@ -49,6 +52,9 @@ class ModelPolicy
 
     public function forceDelete(AuthUser $authUser, Model $model): bool
     {
+        if ($model->items->count() > 0) {
+            return false;
+        }
         return $authUser->can('ForceDelete:Model');
     }
 

@@ -19,6 +19,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\TrashedFilter;
 
 class ItemsTable
 {
@@ -134,6 +135,7 @@ class ItemsTable
                     ->relationship('supplier', 'name')
                     ->searchable()
                     ->preload(),
+                TrashedFilter::make()
 
             ])
             ->filtersFormColumns(3)
