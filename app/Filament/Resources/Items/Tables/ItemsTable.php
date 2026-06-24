@@ -145,8 +145,7 @@ class ItemsTable
                     ->label(__('items.table.supplier'))
                     ->relationship('supplier', 'name')
                     ->searchable()
-                    ->preload(),
-                TrashedFilter::make()
+                    ->preload()
             ])
             ->filtersFormColumns(3)
             ->recordActions([
@@ -169,12 +168,6 @@ class ItemsTable
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
                         ->action(fn(Collection $records) => $records->each->delete()),
-                    ForceDeleteBulkAction::make()
-                        ->authorizeIndividualRecords('forceDelete')
-                        ->action(fn(Collection $records) => $records->each->forceDelete()),
-                    RestoreBulkAction::make()
-                        ->authorizeIndividualRecords('restore')
-                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

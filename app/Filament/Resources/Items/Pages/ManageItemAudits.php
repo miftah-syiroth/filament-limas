@@ -9,7 +9,10 @@ use App\Enums\ItemStatus;
 use App\Filament\Resources\Items\ItemResource;
 use App\Models\ItemStateLog;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -24,6 +27,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 
 class ManageItemAudits extends ManageRelatedRecords
@@ -144,6 +148,14 @@ class ManageItemAudits extends ManageRelatedRecords
                             ]);
                         }
                     }),
+
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
+                ]),
             ]);
     }
 }

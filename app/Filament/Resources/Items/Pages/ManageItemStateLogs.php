@@ -9,6 +9,8 @@ use App\Models\ItemStateLog;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\TextEntry;
@@ -21,6 +23,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class ManageItemStateLogs extends ManageRelatedRecords
 {
@@ -329,6 +332,13 @@ class ManageItemStateLogs extends ManageRelatedRecords
 
                         ]),
                     ]),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
+                ]),
             ]);
     }
 }

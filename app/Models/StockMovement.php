@@ -6,13 +6,14 @@ use App\Enums\StockMovementType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class StockMovement extends Model
 {
-    use HasUuids, LogsActivity;
+    use HasUuids, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'item_id',
