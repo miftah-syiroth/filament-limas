@@ -27,7 +27,7 @@ class RoomForm
                     ->label(__('room.form.capacity'))
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->minValue(1),
                 Textarea::make('notes')
                     ->label(__('room.form.notes'))
                     ->columnSpanFull(),

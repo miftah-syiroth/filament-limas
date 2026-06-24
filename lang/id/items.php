@@ -93,6 +93,7 @@ return [
         'name' => 'Nama',
         'type' => 'Tipe',
         'category' => 'Kategori',
+        'manufacturer' => 'Pabrikan',
         'location' => 'Lokasi',
         'total' => 'Total',
         'available' => 'Tersedia',

@@ -34,6 +34,18 @@ class ItemPolicy
 
     public function delete(AuthUser $authUser, Item $item): bool
     {
+        if ($item->stateLogs->count() > 0) {
+            return false;
+        }
+        if ($item->audits->count() > 0) {
+            return false;
+        }
+        if ($item->maintenances->count() > 0) {
+            return false;
+        }
+        if ($item->stockMovementBalance() > 0) {
+            return false;
+        }
         return $authUser->can('Delete:Item');
     }
 
@@ -49,6 +61,18 @@ class ItemPolicy
 
     public function forceDelete(AuthUser $authUser, Item $item): bool
     {
+        if ($item->stateLogs->count() > 0) {
+            return false;
+        }
+        if ($item->audits->count() > 0) {
+            return false;
+        }
+        if ($item->maintenances->count() > 0) {
+            return false;
+        }
+        if ($item->stockMovementBalance() > 0) {
+            return false;
+        }
         return $authUser->can('ForceDelete:Item');
     }
 

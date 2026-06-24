@@ -93,6 +93,7 @@ return [
         'name' => 'Name',
         'type' => 'Type',
         'category' => 'Category',
+        'manufacturer' => 'Manufacturer',
         'location' => 'Location',
         'total' => 'Total',
         'available' => 'Available',

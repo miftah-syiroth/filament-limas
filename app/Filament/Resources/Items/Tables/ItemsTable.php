@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Items\Tables;
 use App\Enums\ItemStatus;
 use App\Filament\Exports\ItemExporter;
 use App\Filament\Imports\ItemImporter;
+use App\Filament\Resources\Models\ModelResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -20,6 +21,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class ItemsTable
 {
@@ -36,9 +39,12 @@ class ItemsTable
                     ->searchable(),
                 TextColumn::make('model.category.name')
                     ->label(__('items.table.category')),
+                TextColumn::make('model.manufacture.name')
+                    ->label(__('items.table.manufacturer')),
                 TextColumn::make('model.name')
                     ->label(__('items.table.model'))
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn(Model $record): string => ModelResource::getUrl('view', ['record' => $record->model])),
                 TextColumn::make('model.category.type')
                     ->label(__('items.table.type'))
                     ->badge()
@@ -107,6 +113,11 @@ class ItemsTable
                     ->relationship('model.category', 'name')
                     ->searchable()
                     ->preload(),
+                SelectFilter::make('manufacturer_name')
+                    ->label(__('items.table.manufacturer'))
+                    ->relationship('model.manufacture', 'name')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('model_name')
                     ->label(__('items.table.model'))
                     ->relationship(
@@ -136,7 +147,6 @@ class ItemsTable
                     ->searchable()
                     ->preload(),
                 TrashedFilter::make()
-
             ])
             ->filtersFormColumns(3)
             ->recordActions([
@@ -156,9 +166,15 @@ class ItemsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
+                    ForceDeleteBulkAction::make()
+                        ->authorizeIndividualRecords('forceDelete')
+                        ->action(fn(Collection $records) => $records->each->forceDelete()),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore')
+                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

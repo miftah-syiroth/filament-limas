@@ -17,6 +17,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -45,7 +46,18 @@ class ManageItemAudits extends ManageRelatedRecords
                 DatePicker::make('audited_at')
                     ->label(__('items.pages.audits.audited_at'))
                     ->required()
-                    ->default(now()->format('m/d/Y')),
+                    ->default(now()->format('m/d/Y'))
+                    ->live()
+                    ->afterStateUpdated(function (Set $set, $state): void {
+                        $auditInterval = $this->getOwnerRecord()?->model?->audit_interval ?? 3;
+                        // jika state adalah null, maka set next audit date ke null
+                        if (blank($state)) {
+                            $set('next_audit_at', Carbon::now()->addMonths($auditInterval));
+                            return;
+                        }
+
+                        $set('next_audit_at', Carbon::parse($state)->addMonths($auditInterval));
+                    }),
                 Select::make('condition')
                     ->options(ItemAuditCondition::class)
                     ->native(false)

@@ -7,6 +7,7 @@ return [
     'navigation_label' => 'Depreciation',
 
     'form' => [
+        'add' => 'Add Depreciation',
         'name' => 'Name',
         'months' => 'Useful life (months)',
         'minimum_value' => 'Final value (%)',

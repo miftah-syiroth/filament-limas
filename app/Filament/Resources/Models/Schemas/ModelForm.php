@@ -171,7 +171,7 @@ class ModelForm
                                     ->hiddenLabel()
                                     ->multiple()
                                     ->image()
-                                    ->maxSize(1024)
+                                    // ->maxSize(1024)
                                     ->maxFiles(3)
                                     ->columnSpanFull(),
                             ]),

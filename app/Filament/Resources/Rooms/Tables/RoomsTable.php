@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
@@ -17,11 +18,11 @@ class RoomsTable
     {
         return $table
             ->columns([
-                TextColumn::make('location.name')
-                    ->label(__('room.table.location'))
-                    ->searchable(),
                 TextColumn::make('name')
                     ->label(__('room.table.name'))
+                    ->searchable(),
+                TextColumn::make('location.name')
+                    ->label(__('room.table.location'))
                     ->searchable(),
                 TextColumn::make('capacity')
                     ->label(__('room.table.capacity'))
@@ -40,6 +41,13 @@ class RoomsTable
             ->recordActions([
                 ViewAction::make()->label(''),
                 EditAction::make()->label(''),
+            ])
+            ->filters([
+                SelectFilter::make('location_name')
+                    ->label(__('room.table.location'))
+                    ->relationship('location', 'name')
+                    ->preload()
+                    ->native(false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

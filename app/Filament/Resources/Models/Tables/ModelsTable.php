@@ -37,6 +37,8 @@ class ModelsTable
                 TextColumn::make('name')
                     ->label(__('model.table.name'))
                     ->searchable(),
+                TextColumn::make('manufacture.name')
+                    ->label(__('model.table.manufacturer')),
                 TextColumn::make('model_number')
                     ->label(__('model.table.model_number'))
                     ->searchable()
@@ -48,8 +50,7 @@ class ModelsTable
                     ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('manufacture.name')
-                    ->label(__('model.table.manufacturer')),
+
                 TextColumn::make('depreciation')
                     ->label(__('model.table.depreciation'))
                     ->state(function (Model $model): ?string {
