@@ -29,7 +29,7 @@ return [
     'infolist' => [
         'id' => 'ID',
         'item' => 'Item',
-        'status' => 'Status',
+        'status' => 'Status Barang',
         'location_verified' => 'Lokasi sesuai',
         'notes' => 'Catatan',
         'audited_at' => 'Tanggal audit',
@@ -43,7 +43,9 @@ return [
 
     'table' => [
         'code' => 'Kode',
-        'item' => 'Item',
+        'item' => 'Nomor Seri',
+        'model' => 'Model',
+        'category' => 'Kategori',
         'audited_at' => 'Tanggal audit',
         'next_audit_at' => 'Audit berikutnya',
         'location_verified' => 'Lokasi sesuai',

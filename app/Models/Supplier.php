@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
@@ -17,7 +17,7 @@ class Supplier extends Model
         'address',
         'address2',
         'city',
-        'state',
+        'province',
         'country',
         'zip',
         'phone',
@@ -25,6 +25,21 @@ class Supplier extends Model
         'url',
         'notes',
     ];
+
+    public function relationCountry(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country', 'code');
+    }
+
+    public function relationProvince(): BelongsTo
+    {
+        return $this->belongsTo(Province::class, 'province', 'code');
+    }
+
+    public function relationCity(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city', 'code');
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

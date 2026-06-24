@@ -7,6 +7,7 @@ use App\Enums\ItemAuditResult;
 use App\Enums\NavigationGroup;
 use App\Filament\Exports\ItemAuditExporter;
 use App\Filament\Resources\ItemAudits\Pages\ManageItemAudits;
+use App\Filament\Resources\Items\ItemResource;
 use App\Models\ItemAudit;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -54,13 +55,11 @@ class ItemAuditResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('id')
-                    ->label(__('item-audit.infolist.id')),
                 TextEntry::make('item.name')
                     ->label(__('item-audit.infolist.item')),
-                TextEntry::make('status')
+                TextEntry::make('item.status')
                     ->label(__('item-audit.infolist.status'))
-                    ->placeholder('-'),
+                    ->badge(),
                 IconEntry::make('location_verified')
                     ->label(__('item-audit.infolist.location_verified'))
                     ->boolean(),
@@ -70,15 +69,11 @@ class ItemAuditResource extends Resource
                     ->columnSpanFull(),
                 TextEntry::make('audited_at')
                     ->label(__('item-audit.infolist.audited_at'))
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('created_at')
-                    ->label(__('item-audit.infolist.created_at'))
-                    ->dateTime()
+                    ->date('j M Y')
                     ->placeholder('-'),
                 TextEntry::make('next_audit_at')
                     ->label(__('item-audit.infolist.next_audit_at'))
-                    ->dateTime()
+                    ->date('j M Y')
                     ->placeholder('-'),
                 TextEntry::make('condition')
                     ->label(__('item-audit.infolist.condition'))
@@ -94,7 +89,6 @@ class ItemAuditResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->recordUrl(null)
             ->recordTitleAttribute('id')
             ->defaultSort('audited_at', direction: 'desc')
             ->columns([
@@ -105,14 +99,20 @@ class ItemAuditResource extends Resource
                     }),
                 TextColumn::make('item.serial_number')
                     ->label(__('item-audit.table.item'))
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn (ItemAudit $record): string => ItemResource::getUrl('view', ['record' => $record->item])),
+                TextColumn::make('item.model.name')
+                    ->label(__('item-audit.table.model')),
+                TextColumn::make('item.model.category.name')
+                    ->label(__('item-audit.table.category'))
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('audited_at')
                     ->label(__('item-audit.table.audited_at'))
-                    ->dateTime('d M Y')
+                    ->date('j M Y')
                     ->sortable(),
                 TextColumn::make('next_audit_at')
                     ->label(__('item-audit.table.next_audit_at'))
-                    ->dateTime('d M Y')
+                    ->date('j M Y')
                     ->sortable(),
                 IconColumn::make('location_verified')
                     ->label(__('item-audit.table.location_verified'))
@@ -133,8 +133,19 @@ class ItemAuditResource extends Resource
                     ->label(__('item-audit.filters.result'))
                     ->multiple()
                     ->options(ItemAuditResult::class),
+                SelectFilter::make('category_name')
+                    ->label(__('item-audit.table.category'))
+                    ->relationship('item.model.category', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('model_name')
+                    ->label(__('item-audit.table.model'))
+                    ->relationship('item.model', 'name')
+                    ->searchable()
+                    ->preload(),
 
             ])
+            ->filtersFormColumns(3)
             ->recordActions([
                 ViewAction::make()
                     ->label(''),

@@ -28,15 +28,15 @@ class SuppliersTable
                     ->label(__('supplier.table.address2'))
                     ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('city')
+                TextColumn::make('relationCity.name')
                     ->label(__('supplier.table.city'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('state')
+                TextColumn::make('relationProvince.name')
                     ->label(__('supplier.table.province'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('country')
+                TextColumn::make('relationCountry.name')
                     ->label(__('supplier.table.country'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),

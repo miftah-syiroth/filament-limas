@@ -43,7 +43,9 @@ return [
 
     'table' => [
         'code' => 'Code',
-        'item' => 'Item',
+        'item' => 'Serial number',
+        'model' => 'Model',
+        'category' => 'Category',
         'audited_at' => 'Audit date',
         'next_audit_at' => 'Next audit',
         'location_verified' => 'Location matches',

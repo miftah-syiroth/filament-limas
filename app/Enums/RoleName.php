@@ -14,9 +14,9 @@ enum RoleName: string implements HasLabel
     public function getLabel(): string|Htmlable|null
     {
         return match ($this) {
-            self::SuperAdmin => __('filament-shield::filament-shield.field.name'),
-            self::Admin => __('filament-shield::filament-shield.field.name'),
-            self::Operator => __('filament-shield::filament-shield.field.name'),
+            self::SuperAdmin => 'Super Admin',
+            self::Admin => 'Admin',
+            self::Operator => 'Operator',
             default => $this->value,
         };
     }

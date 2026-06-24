@@ -29,7 +29,6 @@ class ModelsTable
             ->query(fn (Builder $query): Builder => ModelsModel::query()
                 ->withSum('itemsInInventory as items_quantity', 'quantity')
                 ->orderBy('name'))
-            ->recordUrl(null)
             ->columns([
                 SpatieMediaLibraryImageColumn::make('images')
                     ->label(__('model.table.images'))
@@ -47,7 +46,7 @@ class ModelsTable
                     ->label(__('model.table.category_type'))
                     ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : '')
                     ->badge()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('manufacture.name')
                     ->label(__('model.table.manufacturer')),
                 TextColumn::make('depreciation')
@@ -89,32 +88,35 @@ class ModelsTable
             ->filters([
                 SelectFilter::make('type')
                     ->label(__('model.table.category_type'))
-                    ->multiple()
                     ->options(CategoryType::class)
+                    ->native(false)
                     ->query(function (Builder $query, array $data): Builder {
-                        $types = $data['values'] ?? [];
-                        if (empty($types)) {
+                        $type = $data['value'] ?? null;
+                        if (empty($type)) {
                             return $query;
                         }
 
-                        return $query->whereHas('category', function (Builder $query) use ($types): Builder {
-                            return $query->whereIn('type', $types);
+                        return $query->whereHas('category', function (Builder $query) use ($type): Builder {
+                            return $query->where('type', $type);
                         });
                     }),
                 SelectFilter::make('category_name')
                     ->label(__('model.table.category'))
                     ->relationship('category', 'name')
-                    ->multiple(),
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('manufacture_name')
                     ->label(__('model.table.manufacturer'))
                     ->relationship('manufacture', 'name')
-                    ->multiple(),
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('depreciation_name')
                     ->label(__('model.table.depreciation'))
-                    ->relationship('depreciation', 'name', hasEmptyOption: true)
-                    ->emptyRelationshipOptionLabel(__('model.table.no_depreciation'))
-                    ->multiple(),
+                    ->relationship('depreciation', 'name')
+                    ->searchable()
+                    ->preload(),
             ])
+            ->filtersFormColumns(3)
             ->recordActions([
                 ViewAction::make()
                     ->label(''),

@@ -28,7 +28,7 @@ class CategoriesTable
                     ->searchable(),
                 TextColumn::make('type')
                     ->label(__('category.table.type'))
-                    ->formatStateUsing(fn (?CategoryType $state): string => $state instanceof CategoryType ? (string) $state->getLabel() : ''),
+                    ->badge(),
                 TextColumn::make('models_count')
                     ->label(__('category.table.models_count'))
                     ->counts('models'),
@@ -41,15 +41,14 @@ class CategoriesTable
             ->filters([
                 SelectFilter::make('type')
                     ->label(__('category.table.type'))
-                    ->multiple()
                     ->options(CategoryType::class)
+                    ->native(false)
                     ->query(function (Builder $query, array $data): Builder {
-                        $types = $data['values'] ?? [];
-                        if (empty($types)) {
+                        $type = $data['value'] ?? null;
+                        if (empty($type)) {
                             return $query;
                         }
-
-                        return $query->whereIn('type', $types);
+                        return $query->where('type', $type);
                     }),
             ])
             ->recordActions([

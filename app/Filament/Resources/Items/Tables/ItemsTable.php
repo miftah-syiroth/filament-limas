@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Items\Tables;
 
-use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
 use App\Filament\Exports\ItemExporter;
 use App\Filament\Imports\ItemImporter;
@@ -20,7 +19,6 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class ItemsTable
 {
@@ -35,11 +33,10 @@ class ItemsTable
                 TextColumn::make('serial_number')
                     ->label(__('items.table.serial_number'))
                     ->searchable(),
+                TextColumn::make('model.category.name')
+                    ->label(__('items.table.category')),
                 TextColumn::make('model.name')
                     ->label(__('items.table.model'))
-                    ->searchable(),
-                TextColumn::make('model.category.name')
-                    ->label(__('items.table.category'))
                     ->searchable(),
                 TextColumn::make('model.category.type')
                     ->label(__('items.table.type'))
@@ -51,7 +48,7 @@ class ItemsTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('location.name')
                     ->label(__('items.table.location'))
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('department.name')
                     ->label(__('items.table.department'))
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -104,50 +101,42 @@ class ItemsTable
                 SelectFilter::make('status')
                     ->multiple()
                     ->options(ItemStatus::class),
-                SelectFilter::make('type')
-                    ->label(__('items.table.category_type'))
-                    ->multiple()
-                    ->options(CategoryType::class)
-                    ->query(function (Builder $query, array $data): Builder {
-                        $types = $data['values'] ?? [];
-                        if (empty($types)) {
-                            return $query;
-                        }
-
-                        return $query->whereHas('model', function (Builder $q) use ($types): Builder {
-                            return $q->whereHas('category', fn(Builder $q): Builder => $q->whereIn('type', $types));
-                        });
-                    }),
+                SelectFilter::make('category_name')
+                    ->label(__('items.table.category'))
+                    ->relationship('model.category', 'name')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('model_name')
                     ->label(__('items.table.model'))
-                    ->relationship('model', 'name')
-                    ->multiple()
+                    ->relationship(
+                        'model',
+                        'name'
+                    )
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('department_name')
+                    ->label(__('items.table.department'))
+                    ->relationship('department', 'name')
                     ->searchable()
                     ->preload(),
                 SelectFilter::make('location_name')
                     ->label(__('items.table.location'))
                     ->relationship('location', 'name')
-                    ->multiple(),
-                SelectFilter::make('department_name')
-                    ->label(__('items.table.department'))
-                    ->relationship('department', 'name')
-                    ->emptyRelationshipOptionLabel(__('items.table.no_department'))
                     ->searchable()
-                    ->preload()
-                    ->multiple(),
+                    ->preload(),
                 SelectFilter::make('room_name')
                     ->label(__('items.table.room'))
                     ->relationship('room', 'name')
-                    ->emptyRelationshipOptionLabel(__('items.table.no_room'))
                     ->searchable()
-                    ->preload()
-                    ->multiple(),
+                    ->preload(),
                 SelectFilter::make('supplier_name')
                     ->label(__('items.table.supplier'))
                     ->relationship('supplier', 'name')
-                    ->emptyRelationshipOptionLabel(__('items.table.no_supplier')),
+                    ->searchable()
+                    ->preload(),
 
             ])
+            ->filtersFormColumns(3)
             ->recordActions([
                 ViewAction::make()->label(''),
                 EditAction::make()->label(''),

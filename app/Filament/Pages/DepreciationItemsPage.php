@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Enums\ItemStatus;
 use App\Enums\NavigationGroup;
 use App\Filament\Exports\DepreciationItemExporter;
+use App\Filament\Resources\Items\ItemResource;
 use App\Models\Item;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
@@ -71,18 +72,17 @@ class DepreciationItemsPage extends Page implements HasActions, HasSchemas, HasT
             ->columns([
                 TextColumn::make('serial_number')
                     ->label(__('items.table.serial_number'))
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn (Item $record): string => ItemResource::getUrl('view', ['record' => $record])),
                 TextColumn::make('model.name')
-                    ->label(__('items.table.model'))
-                    ->searchable(),
+                    ->label(__('items.table.model')),
                 TextColumn::make('model.category.name')
                     ->label(__('items.table.category'))
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('status')
                     ->label(__('items.table.status'))
                     ->badge()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('purchase_date')
                     ->label(__('items.table.purchase_date'))
                     ->date('d M Y'),
@@ -117,14 +117,24 @@ class DepreciationItemsPage extends Page implements HasActions, HasSchemas, HasT
             ->filters([
                 SelectFilter::make('status')
                     ->multiple()
-                    ->options(ItemStatus::class),
+                    ->options(
+                        collect(ItemStatus::cases())
+                            ->reject(fn (ItemStatus $status) => in_array($status, ItemStatus::excludedFromInventory(), true))
+                            ->mapWithKeys(fn (ItemStatus $status) => [$status->value => $status->getLabel()])
+                            ->toArray()
+                    ),
+                SelectFilter::make('category_name')
+                    ->label(__('items.table.category'))
+                    ->relationship('model.category', 'name')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('model_name')
                     ->label(__('items.table.model'))
                     ->relationship('model', 'name')
-                    ->multiple()
                     ->searchable()
                     ->preload(),
             ])
+            ->filtersFormColumns(3)
             ->headerActions([
                 ExportAction::make()
                     ->exporter(DepreciationItemExporter::class)

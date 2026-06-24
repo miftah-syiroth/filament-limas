@@ -28,7 +28,7 @@ class SupplierInfolist
                         TextEntry::make('city')
                             ->label(__('supplier.infolist.city'))
                             ->placeholder('-'),
-                        TextEntry::make('state')
+                        TextEntry::make('province')
                             ->label(__('supplier.infolist.province'))
                             ->placeholder('-'),
                         TextEntry::make('country')

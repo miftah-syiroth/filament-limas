@@ -39,17 +39,6 @@ class UsersTable
                 TextColumn::make('roles.name')
                     ->label(__('user.table.roles'))
                     ->badge(),
-                // ToggleColumn::make('email_verified_at')
-                //     ->label(__('user.table.email_verified'))
-                //     ->disabled(fn ($record) => Gate::denies('update', $record))
-                //     ->alignCenter()
-                //     ->getStateUsing(fn ($record): bool => $record->email_verified_at !== null)
-                //     ->updateStateUsing(function ($record, bool $state): void {
-                //         Gate::authorize('update', $record);
-                //         $record->update([
-                //             'email_verified_at' => $state ? now() : null,
-                //         ]);
-                //     }),
                 TextColumn::make('created_at')
                     ->label(__('user.table.created_at'))
                     ->dateTime()
@@ -68,8 +57,7 @@ class UsersTable
             ->filters([
                 SelectFilter::make('roles_name')
                     ->label(__('user.table.roles'))
-                    ->relationship('roles', 'name', hasEmptyOption: true)
-                    ->emptyRelationshipOptionLabel(__('user.table.no_role'))
+                    ->relationship('roles', 'name')
                     ->multiple(),
             ])
             ->recordActions([
