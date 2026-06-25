@@ -5,7 +5,10 @@ namespace App\Filament\Resources\Items\Pages;
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -16,6 +19,8 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Database\Eloquent\Collection;
 
 class ManageStockMovements extends ManageRelatedRecords
 {
@@ -54,7 +59,7 @@ class ManageStockMovements extends ManageRelatedRecords
                     ->required()
                     ->numeric()
                     ->rules([
-                        fn (Get $get) => function (string $attribute, $value, $fail) use ($get) {
+                        fn(Get $get) => function (string $attribute, $value, $fail) use ($get) {
                             $value = (int) $value;
                             if ($value === 0) {
                                 $fail(__('items.pages.stock_movements.validation.quantity_not_zero'));
@@ -94,10 +99,29 @@ class ManageStockMovements extends ManageRelatedRecords
                 TextColumn::make('created_at')
                     ->dateTime('j M Y H:i')
                     ->sortable(),
+                TextColumn::make('deleted_at')
+                    ->label(__('items.table.deleted_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                TrashedFilter::make()
+                    ->native(false),
             ])
             ->headerActions([
                 CreateAction::make()
                     ->authorize('create', $this->getOwnerRecord()),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore')
+                        ->action(fn(Collection $records) => $records->each->restore()),
+                ]),
             ]);
     }
 }

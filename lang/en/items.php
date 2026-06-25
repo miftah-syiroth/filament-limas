@@ -115,6 +115,7 @@ return [
         'no_department' => 'No department',
         'no_room' => 'No room',
         'no_supplier' => 'No supplier',
+        'deleted_at' => 'Deleted',
     ],
 
     'pages' => [

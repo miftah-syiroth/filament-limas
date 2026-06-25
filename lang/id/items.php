@@ -115,6 +115,7 @@ return [
         'no_department' => 'Tidak ada departemen',
         'no_room' => 'Tidak ada ruangan',
         'no_supplier' => 'Tidak ada pemasok',
+        'deleted_at' => 'Dihapus',
     ],
 
     'pages' => [

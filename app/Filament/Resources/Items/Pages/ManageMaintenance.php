@@ -15,7 +15,6 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -27,6 +26,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -58,11 +58,11 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->required(),
                 DatePicker::make('started_at')
                     ->label(__('items.pages.maintenance.started_at'))
-                    ->required(fn (Get $get): bool => $get('status') === MaintenanceStatus::Completed)
+                    ->required(fn(Get $get): bool => $get('status') === MaintenanceStatus::Completed)
                     ->afterOrEqual('reported_at'),
                 DatePicker::make('completed_at')
                     ->label(__('items.pages.maintenance.completed_at'))
-                    ->required(fn (Get $get): bool => $get('status') === MaintenanceStatus::Completed)
+                    ->required(fn(Get $get): bool => $get('status') === MaintenanceStatus::Completed)
                     ->afterOrEqual('started_at'),
                 Select::make('item_audit_id')
                     ->label(__('items.pages.maintenance.audit'))
@@ -70,11 +70,11 @@ class ManageMaintenance extends ManageRelatedRecords
                         $ownerRecord = $this->getOwnerRecord();
 
                         return ItemAudit::query()
-                            ->when($ownerRecord, fn (Builder $q) => $q->where('item_id', $ownerRecord->getKey()))
+                            ->when($ownerRecord, fn(Builder $q) => $q->where('item_id', $ownerRecord->getKey()))
                             ->latest('audited_at')
                             ->limit(10)
                             ->get()
-                            ->mapWithKeys(fn (ItemAudit $audit) => [$audit->id => $audit->code])
+                            ->mapWithKeys(fn(ItemAudit $audit) => [$audit->id => $audit->code])
                             ->all();
                     })
                     ->searchable()
@@ -82,15 +82,15 @@ class ManageMaintenance extends ManageRelatedRecords
                         $ownerRecord = $this->getOwnerRecord();
 
                         return ItemAudit::query()
-                            ->when($ownerRecord, fn (Builder $q) => $q->where('item_id', $ownerRecord->getKey()))
+                            ->when($ownerRecord, fn(Builder $q) => $q->where('item_id', $ownerRecord->getKey()))
                             ->where('id', 'ilike', "%{$search}%")
                             ->latest('audited_at')
                             ->limit(50)
                             ->get()
-                            ->mapWithKeys(fn (ItemAudit $audit) => [$audit->id => $audit->code])
+                            ->mapWithKeys(fn(ItemAudit $audit) => [$audit->id => $audit->code])
                             ->all();
                     })
-                    ->getOptionLabelUsing(fn (?string $value): ?string => $value ? ItemAudit::find($value)?->code : null)
+                    ->getOptionLabelUsing(fn(?string $value): ?string => $value ? ItemAudit::find($value)?->code : null)
                     ->native(false),
                 Select::make('status')
                     ->options(MaintenanceStatus::class)
@@ -112,7 +112,7 @@ class ManageMaintenance extends ManageRelatedRecords
                         Select::make('from_status')
                             ->label(__('items.pages.maintenance.status_from'))
                             ->options(ItemStatus::class)
-                            ->default(fn (): ?string => $this->getOwnerRecord()?->status?->value)
+                            ->default(fn(): ?string => $this->getOwnerRecord()?->status?->value)
                             ->disabled(),
                         Select::make('to_status')
                             ->label(__('items.pages.maintenance.status_to'))
@@ -132,7 +132,7 @@ class ManageMaintenance extends ManageRelatedRecords
                 TextColumn::make('itemAudit.code')
                     ->label(__('items.pages.maintenance.audit_code'))
                     ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->whereHas('itemAudit', fn (Builder $q) => $q->where('id', 'ilike', "%{$search}%"));
+                        return $query->whereHas('itemAudit', fn(Builder $q) => $q->where('id', 'ilike', "%{$search}%"));
                     }),
                 TextColumn::make('reported_at')
                     ->label(__('items.pages.maintenance.reported_at'))
@@ -156,6 +156,15 @@ class ManageMaintenance extends ManageRelatedRecords
                 TextColumn::make('notes')
                     ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->label(__('items.table.deleted_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                TrashedFilter::make()
+                    ->native(false),
             ])
             ->headerActions([
                 CreateAction::make()
@@ -179,7 +188,7 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->hiddenLabel()
                     ->closeModalByClickingAway(false)
                     ->label(__('items.pages.maintenance.edit'))
-                    ->fillForm(fn ($record): array => [
+                    ->fillForm(fn($record): array => [
                         ...$record->toArray(),
                         'from_status' => $this->getOwnerRecord()?->status?->value,
                     ])
@@ -203,6 +212,9 @@ class ManageMaintenance extends ManageRelatedRecords
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
                         ->action(fn(Collection $records) => $records->each->delete()),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore')
+                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

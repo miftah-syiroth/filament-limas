@@ -98,6 +98,12 @@ class ItemsTable
                     ->alignCenter()
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
+                    // deleted_at
+                TextColumn::make('deleted_at')
+                    ->label(__('card.table.deleted_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -140,7 +146,9 @@ class ItemsTable
                     ->label(__('items.table.supplier'))
                     ->relationship('supplier', 'name')
                     ->searchable()
-                    ->preload()
+                    ->preload(),
+                TrashedFilter::make()
+                    ->native(false),
             ])
             ->filtersFormColumns(3)
             ->recordActions([
@@ -163,6 +171,9 @@ class ItemsTable
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
                         ->action(fn(Collection $records) => $records->each->delete()),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore')
+                        ->action(fn (Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }
