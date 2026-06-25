@@ -26,6 +26,7 @@ class Model extends EloquentModel implements HasMedia
         'audit_interval', // in months
         'notes',
         'unit_id',
+        // kurang kolom spesifikasi misal dimensi, berat
     ];
 
     protected $casts = [
