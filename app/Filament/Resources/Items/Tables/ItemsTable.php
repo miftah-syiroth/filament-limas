@@ -75,11 +75,6 @@ class ItemsTable
                     ->label(__('items.table.quantity'))
                     ->numeric()
                     ->alignCenter(),
-                TextColumn::make('order_quantity')
-                    ->label(__('items.table.order_quantity'))
-                    ->numeric()
-                    ->alignCenter()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('purchase_date')
                     ->label(__('items.table.purchase_date'))
                     ->date()

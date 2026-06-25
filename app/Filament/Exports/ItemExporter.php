@@ -40,8 +40,6 @@ class ItemExporter extends Exporter
                 ->label(__('items.table.status')),
             ExportColumn::make('quantity')
                 ->label(__('items.table.quantity')),
-            ExportColumn::make('order_quantity')
-                ->label(__('items.table.order_quantity')),
             ExportColumn::make('purchase_date')
                 ->label(__('items.table.purchase_date'))
                 ->formatStateUsing(fn(mixed $state): ?string => filled($state) ? Carbon::parse($state)->format('Y-m-d') : null),

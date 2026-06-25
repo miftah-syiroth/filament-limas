@@ -41,7 +41,6 @@ test('applyScannedSerialNumber finds item and opens modal', function () {
         'location_id' => $location->id,
         'serial_number' => 'ABCD1234',
         'quantity' => 1,
-        'order_quantity' => 1,
         'status' => ItemStatus::Active,
         'is_individual_tracking' => true,
     ]);
@@ -68,7 +67,6 @@ test('updatedSerialNumber searches when eight characters are entered', function 
         'location_id' => $location->id,
         'serial_number' => 'WXYZ9876',
         'quantity' => 1,
-        'order_quantity' => 1,
         'status' => ItemStatus::Active,
         'is_individual_tracking' => true,
     ]);

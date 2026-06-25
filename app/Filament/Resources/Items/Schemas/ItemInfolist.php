@@ -123,9 +123,6 @@ class ItemInfolist
                         TextEntry::make('purchase_date')
                             ->label(__('items.infolist.purchase_date'))
                             ->date(),
-                        TextEntry::make('order_quantity')
-                            ->label(__('items.infolist.order_quantity'))
-                            ->numeric(),
                         TextEntry::make('purchase_price')
                             ->label(__('items.infolist.purchase_price'))
                             ->money('IDR', locale: 'id', decimalPlaces: 0),

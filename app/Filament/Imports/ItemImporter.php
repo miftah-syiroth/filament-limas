@@ -47,9 +47,6 @@ class ItemImporter extends Importer
                 ->rules(['max:255']),
             ImportColumn::make('serial_number')
                 ->rules(['max:255']),
-            ImportColumn::make('order_quantity')
-                ->numeric()
-                ->rules(['integer']),
             ImportColumn::make('purchase_date')
                 ->rules(['date']),
             ImportColumn::make('purchase_price')

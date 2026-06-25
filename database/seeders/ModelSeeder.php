@@ -399,7 +399,6 @@ class ModelSeeder extends Seeder
                 'name' => null,
                 'serial_number' => ItemSerialNumber::generate(),
                 'quantity' => 1,
-                'order_quantity' => 1,
                 'purchase_date' => $purchaseDate,
                 'purchase_price' => $modelData['purchase_price'],
                 'eol_date' => $eolDate,
@@ -447,7 +446,6 @@ class ModelSeeder extends Seeder
             'name' => null,
             'serial_number' => ItemSerialNumber::generate(),
             'quantity' => $quantity,
-            'order_quantity' => $quantity,
             'purchase_date' => $purchaseDate,
             'purchase_price' => $modelData['purchase_price'],
             'eol_date' => null,
@@ -474,7 +472,7 @@ class ModelSeeder extends Seeder
             return;
         }
 
-        $initialQty = (int) $item->order_quantity;
+        $initialQty = (int) $item->quantity;
         $movements = $this->stockMovementSequence($initialQty);
 
         if ($existingCount === 1) {

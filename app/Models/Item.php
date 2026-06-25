@@ -32,7 +32,6 @@ class Item extends BaseModel implements HasMedia
         'user_id',
         'name',
         'quantity',
-        'order_quantity',
         'purchase_date',
         'purchase_price',
         'eol_date',

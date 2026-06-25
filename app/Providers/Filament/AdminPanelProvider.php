@@ -73,6 +73,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->maxContentWidth(Width::Full)
             ->databaseNotifications()
-            ->favicon(asset('logo.webp'));
+            ->favicon(asset('logo.webp'))
+            ->sidebarCollapsibleOnDesktop();
     }
 }

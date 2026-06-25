@@ -14,14 +14,12 @@ test('item form translation keys resolve in English and Indonesian', function ()
     expect(trans('items.form.supplier', [], 'en'))->toBe('Supplier')
         ->and(trans('items.form.purchase_date', [], 'en'))->toBe('Purchase date')
         ->and(trans('items.form.purchase_price', [], 'en'))->toBe('Purchase price')
-        ->and(trans('items.form.order_quantity', [], 'en'))->toBe('Order quantity')
         ->and(trans('items.form.location', [], 'en'))->toBe('Location')
         ->and(trans('items.form.room', [], 'en'))->toBe('Room');
 
     expect(trans('items.form.supplier', [], 'id'))->toBe('Pemasok')
         ->and(trans('items.form.purchase_date', [], 'id'))->toBe('Tanggal pembelian')
         ->and(trans('items.form.purchase_price', [], 'id'))->toBe('Harga pembelian')
-        ->and(trans('items.form.order_quantity', [], 'id'))->toBe('Kuantitas pesanan')
         ->and(trans('items.form.room', [], 'id'))->toBe('Ruangan');
 
     expect(trans('items.infolist.warranty_with_end', [
@@ -77,7 +75,6 @@ test('item table translation keys resolve in English and Indonesian', function (
         'user' => ['Responsible person', 'Penanggung jawab'],
         'status' => ['Status', 'Status'],
         'quantity' => ['Quantity', 'Kuantitas'],
-        'order_quantity' => ['Order quantity', 'Kuantitas pesanan'],
         'purchase_date' => ['Purchase date', 'Tanggal pembelian'],
         'purchase_price' => ['Purchase price', 'Harga pembelian'],
         'eol_date' => ['Expiry date', 'Tanggal kadaluarsa'],

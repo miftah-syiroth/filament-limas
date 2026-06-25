@@ -281,11 +281,6 @@ class ItemForm
                             ->label(__('items.form.warranty_months'))
                             ->minValue(0)
                             ->numeric(),
-                        TextInput::make('order_quantity')
-                            ->label(__('items.form.order_quantity'))
-                            ->default(1)
-                            ->minValue(1)
-                            ->numeric(),
                     ]),
 
             ]);
