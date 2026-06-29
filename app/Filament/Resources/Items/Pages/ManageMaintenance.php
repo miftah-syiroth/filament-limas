@@ -28,6 +28,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
@@ -39,6 +40,14 @@ class ManageMaintenance extends ManageRelatedRecords
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedWrench;
 
     protected static string $relationship = 'maintenances';
+
+    public function getTitle(): string | Htmlable
+    {
+        $item = $this->getOwnerRecord();
+        return __('items.pages.maintenance.title', [
+            'item' => $item->serial_number ?? $item->name,
+        ]);
+    }
 
     public static function getNavigationLabel(): string
     {

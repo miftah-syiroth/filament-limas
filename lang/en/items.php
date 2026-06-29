@@ -121,6 +121,8 @@ return [
     'pages' => [
         'stock_movements' => [
             'navigation_label' => 'Stock',
+            'title' => 'Stock :item',
+            'add' => 'Add stock',
             'unit' => 'Unit',
             'validation' => [
                 'quantity_not_zero' => 'Quantity cannot be zero.',
@@ -131,6 +133,7 @@ return [
         ],
         'maintenance' => [
             'navigation_label' => 'Maintenance',
+            'title' => ':item Maintenance',
             'reported_at' => 'Report date',
             'started_at' => 'Start date',
             'completed_at' => 'End date',
@@ -145,6 +148,8 @@ return [
         ],
         'audits' => [
             'navigation_label' => 'Audit',
+            'title' => 'Audit :item',
+            'relationship_title' => 'Audit history',
             'audited_at' => 'Audit date',
             'location_verified' => 'Location verified',
             'next_audit_at' => 'Next audit date',
@@ -157,6 +162,7 @@ return [
         ],
         'state_logs' => [
             'navigation_label' => 'Transfer & status',
+            'title' => 'Transfer :item',
             'event_type' => 'Event type',
             'location_from' => 'Location from',
             'location_to' => 'Location to',

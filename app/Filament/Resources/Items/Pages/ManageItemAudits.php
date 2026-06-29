@@ -28,6 +28,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
@@ -40,10 +41,24 @@ class ManageItemAudits extends ManageRelatedRecords
 
     protected static string $relationship = 'audits';
 
+    // public static function getRelationshipTitle(): string
+    // {
+    //     return __('items.pages.audits.relationship_title');
+    // }
+
+    public function getTitle(): string | Htmlable
+    {
+        $item = $this->getOwnerRecord();
+        return __('items.pages.audits.title', [
+            'item' => $item->serial_number ?? $item->name,
+        ]);
+    }
+
     public static function getNavigationLabel(): string
     {
         return __('items.pages.audits.navigation_label');
     }
+
 
     public function form(Schema $schema): Schema
     {

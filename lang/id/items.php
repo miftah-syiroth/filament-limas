@@ -121,6 +121,8 @@ return [
     'pages' => [
         'stock_movements' => [
             'navigation_label' => 'Stok',
+            'title' => 'Stok :item',
+            'add' => 'Tambah stok',
             'unit' => 'Satuan',
             'validation' => [
                 'quantity_not_zero' => 'Kuantitas tidak boleh 0.',
@@ -131,6 +133,7 @@ return [
         ],
         'maintenance' => [
             'navigation_label' => 'Pemeliharaan',
+            'title' => 'Pemeliharaan :item',
             'reported_at' => 'Tanggal laporan',
             'started_at' => 'Tanggal mulai',
             'completed_at' => 'Tanggal selesai',
@@ -145,6 +148,8 @@ return [
         ],
         'audits' => [
             'navigation_label' => 'Audit',
+            'title' => 'Audit :item',
+            'relationship_title' => 'Audit barang',
             'audited_at' => 'Tanggal audit',
             'location_verified' => 'Lokasi diverifikasi',
             'next_audit_at' => 'Tanggal audit berikutnya',
@@ -157,6 +162,7 @@ return [
         ],
         'state_logs' => [
             'navigation_label' => 'Transfer & status',
+            'title' => 'Transfer :item',
             'event_type' => 'Tipe event',
             'location_from' => 'Lokasi dari',
             'location_to' => 'Lokasi ke',

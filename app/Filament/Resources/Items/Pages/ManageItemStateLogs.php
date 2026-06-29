@@ -24,6 +24,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -34,6 +35,14 @@ class ManageItemStateLogs extends ManageRelatedRecords
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowsRightLeft;
 
     protected static string $relationship = 'stateLogs';
+
+    public function getTitle(): string | Htmlable
+    {
+        $item = $this->getOwnerRecord();
+        return __('items.pages.state_logs.title', [
+            'item' => $item->serial_number ?? $item->name,
+        ]);
+    }
 
     public static function getNavigationLabel(): string
     {

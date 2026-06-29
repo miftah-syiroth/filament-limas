@@ -20,6 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Collection;
 
 class ManageStockMovements extends ManageRelatedRecords
@@ -29,6 +30,14 @@ class ManageStockMovements extends ManageRelatedRecords
     protected static string|BackedEnum|null $navigationIcon = Heroicon::InboxStack;
 
     protected static string $relationship = 'stockMovements';
+
+    public function getTitle(): string | Htmlable
+    {
+        $item = $this->getOwnerRecord();
+        return __('items.pages.stock_movements.title', [
+            'item' => $item->serial_number ?? $item->name,
+        ]);
+    }
 
     public static function getNavigationLabel(): string
     {
@@ -111,7 +120,8 @@ class ManageStockMovements extends ManageRelatedRecords
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->authorize('create', $this->getOwnerRecord()),
+                    ->authorize('create', $this->getOwnerRecord())
+                    ->label(__('items.pages.stock_movements.add')),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
