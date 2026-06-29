@@ -11,7 +11,7 @@ use App\Filament\Resources\Items\Pages\ManageItemStateLogs;
 use App\Filament\Resources\Items\Pages\ManageMaintenance;
 use App\Filament\Resources\Items\Pages\ManageStockMovements;
 use App\Filament\Resources\Items\Pages\ViewItem;
-use App\Filament\Resources\Items\Schemas\ItemForm;
+use App\Filament\Resources\Items\Schemas\ItemEditForm;
 use App\Filament\Resources\Items\Schemas\ItemInfolist;
 use App\Filament\Resources\Items\Tables\ItemsTable;
 use App\Models\Item;
@@ -84,7 +84,7 @@ class ItemResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return ItemForm::configure($schema);
+        return ItemEditForm::configure($schema);
     }
 
     public static function infolist(Schema $schema): Schema

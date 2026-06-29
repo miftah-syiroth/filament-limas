@@ -4,15 +4,22 @@ namespace App\Filament\Resources\Items\Pages;
 
 use App\Enums\CategoryType;
 use App\Filament\Resources\Items\ItemResource;
+use App\Filament\Resources\Items\Schemas\ItemEditForm;
 use App\Models\Model as ItemModel;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
 class EditItem extends EditRecord
 {
     protected static string $resource = ItemResource::class;
+
+    public function form(Schema $schema): Schema
+    {
+        return ItemEditForm::configure($schema);
+    }
 
     protected function getHeaderActions(): array
     {

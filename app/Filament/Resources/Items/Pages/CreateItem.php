@@ -6,17 +6,24 @@ use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
+use App\Filament\Resources\Items\Schemas\ItemCreateForm;
 use App\Models\Item;
 use App\Models\Model as ItemModel;
 use App\Models\StockMovement;
 use App\Support\ItemSerialNumber;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 
 class CreateItem extends CreateRecord
 {
     protected static string $resource = ItemResource::class;
+
+    public function form(Schema $schema): Schema
+    {
+        return ItemCreateForm::configure($schema);
+    }
 
     protected function handleRecordCreation(array $data): Model
     {

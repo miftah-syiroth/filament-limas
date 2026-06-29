@@ -174,6 +174,9 @@ class ItemsTable
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore')
                         ->action(fn (Collection $records) => $records->each->restore()),
+                    ForceDeleteBulkAction::make()
+                        ->authorizeIndividualRecords('forceDelete')
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
                 ]),
             ]);
     }
