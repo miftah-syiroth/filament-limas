@@ -43,6 +43,12 @@ return [
         'add_item' => 'Tambah item',
         'warranty_months' => 'Garansi (bulan)',
         'eol_date' => 'Kadaluarsa',
+        'create_callout' => [
+            'title' => 'Cara kerja kuantitas',
+            'individual' => 'Kuantitas pada setiap baris adalah jumlah unit terpisah yang akan dibuat. Setiap unit disimpan sebagai item sendiri (kuantitas 1, nomor seri unik). Contoh: kuantitas 5 di satu lokasi = 5 item.',
+            'bulk' => 'Kuantitas pada setiap baris adalah jumlah stok untuk satu record item di lokasi, departemen, dan ruangan tersebut. Contoh: kuantitas 20 = 1 item dengan stok 20.',
+            'consumable' => 'Kategori consumable selalu dicatat sebagai stok massal. Kuantitas pada setiap baris adalah jumlah stok awal untuk lokasi tersebut (bukan jumlah item terpisah).',
+        ],
         'validation' => [
             'consumable_no_individual' => 'Kategori Consumable tidak dapat menggunakan pelacakan individu.',
             'quantity_positive_consumable' => 'Kuantitas wajib positif untuk kategori Consumable.',

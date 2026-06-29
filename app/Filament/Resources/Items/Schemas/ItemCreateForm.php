@@ -12,6 +12,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
@@ -96,6 +97,20 @@ class ItemCreateForm
                                 },
                             ]),
                     ]),
+                Callout::make(__('items.form.create_callout.title'))
+                    ->description(function (Get $get): string {
+                        if (self::isCategoryConsumable($get)) {
+                            return __('items.form.create_callout.consumable');
+                        }
+
+                        if ($get('is_individual_tracking')) {
+                            return __('items.form.create_callout.individual');
+                        }
+
+                        return __('items.form.create_callout.bulk');
+                    })
+                    ->warning()
+                    ->columnSpanFull(),
                 Section::make()
                     ->compact()
                     ->columnSpanFull()

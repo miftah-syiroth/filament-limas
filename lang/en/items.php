@@ -43,6 +43,12 @@ return [
         'add_item' => 'Add item',
         'warranty_months' => 'Warranty (months)',
         'eol_date' => 'Expiry',
+        'create_callout' => [
+            'title' => 'How quantity works',
+            'individual' => 'The quantity in each row is the number of separate units to create. Each unit is saved as its own item (quantity 1, unique serial number). Example: quantity 5 at one location creates 5 items.',
+            'bulk' => 'The quantity in each row is the stock amount for a single item record at that location, department, and room. Example: quantity 20 creates 1 item with stock of 20.',
+            'consumable' => 'Consumable categories are always recorded as bulk stock. The quantity in each row is the initial stock for that location, not the number of separate items.',
+        ],
         'validation' => [
             'consumable_no_individual' => 'Consumable categories cannot use individual tracking.',
             'quantity_positive_consumable' => 'Quantity must be positive for consumable categories.',
