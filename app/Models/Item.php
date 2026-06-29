@@ -28,8 +28,8 @@ class Item extends BaseModel implements HasMedia
         'location_id',
         'department_id',
         'room_id',
-        'supplier_id',
         'user_id',
+        'supplier_id',
         'name',
         'quantity',
         'purchase_date',
@@ -39,7 +39,7 @@ class Item extends BaseModel implements HasMedia
         'is_individual_tracking',
         'status',
         'notes',
-        'status_updated_at',
+        // 'status_updated_at',
 
         //
         'last_audit_date',
@@ -63,6 +63,11 @@ class Item extends BaseModel implements HasMedia
             'next_audit_date' => 'datetime',
         ];
     }
+
+    protected $attributes = [
+        'quantity' => 1,
+        'status' => ItemStatus::Active,
+    ];
 
     protected static function booted(): void
     {

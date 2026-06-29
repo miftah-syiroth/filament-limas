@@ -40,7 +40,7 @@ return [
         'individual_tracking' => 'Pelacakan individu',
         'quantity' => 'Kuantitas',
         'responsible_person' => 'Penanggung jawab',
-        'add_serial' => 'Tambah serial',
+        'add_item' => 'Tambah item',
         'warranty_months' => 'Garansi (bulan)',
         'eol_date' => 'Kadaluarsa',
         'validation' => [

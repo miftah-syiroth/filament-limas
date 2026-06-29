@@ -52,6 +52,17 @@ class ModelForm
                             ->columns(2)
                             ->compact()
                             ->schema([
+                                Select::make('manufacture_id')
+                                    ->label(__('model.form.manufacturer'))
+                                    ->relationship('manufacture', 'name')
+                                    ->searchable()
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->label(__('manufacture.form.name'))
+                                            ->required(),
+                                    ])
+                                    ->preload()
+                                    ->required(),
                                 Select::make('category_id')
                                     ->label(__('model.form.category'))
                                     ->relationship(
@@ -85,17 +96,7 @@ class ModelForm
                                     ->required(),
                                 TextInput::make('model_number')
                                     ->label(__('model.form.model_number')),
-                                Select::make('manufacture_id')
-                                    ->label(__('model.form.manufacturer'))
-                                    ->relationship('manufacture', 'name')
-                                    ->searchable()
-                                    ->createOptionForm([
-                                        TextInput::make('name')
-                                            ->label(__('manufacture.form.name'))
-                                            ->required(),
-                                    ])
-                                    ->preload()
-                                    ->required(),
+
                                 Select::make('depreciation_id')
                                     ->label(__('model.form.depreciation'))
                                     ->relationship('depreciation', 'name')

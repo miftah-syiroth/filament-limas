@@ -40,7 +40,7 @@ return [
         'individual_tracking' => 'Individual tracking',
         'quantity' => 'Quantity',
         'responsible_person' => 'Responsible person',
-        'add_serial' => 'Add serial',
+        'add_item' => 'Add item',
         'warranty_months' => 'Warranty (months)',
         'eol_date' => 'Expiry',
         'validation' => [

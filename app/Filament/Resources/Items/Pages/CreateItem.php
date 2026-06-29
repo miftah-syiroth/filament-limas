@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Items\Pages;
 
 use App\Enums\CategoryType;
+use App\Enums\ItemStatus;
 use App\Enums\StockMovementType;
 use App\Filament\Resources\Items\ItemResource;
 use App\Models\Item;
@@ -11,6 +12,7 @@ use App\Models\StockMovement;
 use App\Support\ItemSerialNumber;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use RuntimeException;
 
 class CreateItem extends CreateRecord
 {
@@ -18,49 +20,70 @@ class CreateItem extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $model = ItemModel::find($data['model_id'] ?? null);
-        $isConsumable = $model?->category?->type === CategoryType::Consumable;
+        $model = ItemModel::with('category')->findOrFail($data['model_id']);
+        $isConsumable = $model->category->type === CategoryType::Consumable;
         $isIndividualTracking = $isConsumable ? false : ($data['is_individual_tracking'] ?? true);
+        $nextAuditDate = $model->computeInitialNextAuditDate();
+        $status = $data['status'] ?? ItemStatus::Active;
+        $first = null;
 
-        $baseData = collect($data)->except(['tracking_entries', 'serial_number'])->toArray();
+        foreach ($data['items'] ?? [] as $row) {
+            if ($isIndividualTracking) {
+                $count = (int) ($row['quantity'] ?? 1);
 
-        if ($nextAuditDate = $model?->computeInitialNextAuditDate()) {
-            $baseData['next_audit_date'] = $nextAuditDate;
-        }
+                for ($i = 0; $i < $count; $i++) {
+                    $created = Item::create($this->itemAttributes($data, $model, $row, $isIndividualTracking, $status, $nextAuditDate, 1));
+                    $first ??= $created;
+                }
 
-        if ($isIndividualTracking) {
-            $entries = $data['tracking_entries'] ?? [];
-            $first = null;
-
-            foreach ($entries as $entry) {
-                $itemData = array_merge($baseData, [
-                    'serial_number' => $entry['serial_number'],
-                    'user_id' => $entry['user_id'] ?? null,
-                ]);
-                $item = Item::create($itemData);
-                $first ??= $item;
+                continue;
             }
 
-            return $first ?? Item::create(array_merge($baseData, [
-                'serial_number' => ItemSerialNumber::generate(),
-                'user_id' => null,
-            ]));
-        }
+            $quantity = (int) ($row['quantity'] ?? 1);
+            $created = Item::create($this->itemAttributes($data, $model, $row, $isIndividualTracking, $status, $nextAuditDate, $quantity));
+            $first ??= $created;
 
-        $item = Item::create(array_merge($baseData, [
-            'serial_number' => $data['serial_number'],
-        ]));
-
-        $quantity = (int) ($data['quantity'] ?? 1);
-        if ($quantity > 0) {
             StockMovement::create([
-                'item_id' => $item->id,
+                'item_id' => $created->id,
                 'type' => StockMovementType::In,
                 'quantity' => $quantity,
                 'notes' => __('items.create.initial_stock_notes'),
             ]);
         }
 
-        return $item;
+        return $first ?? throw new RuntimeException('No items created.');
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $row
+     * @return array<string, mixed>
+     */
+    private function itemAttributes(
+        array $data,
+        ItemModel $model,
+        array $row,
+        bool $isIndividualTracking,
+        ItemStatus $status,
+        mixed $nextAuditDate,
+        int $quantity,
+    ): array {
+        return [
+            'model_id' => $data['model_id'],
+            'serial_number' => ItemSerialNumber::generate(),
+            'location_id' => $row['location_id'],
+            'department_id' => $row['department_id'] ?? null,
+            'room_id' => $row['room_id'] ?? null,
+            'supplier_id' => $data['supplier_id'] ?? null,
+            'name' => $model->name,
+            'quantity' => $quantity,
+            'purchase_date' => $data['purchase_date'] ?? null,
+            'purchase_price' => $data['purchase_price'] ?? null,
+            'eol_date' => $data['eol_date'] ?? null,
+            'warranty_months' => $data['warranty_months'] ?? null,
+            'is_individual_tracking' => $isIndividualTracking,
+            'status' => $status,
+            'next_audit_date' => $nextAuditDate,
+        ];
     }
 }
