@@ -14,7 +14,6 @@ class BorrowingPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return false;
         return $authUser->can('ViewAny:Borrowing');
     }
 
@@ -25,7 +24,6 @@ class BorrowingPolicy
 
     public function create(AuthUser $authUser): bool
     {
-        return false;
         return $authUser->can('Create:Borrowing');
     }
 
