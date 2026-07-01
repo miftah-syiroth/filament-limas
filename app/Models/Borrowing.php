@@ -17,6 +17,9 @@ class Borrowing extends Model
 
     protected $fillable = [
         'user_id',
+        'to_location_id',
+        'to_department_id',
+        'to_room_id',
         'borrowed_at',
         'due_at',
         'returned_at',
@@ -61,6 +64,21 @@ class Borrowing extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function toLocation(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'to_location_id');
+    }
+
+    public function toDepartment(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'to_department_id');
+    }
+
+    public function toRoom(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'to_room_id');
     }
 
     public function items(): HasMany

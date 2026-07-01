@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('borrowing_items', function (Blueprint $table) {
+            $table->foreignUuid('from_location_id')->nullable()->after('item_id');
+            $table->foreignUuid('from_department_id')->nullable()->after('from_location_id');
+            $table->foreignUuid('from_room_id')->nullable()->after('from_department_id');
+            $table->foreignUuid('to_location_id')->nullable()->after('from_room_id');
+            $table->foreignUuid('to_department_id')->nullable()->after('to_location_id');
+            $table->foreignUuid('to_room_id')->nullable()->after('to_department_id');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('borrowing_items', function (Blueprint $table) {
+            $table->dropColumn('from_location_id');
+            $table->dropColumn('from_department_id');
+            $table->dropColumn('from_room_id');
+            $table->dropColumn('to_location_id');
+            $table->dropColumn('to_department_id');
+            $table->dropColumn('to_room_id');
+        });
+    }
+};

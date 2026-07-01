@@ -23,6 +23,13 @@ class BorrowingItem extends Model
         'checked_in_at',
         'condition_in',
         'notes',
+
+        'from_location_id',
+        'from_department_id',
+        'from_room_id',
+        'to_location_id',
+        'to_department_id',
+        'to_room_id',
     ];
 
     protected $casts = [
@@ -49,5 +56,30 @@ class BorrowingItem extends Model
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class, 'item_id');
+    }
+
+    public function fromLocation(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'from_location_id');
+    }
+
+    public function fromDepartment(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'from_department_id');
+    }
+    
+    public function toLocation(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'to_location_id');
+    }
+
+    public function toDepartment(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'to_department_id');
+    }
+
+    public function toRoom(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'to_room_id');
     }
 }

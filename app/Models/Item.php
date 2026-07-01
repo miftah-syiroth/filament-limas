@@ -28,7 +28,7 @@ class Item extends BaseModel implements HasMedia
         'location_id',
         'department_id',
         'room_id',
-        'user_id',
+        // 'user_id', belum digunakan
         'supplier_id',
         'name',
         'quantity',

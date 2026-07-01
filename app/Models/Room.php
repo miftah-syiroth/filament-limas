@@ -38,4 +38,9 @@ class Room extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+    public function borrowings(): HasMany
+    {
+        return $this->hasMany(Borrowing::class, 'to_room_id');
+    }
 }
