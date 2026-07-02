@@ -23,6 +23,8 @@ class BorrowingResource extends Resource
 {
     protected static ?string $model = Borrowing::class;
 
+    protected static ?int $navigationSort = 2;
+
     public static function getModelLabel(): string
     {
         return __('borrowing.model_label');

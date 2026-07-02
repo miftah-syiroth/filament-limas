@@ -94,6 +94,7 @@ return [
 
     'table' => [
         'serial_number' => 'Nomor seri',
+        'borrowable_quantity' => 'Dapat dipinjam',
         'name' => 'Nama',
         'type' => 'Tipe',
         'category' => 'Kategori',

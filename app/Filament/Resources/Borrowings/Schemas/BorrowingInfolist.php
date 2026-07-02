@@ -16,10 +16,20 @@ class BorrowingInfolist
             ->components([
                 Section::make(__('borrowing.infolist.section_general'))
                     ->columnSpanFull()
-                    ->columns(2)
+                    ->columns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'md' => 3,
+                    ])
                     ->schema([
                         TextEntry::make('user.name')
                             ->label(__('borrowing.infolist.borrower')),
+                        TextEntry::make('to_location.name')
+                            ->label(__('borrowing.infolist.to_location')),
+                        TextEntry::make('to_department.name')
+                            ->label(__('borrowing.infolist.to_department')),
+                        TextEntry::make('to_room.name')
+                            ->label(__('borrowing.infolist.to_room')),
                         TextEntry::make('status')
                             ->label(__('borrowing.infolist.status'))
                             ->badge(),

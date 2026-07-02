@@ -16,6 +16,9 @@ return [
         'section_borrower' => 'Borrower',
         'section_items' => '',
         'user' => 'Borrower',
+        'to_location' => 'Destination location',
+        'to_department' => 'Destination department',
+        'to_room' => 'Destination room',
         'borrowed_at' => 'Borrowed on',
         'due_at' => 'Due date',
         'returned_at' => 'Returned on',
@@ -29,6 +32,9 @@ return [
     'infolist' => [
         'section_general' => 'General information',
         'borrower' => 'Borrower',
+        'to_location' => 'Destination location',
+        'to_department' => 'Destination department',
+        'to_room' => 'Destination room',
         'status' => 'Status',
         'fieldset_dates' => 'Dates',
         'borrowed_at' => 'Borrowed on',
@@ -54,6 +60,12 @@ return [
         'overdue_placeholder' => 'All',
         'overdue_true' => 'Yes',
         'overdue_false' => 'No',
+    ],
+
+    'notifications' => [
+        'created' => 'Borrowing created successfully.',
+        'invalid_quantities_title' => 'Invalid borrowing quantities',
+        'invalid_quantities_body' => 'Enter a quantity of at least 1 for: :items',
     ],
 
     'relation' => [

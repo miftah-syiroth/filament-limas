@@ -19,8 +19,8 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,7 +44,7 @@ class ItemsTable
                 TextColumn::make('model.name')
                     ->label(__('items.table.model'))
                     ->searchable()
-                    ->url(fn(Model $record): string => ModelResource::getUrl('view', ['record' => $record->model])),
+                    ->url(fn (Model $record): string => ModelResource::getUrl('view', ['record' => $record->model])),
                 TextColumn::make('model.category.type')
                     ->label(__('items.table.type'))
                     ->badge()
@@ -65,14 +65,18 @@ class ItemsTable
                 TextColumn::make('supplier.name')
                     ->label(__('items.table.supplier'))
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('user.name')
-                    ->label(__('items.table.user'))
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
                     ->label(__('items.table.status'))
                     ->badge(),
                 TextColumn::make('quantity')
                     ->label(__('items.table.quantity'))
+                    ->numeric()
+                    ->alignCenter(),
+                TextColumn::make('borrowable')
+                    ->label(__('items.table.borrowable_quantity'))
+                    ->state(function (Model $record): int {
+                        return max(0, $record->quantity - $record->activeBorrowingItems->sum('quantity'));
+                    })
                     ->numeric()
                     ->alignCenter(),
                 TextColumn::make('purchase_date')
@@ -98,9 +102,8 @@ class ItemsTable
                     ->alignCenter()
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
-                    // deleted_at
                 TextColumn::make('deleted_at')
-                    ->label(__('card.table.deleted_at'))
+                    ->label(__('items.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -170,7 +173,7 @@ class ItemsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
-                        ->action(fn(Collection $records) => $records->each->delete()),
+                        ->action(fn (Collection $records) => $records->each->delete()),
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore')
                         ->action(fn (Collection $records) => $records->each->restore()),

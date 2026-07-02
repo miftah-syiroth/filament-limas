@@ -16,6 +16,9 @@ return [
         'section_borrower' => 'Peminjam',
         'section_items' => '',
         'user' => 'Peminjam',
+        'to_location' => 'Lokasi tujuan',
+        'to_department' => 'Departemen tujuan',
+        'to_room' => 'Ruang tujuan',
         'borrowed_at' => 'Tanggal peminjaman',
         'due_at' => 'Batas peminjaman',
         'returned_at' => 'Tanggal pengembalian',
@@ -29,6 +32,9 @@ return [
     'infolist' => [
         'section_general' => 'Informasi umum',
         'borrower' => 'Peminjam',
+        'to_location' => 'Lokasi tujuan',
+        'to_department' => 'Departemen tujuan',
+        'to_room' => 'Ruang tujuan',
         'status' => 'Status',
         'fieldset_dates' => 'Tanggal',
         'borrowed_at' => 'Tanggal peminjaman',
@@ -54,6 +60,12 @@ return [
         'overdue_placeholder' => 'Semua',
         'overdue_true' => 'Ya',
         'overdue_false' => 'Tidak',
+    ],
+
+    'notifications' => [
+        'created' => 'Pinjaman berhasil dibuat.',
+        'invalid_quantities_title' => 'Jumlah pinjaman tidak valid',
+        'invalid_quantities_body' => 'Isi jumlah minimal 1 untuk item: :items',
     ],
 
     'relation' => [

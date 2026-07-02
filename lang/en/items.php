@@ -94,6 +94,7 @@ return [
 
     'table' => [
         'serial_number' => 'Serial number',
+        'borrowable_quantity' => 'Borrowable quantity',
         'name' => 'Name',
         'type' => 'Type',
         'category' => 'Category',

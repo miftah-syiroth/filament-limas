@@ -34,6 +34,10 @@ class Borrowing extends Model
         'status' => BorrowingStatus::class,
     ];
 
+    protected $attributes = [
+        'status' => BorrowingStatus::Active,
+    ];
+
     // append
     protected $appends = ['overdue'];
 

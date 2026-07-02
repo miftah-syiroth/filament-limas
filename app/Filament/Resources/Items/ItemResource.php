@@ -30,6 +30,8 @@ class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
 
+    protected static ?int $navigationSort = 1;
+
     public static function getModelLabel(): string
     {
         return __('items.model_label');
