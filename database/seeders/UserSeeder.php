@@ -43,14 +43,41 @@ class UserSeeder extends Seeder
         ])->assignRole($superAdminRole);
 
         // create admin user
-        // User::updateOrCreate([
-        //     'email' => 'admin@uhb.ac.id',
-        // ], [
-        //     'name' => 'Admin',
-        //     'email_verified_at' => now(),
-        //     'password' => bcrypt('ASDqwe123!@#'),
-        //     'remember_token' => Str::random(10),
-        // ])->assignRole($adminRole);
+        User::updateOrCreate([
+            'email' => 'miftakhusysyiroth@uhb.ac.id',
+        ], [
+            'name' => 'Miftakhusy Syiroth',
+            'email_verified_at' => now(),
+            'password' => bcrypt('ASDqwe123!@#'),
+            'remember_token' => Str::random(10),
+        ])->assignRole($adminRole);
+
+        User::updateOrCreate([
+            'email' => 'yansah_juni@uhb.ac.id',
+        ], [
+            'name' => 'Yuniyansah',
+            'email_verified_at' => now(),
+            'password' => bcrypt('ASDqwe123!@#'),
+            'remember_token' => Str::random(10),
+        ])->assignRole($adminRole);
+        
+        User::updateOrCreate([
+            'email' => 'reza@uhb.ac.id',
+        ], [
+            'name' => 'Reza Rokhadi ',
+            'email_verified_at' => now(),
+            'password' => bcrypt('ASDqwe123!@#'),
+            'remember_token' => Str::random(10),
+        ])->assignRole($adminRole);
+
+        User::updateOrCreate([
+            'email' => 'lusiyuliarti@uhb.ac.id',
+        ], [
+            'name' => 'Lusi Yuliarti',
+            'email_verified_at' => now(),
+            'password' => bcrypt('ASDqwe123!@#'),
+            'remember_token' => Str::random(10),
+        ])->assignRole($adminRole);
 
         // create operator user
         // User::updateOrCreate([
