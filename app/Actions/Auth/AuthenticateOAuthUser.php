@@ -19,18 +19,6 @@ class AuthenticateOAuthUser
             return null;
         }
 
-        // $user->forceFill([
-        //     'oauth' => [
-        //         'provider' => 'sso',
-        //         'provider_id' => $oauthUser->getId(),
-        //         'access_token' => $oauthUser->token,
-        //         'refresh_token' => $oauthUser->refreshToken,
-        //         'expires_at' => $oauthUser->expiresIn
-        //           ? now()->addSeconds($oauthUser->expiresIn)->toIso8601String()
-        //           : null,
-        //     ],
-        // ])->save();
-
         session(['auth_login_method' => 'sso']);
 
         Auth::login($user);

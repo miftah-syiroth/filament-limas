@@ -1,4 +1,4 @@
-# Struktur Database — LIMAS
+# Struktur Database — SIRIS
 
 Dokumentasi tabel inti bisnis aplikasi manajemen aset/inventori. Semua tabel bisnis memakai **UUID** sebagai primary key.
 

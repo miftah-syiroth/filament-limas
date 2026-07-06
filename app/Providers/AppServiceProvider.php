@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Socialite\SsoProvider;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
+use BinaryTorch\LaRecipe\LaRecipe;
 use Carbon\CarbonImmutable;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Colors\Color;
@@ -32,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureSocialite();
+        $this->configureLaRecipe();
 
         FilamentAsset::register([
             AlpineComponent::make('barcode-scanner', resource_path('js/dist/components/barcode-scanner.js')),
@@ -69,6 +71,12 @@ class AppServiceProvider extends ServiceProvider
                 ->setBaseUrl($config['url'])
                 ->setUserAgent($config['user_agent']);
         });
+    }
+
+    protected function configureLaRecipe(): void
+    {
+        LaRecipe::script('mermaid', 'https://unpkg.com/mermaid@10/dist/mermaid.min.js');
+        LaRecipe::script('mermaid-init', resource_path('js/larecipe-mermaid.js'));
     }
 
     protected function configureDefaults(): void

@@ -1,4 +1,4 @@
-# Dashboard Widget Plan — LIMAS
+# Dashboard Widget Plan — SIRIS
 
 Dokumen spesifikasi implementasi widget dashboard. Setiap item mencakup: deskripsi, tabel, relasi, query, kolom tipe/status, agregat, dan jenis widget Filament yang disarankan.
 
