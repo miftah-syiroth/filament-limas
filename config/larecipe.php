@@ -122,7 +122,7 @@ return [
 
     'ui' => [
         'code_theme' => 'dark', // or: light
-        'fav' => '',     // eg: fav.png
+        'fav' => 'logo.png',     // eg: fav.png
         'fa_v4_shims' => true, // Add FontAwesome v4 shims prevent BC break
         'show_side_bar' => true,
         'colors' => [
@@ -152,8 +152,8 @@ return [
         'og' => [
             'title' => 'SIRIS — Panduan Pengguna',
             'type' => 'article',
-            'url' => '',
-            'image' => '',
+            'url' => 'https://siris.uhb.ac.id',
+            'image' => 'https://siris.uhb.ac.id/logo.png',
             'description' => 'Panduan pengguna SIRIS — sistem informasi inventori Universitas Harapan Bangsa.',
         ],
     ],

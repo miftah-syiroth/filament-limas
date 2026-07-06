@@ -1,10 +1,15 @@
-- ## Beranda
-    - [SIRIS — Panduan Pengguna](/{{route}}/{{version}}/overview)
 - ## Memulai
-    - [Pengenalan](/{{route}}/{{version}}/memulai/pengenalan)
-- ## Masuk ke Sistem
-    - [Login & 2FA](/{{route}}/{{version}}/autentikasi/login-dan-2fa)
-    - [SSO My UHB](/{{route}}/{{version}}/autentikasi/sso)
+    - [Ringkasan](/{{route}}/{{version}}/overview)
+    - [Inisialisasi](/{{route}}/{{version}}/memulai/inisialisasi)
+- ## Autentikasi
+    - [Login](/{{route}}/{{version}}/autentikasi/login)
+- ## Data Master
+    - [Organisasi](/{{route}}/{{version}}/master/organisasi)
+    - [Lokasi](/{{route}}/{{version}}/master/lokasi)
+    - [Department](/{{route}}/{{version}}/master/department)
+    - [Ruangan](/{{route}}/{{version}}/master/ruangan)
+    - [Satuan](/{{route}}/{{version}}/master/satuan)
+    - [Penyusutan](/{{route}}/{{version}}/master/penyusutan)
 - ## Antarmuka
     - [Navigasi](/{{route}}/{{version}}/panel-admin/navigasi)
     - [Dasbor](/{{route}}/{{version}}/panel-admin/dashboard)

@@ -32,13 +32,9 @@ Tabel menampilkan nama, email, dan peran setiap pengguna. Gunakan pencarian untu
 3. Ubah **peran** jika diperlukan
 4. Simpan
 
-## Autentikasi Dua Faktor
-
-Pengguna dapat mengaktifkan 2FA sendiri melalui pengaturan profil. Admin tidak wajib mengaturnya, tetapi disarankan untuk akun dengan akses tinggi.
-
 ## Login SSO
 
-Jika pengguna login via My UHB, email di akun SIRIS harus **sama** dengan email My UHB. Lihat [SSO My UHB](/{{route}}/{{version}}/autentikasi/sso).
+Jika pengguna login via My UHB, email di akun SIRIS harus **sama** dengan email My UHB. Lihat [Login dengan My UHB](/{{route}}/{{version}}/autentikasi/login#login-dengan-my-uhb).
 
 ## Langkah Selanjutnya
 
