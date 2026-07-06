@@ -11,6 +11,7 @@ enum NavigationGroup: string implements HasLabel
     case Reports = 'Reports';
     case Administration = 'Administration';
     case MasterData = 'Master Data';
+    case Help = 'Help';
 
     public function getLabel(): string|Htmlable|null
     {
@@ -19,6 +20,7 @@ enum NavigationGroup: string implements HasLabel
             self::Reports => __('navigation.groups.reports'),
             self::Administration => __('navigation.groups.administration'),
             self::MasterData => __('navigation.groups.master_data'),
+            self::Help => __('navigation.groups.help'),
         };
     }
 }
