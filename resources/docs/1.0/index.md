@@ -1,32 +1,25 @@
 - ## Beranda
-    - [SIRIS — Sistem Informasi Inventori](/{{route}}/{{version}}/overview)
+    - [SIRIS — Panduan Pengguna](/{{route}}/{{version}}/overview)
 - ## Memulai
     - [Pengenalan](/{{route}}/{{version}}/memulai/pengenalan)
-    - [Instalasi](/{{route}}/{{version}}/memulai/instalasi)
-    - [Konfigurasi](/{{route}}/{{version}}/memulai/konfigurasi)
-- ## Autentikasi
-    - [Gambaran Umum](/{{route}}/{{version}}/autentikasi/gambaran-umum)
-    - [Login dan 2FA](/{{route}}/{{version}}/autentikasi/login-dan-2fa)
-    - [SSO](/{{route}}/{{version}}/autentikasi/sso)
-- ## Panel Admin
-    - [Gambaran Umum](/{{route}}/{{version}}/panel-admin/gambaran-umum)
+- ## Masuk ke Sistem
+    - [Login & 2FA](/{{route}}/{{version}}/autentikasi/login-dan-2fa)
+    - [SSO My UHB](/{{route}}/{{version}}/autentikasi/sso)
+- ## Antarmuka
     - [Navigasi](/{{route}}/{{version}}/panel-admin/navigasi)
-    - [Dashboard](/{{route}}/{{version}}/panel-admin/dashboard)
-- ## Modul
-    - [Inventori](/{{route}}/{{version}}/modul/inventori)
+    - [Dasbor](/{{route}}/{{version}}/panel-admin/dashboard)
+- ## Fitur Utama
+    - [Barang](/{{route}}/{{version}}/modul/inventori)
     - [Peminjaman](/{{route}}/{{version}}/modul/peminjaman)
-    - [Audit](/{{route}}/{{version}}/modul/audit)
-    - [Maintenance](/{{route}}/{{version}}/modul/maintenance)
+    - [Audit Barang](/{{route}}/{{version}}/modul/audit)
+    - [Pemeliharaan](/{{route}}/{{version}}/modul/maintenance)
     - [Pergerakan Stok](/{{route}}/{{version}}/modul/pergerakan-stok)
-    - [Riwayat Status](/{{route}}/{{version}}/modul/riwayat-status)
+    - [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status)
+- ## Data & Referensi
     - [Data Master](/{{route}}/{{version}}/modul/data-master)
-    - [Impor Ekspor](/{{route}}/{{version}}/modul/impor-ekspor)
+    - [Impor & Ekspor](/{{route}}/{{version}}/modul/impor-ekspor)
+- ## Laporan
+    - [Laporan](/{{route}}/{{version}}/modul/laporan)
 - ## Administrasi
     - [Pengguna](/{{route}}/{{version}}/administrasi/pengguna)
-    - [Peran dan Izin](/{{route}}/{{version}}/administrasi/peran-izin)
-- ## Referensi
-    - [Database](/{{route}}/{{version}}/referensi/database)
-    - [Enum](/{{route}}/{{version}}/referensi/enum)
-- ## Pengembangan
-    - [Struktur Proyek](/{{route}}/{{version}}/pengembangan/struktur-proyek)
-    - [Testing](/{{route}}/{{version}}/pengembangan/testing)
+    - [Peran & Izin](/{{route}}/{{version}}/administrasi/peran-izin)

@@ -1,79 +1,72 @@
-# Dashboard
+# Dasbor
 
-Dashboard SIRIS (`app/Filament/Pages/Dashboard.php`) menampilkan ringkasan operasional inventori melalui widget-widget yang tersusun dalam beberapa baris.
+Dasbor adalah halaman pertama setelah login. Di sini Anda melihat ringkasan kondisi inventori dan peringatan yang perlu ditindaklanjuti.
 
-## Konvensi Scope
+## Cara Membuka
 
-- `Item::inInventory()` — mengecualikan status `lost`, `stolen`, `archived`, `disposed`
-- Item **aktif** — `status = active`
-- Nilai moneter diformat IDR tanpa desimal
+Klik **Dasbor** di sidebar (biasanya halaman default saat masuk ke `/admin`).
 
-## Baris Alert / KPI
+## Peringatan & KPI
 
-Widget peringatan di bagian atas dashboard:
+Bagian atas dasbor menampilkan kartu peringatan, antara lain:
 
-| Widget | Keterangan | Warna |
-|--------|------------|-------|
-| Maintenance belum selesai | Tiket status `reported` atau `in_progress` | Warning |
-| Audit jatuh tempo | Item dengan `next_audit_date` lewat atau ≤ 7 hari | Danger/Warning |
-| Stok kritis | Model dengan stok di bawah `min_amount` | Warning |
-| Item bermasalah | Status `damaged`, `under_repair`, dll. | Danger |
-| Item hilang/dicuri | Status `lost` atau `stolen` | Danger |
+| Peringatan | Arti |
+|------------|------|
+| Pemeliharaan belum selesai | Ada tiket perawatan yang masih terbuka |
+| Audit jatuh tempo | Barang perlu diinspeksi (sudah lewat atau dalam 7 hari) |
+| Stok kritis | Stok consumable di bawah batas minimum |
+| Barang bermasalah | Status rusak, sedang diperbaiki, atau sejenisnya |
+| Barang hilang/dicuri | Barang berstatus hilang atau dicuri |
 
-## Inventori
+Klik kartu peringatan jika tersedia tautan ke daftar terkait.
 
-| Widget | Tipe | Keterangan |
-|--------|------|------------|
-| Inventory stats | StatsOverview | Total item, nilai pembelian |
-| Status doughnut | ChartWidget | Distribusi status item |
-| Category bar | ChartWidget | Item per kategori |
-| Location bar | ChartWidget | Item per lokasi |
-| Department bar | ChartWidget | Item per departemen |
-| EOL table | TableWidget | Item mendekati end-of-life |
-| Expiring warranty | TableWidget | Garansi akan berakhir |
+## Ringkasan Inventori
 
-## Audit & Maintenance
+- **Total barang** dan nilai pembelian keseluruhan
+- **Grafik status** — distribusi barang per status (aktif, rusak, dll.)
+- **Grafik kategori, lokasi, departemen** — sebaran aset
+- **Tabel mendekati kadaluarsa** — barang yang hampir mencapai akhir masa pakai
+- **Tabel garansi berakhir** — barang dengan masa garansi yang akan habis
 
-| Widget | Keterangan |
-|--------|------------|
-| AuditMaintenanceStatsOverview | Ringkasan audit dan maintenance |
-| MaintenanceByTypeChart | Grafik maintenance per tipe |
+## Audit & Pemeliharaan
+
+Ringkasan jumlah audit dan pemeliharaan, plus grafik pemeliharaan per jenis.
 
 ## Stok
 
-| Widget | Keterangan |
-|--------|------------|
-| Today stock movements | Pergerakan stok hari ini |
-| Critical consumables | Consumable di bawah minimum |
-| Top consumable chart | Consumable paling aktif |
+- Pergerakan stok hari ini
+- Consumable dengan stok di bawah minimum
+- Grafik consumable paling aktif
 
 ## Keuangan
 
-| Widget | Keterangan |
-|--------|------------|
-| Purchase/book value stats | Nilai pembelian vs nilai buku |
-| Monthly depreciation chart | Tren depresiasi bulanan |
-| Near minimum depreciation | Item mendekati nilai residu minimum |
+- Perbandingan nilai pembelian vs nilai buku (setelah penyusutan)
+- Grafik tren penyusutan bulanan
+- Barang mendekati nilai residu minimum
 
-## Master Data
+## Data Master
 
-Widget ringkasan jumlah: models, categories, suppliers, manufactures.
+Ringkasan jumlah model, kategori, pemasok, dan pabrikan yang terdaftar.
 
-## Aktivitas
+## Riwayat Aktivitas
 
-| Widget | Keterangan |
-|--------|------------|
-| LatestActivityLogTable | 10 aktivitas terbaru dari Spatie Activity Log |
+Tabel 10 aktivitas terbaru — siapa melakukan apa dan kapan. Berguna untuk audit internal.
 
-## Barcode Scanner
+## Pemindai Barcode
 
-Widget `BarcodeScanner` memungkinkan scan nomor seri 8 karakter untuk langsung membuka halaman view item terkait.
+Widget pemindai barcode di dasbor memungkinkan Anda memindai **nomor seri** barang (8 karakter) untuk langsung membuka halaman detail barang tersebut.
 
-## Halaman Depresiasi
+### Cara menggunakan
 
-Selain widget, laporan depresiasi lengkap tersedia di halaman **Depreciation Items** (`DepreciationItemsPage`) dengan opsi ekspor.
+1. Klik kolom pemindai di widget
+2. Arahkan pemindai barcode ke label barang, atau ketik nomor seri manual
+3. Halaman detail barang terbuka otomatis
+
+## Laporan Depresiasi Lengkap
+
+Untuk laporan nilai buku yang lebih detail, buka menu **Barang depresiasi** di grup Laporan. Dari sana Anda dapat mengekspor data.
 
 ## Langkah Selanjutnya
 
-- [Modul Inventori](/{{route}}/{{version}}/modul/inventori)
-- [Referensi Enum](/{{route}}/{{version}}/referensi/enum)
+- [Barang](/{{route}}/{{version}}/modul/inventori)
+- [Laporan](/{{route}}/{{version}}/modul/laporan)

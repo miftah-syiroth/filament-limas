@@ -1,56 +1,45 @@
-# Riwayat Status
+# Transfer & Status
 
-Jejak permanen perubahan lokasi, penugasan, dan status aset.
+Tab **Transfer & status** pada halaman barang mencatat **perpindahan permanen** lokasi, departemen, ruangan, penanggung jawab, atau perubahan status.
 
-**Sub-halaman:** Item → tab State Logs · **Model:** `App\Models\ItemStateLog`
+## Siapa yang Bisa Mengakses
 
-## Kapan Digunakan
+Operator dan admin dengan izin pada barang terkait.
 
-Item State Log mencatat perubahan **permanen**:
+## Cara Membuka
 
-| Event | Keterangan |
-|-------|------------|
-| `transfer` | Transfer lokasi/departemen/ruang permanen |
-| `assignment` | Perubahan penanggung jawab |
-| `status_change` | Perubahan status operasional |
+1. Buka detail barang
+2. Klik tab **Transfer & status**
 
-Lihat [ItemStateEventType](/{{route}}/{{version}}/referensi/enum#itemstateeventtype).
+## Kapan Menggunakan?
 
-## Perbedaan dengan Peminjaman
+| Situasi | Gunakan |
+|---------|---------|
+| Memindahkan laptop ke departemen lain secara permanen | Transfer & status |
+| Mengganti penanggung jawab aset | Transfer & status |
+| Meminjamkan proyektor untuk acara 3 hari | [Peminjaman](/{{route}}/{{version}}/modul/peminjaman) |
+| Mengubah jumlah stok tinta printer | [Pergerakan Stok](/{{route}}/{{version}}/modul/pergerakan-stok) |
 
-| Aspek | State Log | Borrowing |
-|-------|-----------|-----------|
-| Sifat | Permanen | Sementara |
-| Restore posisi | Tidak | Ya (check-in) |
-| Use case | Mutasi aset, pensiun | Event, pinjam sementara |
+## Mencatat Transfer
 
-## Data
+1. Buka barang → tab **Transfer & status**
+2. Klik **Tambah transfer**
+3. Isi minimal satu **tujuan** yang berbeda dari posisi saat ini:
+   - Lokasi ke
+   - Departemen ke
+   - Ruangan ke
+   - Penanggung jawab ke
+4. Ubah **status** jika perlu (misalnya Aktif → Rusak)
+5. Tambahkan **catatan**
+6. Simpan
 
-| Field | Keterangan |
-|-------|------------|
-| `event_type` | transfer / assignment / status_change |
-| `from_location_id` → `to_location_id` | Perubahan lokasi |
-| `from_department_id` → `to_department_id` | Perubahan departemen |
-| `from_room_id` → `to_room_id` | Perubahan ruang |
-| `from_user_id` → `to_user_id` | Perubahan penanggung jawab |
-| `from_status` → `to_status` | Perubahan status |
-| `item_audit_id` | Audit terkait (opsional) |
-| `maintenance_id` | Maintenance terkait (opsional) |
-| `notes` | Keterangan |
+Setiap transfer tercatat sebagai jejak audit dan memperbarui data barang.
 
-## Pemicu Otomatis
+## Melihat Riwayat
 
-State log dapat dibuat saat:
-
-- Transfer aset antar lokasi
-- Perubahan status dari audit atau maintenance
-- Assignment penanggung jawab baru
-
-## Activity Log
-
-Selain state log, perubahan model juga tercatat di Spatie Activity Log (`ActivityLogResource`).
+Tabel di tab ini menampilkan semua perubahan sebelumnya beserta tanggal dan detail perubahan.
 
 ## Langkah Selanjutnya
 
-- [Data Master](/{{route}}/{{version}}/modul/data-master)
-- [Referensi Database](/{{route}}/{{version}}/referensi/database#item_state_logs)
+- [Peminjaman](/{{route}}/{{version}}/modul/peminjaman)
+- [Barang](/{{route}}/{{version}}/modul/inventori)

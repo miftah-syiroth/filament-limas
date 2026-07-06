@@ -1,84 +1,89 @@
-# Inventori (Items)
+# Barang
 
-Modul inti SIRIS untuk melacak setiap unit aset individual.
+Modul **Barang** adalah pusat inventori SIRIS. Di sini Anda mencatat setiap aset — baik per unit (laptop, proyektor) maupun stok massal (consumable).
 
-**Resource:** `ItemResource` · **Model:** `App\Models\Item`
+## Siapa yang Bisa Mengakses
 
-## Halaman
+Operator dan admin dengan izin **Barang** dapat melihat dan mencatat data. Izin buat, ubah, atau hapus bergantung peran Anda.
 
-| Halaman | Keterangan |
-|---------|------------|
-| List | Tabel semua item dengan filter dan pencarian |
-| Create | Tambah item baru |
-| View | Detail item + barcode |
-| Edit | Ubah data item |
+## Cara Membuka
 
-## Data Utama
+Sidebar → **Barang** (menu utama, bagian atas)
 
-| Field | Keterangan |
-|-------|------------|
-| `serial_number` | Nomor seri unik (8 karakter, untuk barcode) |
-| `model_id` | Template produk |
-| `location_id` | Lokasi fisik saat ini |
-| `department_id` | Departemen penanggung jawab |
-| `room_id` | Ruangan |
-| `user_id` | Penanggung jawab |
-| `supplier_id` | Pemasok pengadaan |
-| `quantity` | Jumlah (default 1) |
-| `purchase_date` / `purchase_price` | Data pembelian |
-| `eol_date` | Tanggal end-of-life |
-| `warranty_months` | Masa garansi |
-| `is_individual_tracking` | Pelacakan per unit vs stok |
-| `status` | Status operasional (lihat [Enum ItemStatus](/{{route}}/{{version}}/referensi/enum#itemstatus)) |
+## Melihat Daftar Barang
 
-## Status Item
+1. Klik **Barang** di sidebar
+2. Gunakan **pencarian** dan **filter** di atas tabel untuk mempersempit hasil
+3. Klik baris atau tombol **Lihat** untuk membuka detail
 
-Status menentukan apakah item masuk scope inventori (`inInventory()`). Status `lost`, `stolen`, `archived`, dan `disposed` dikecualikan dari perhitungan inventori.
+Anda juga dapat mencari barang dari **kotak pencarian global** di header panel (nomor seri, nama, model, lokasi, dll.).
 
-## Media & Barcode
+## Menambah Barang Baru
 
-- **Foto aset** — Spatie Media Library, disk `public`
-- **Barcode** — komponen `QrCodeEntry` menampilkan Code 128 dari nomor seri
+1. Klik **Tambah Barang**
+2. Isi informasi utama:
+   - **Kategori** dan **Model**
+   - **Lokasi**, **Departemen**, **Ruangan**
+   - **Status** (bawaan: Aktif)
+   - **Penanggung jawab** (opsional)
+3. Isi **Informasi pembelian** jika perlu menghitung depresiasi (tanggal & harga pembelian)
+4. Unggah **Gambar** jika ada
+5. Atur **Kuantitas** sesuai jenis barang:
+   - **Pelacakan individu** — setiap unit menjadi baris terpisah dengan nomor seri unik
+   - **Stok massal** — satu record dengan jumlah stok
+6. Klik **Simpan**
 
-## Sub-halaman Item
+> {note} Kategori consumable
+>
+> Barang kategori consumable selalu dicatat sebagai stok massal, bukan per unit.
 
-Dari record item, akses tab terkait:
+## Melihat Detail Barang
 
-| Tab | Keterangan |
-|-----|------------|
-| [Stock Movements](/{{route}}/{{version}}/modul/pergerakan-stok) | Pergerakan stok consumable |
-| [Borrowing History](/{{route}}/{{version}}/modul/peminjaman) | Riwayat peminjaman |
-| [State Logs](/{{route}}/{{version}}/modul/riwayat-status) | Transfer permanen, assignment |
-| [Audits](/{{route}}/{{version}}/modul/audit) | Inspeksi fisik |
-| [Maintenances](/{{route}}/{{version}}/modul/maintenance) | Perawatan/perbaikan |
+Halaman detail menampilkan:
 
-## Scope & Accessor
+- **Nomor seri** dan kode barcode/QR
+- Spesifikasi (model, kategori, pabrikan)
+- Lokasi, departemen, ruangan, penanggung jawab
+- Informasi pembelian dan nilai depresiasi
+- Tanggal audit berikutnya dan masa garansi
 
-| Method | Keterangan |
+## Mengubah Barang
+
+1. Buka detail barang → klik **Ubah**
+2. Perbarui field yang diperlukan
+3. Simpan perubahan
+
+## Status Barang
+
+| Status | Keterangan |
 |--------|------------|
-| `inInventory()` | Scope query — exclude lost/stolen/archived/disposed |
-| `borrowable()` | Item yang dapat dipinjamkan |
-| `depreciated_price` | Nilai buku setelah depresiasi |
-| `borrowable_quantity` | Qty tersedia untuk dipinjam |
+| Aktif | Beroperasi normal, masuk perhitungan inventori |
+| Sedang didiagnosis | Sedang diperiksa masalahnya |
+| Sedang diperbaiki | Dalam proses perbaikan |
+| Rusak | Tidak berfungsi |
+| Tidak dapat diperbaiki | Rusak permanen |
+| Hilang / Dicuri | Tidak ada di lokasi, dikeluarkan dari inventori aktif |
+| Diarsipkan / Dimusnahkan | Tidak lagi digunakan |
 
-## Global Search
+## Tab pada Detail Barang
 
-Item dapat dicari dari pencarian global panel berdasarkan serial, model, lokasi, departemen, ruang, dan penanggung jawab.
+| Tab | Kegunaan |
+|-----|----------|
+| **Stok** | Catat stok masuk/keluar (consumable) — lihat [Pergerakan Stok](/{{route}}/{{version}}/modul/pergerakan-stok) |
+| **Pemeliharaan** | Riwayat dan tambah tiket pemeliharaan |
+| **Audit** | Riwayat dan tambah audit fisik |
+| **Transfer & status** | Pindah lokasi permanen atau ganti penanggung jawab |
+| **Peminjaman** | Riwayat peminjaman item ini |
 
 ## Impor & Ekspor
 
-- **Import:** `ItemImporter` — impor massal dari spreadsheet
-- **Export:** `ItemExporter` — ekspor data item
+- **Impor** — unggah spreadsheet dari tombol **Impor** di daftar barang
+- **Ekspor** — unduh data dari tombol **Ekspor**
 
-Lihat [Impor & Ekspor](/{{route}}/{{version}}/modul/impor-ekspor).
-
-## Widget Terkait
-
-- Barcode Scanner di dashboard
-- Grafik status, kategori, lokasi
-- Tabel EOL dan garansi
+Lihat [Impor & Ekspor](/{{route}}/{{version}}/modul/impor-ekspor) untuk detail.
 
 ## Langkah Selanjutnya
 
 - [Peminjaman](/{{route}}/{{version}}/modul/peminjaman)
-- [Referensi Database](/{{route}}/{{version}}/referensi/database#items)
+- [Audit Barang](/{{route}}/{{version}}/modul/audit)
+- [Data Master](/{{route}}/{{version}}/modul/data-master)

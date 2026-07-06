@@ -1,128 +1,82 @@
 # Data Master
 
-Kumpulan resource untuk data referensi dan struktur organisasi.
+**Data master** adalah data referensi organisasi dan pengaturan pendukung yang harus ada sebelum mencatat barang.
 
-## Organisasi & Lokasi
+## Siapa yang Bisa Mengakses
 
-### Organizations (`OrganizationResource`)
+Umumnya **admin**. Operator mungkin hanya melihat, tergantung izin.
 
-Institusi pemilik aset.
+## Cara Membuka
 
-| Field | Keterangan |
-|-------|------------|
-| `name` | Nama organisasi |
-| `email`, `phone` | Kontak |
-| `notes` | Catatan |
+Sidebar → grup **Data Master**
 
-**Relasi:** `hasMany` locations, departments
+## Organisasi
 
-### Locations (`LocationResource`)
+Mencatat institusi pemilik aset.
 
-Cabang/kantor di bawah organisasi.
+1. Klik **Organisasi** → **Tambah**
+2. Isi nama, kontak (email/telepon), dan catatan
+3. Simpan
 
-| Field | Keterangan |
-|-------|------------|
-| `organization_id` | Organisasi induk |
-| `name` | Nama lokasi |
-| `address`, `city`, `province`, `country`, `zip` | Alamat |
-| Referensi geo | `country`, `province`, `city` via kode lookup |
+## Lokasi
 
-### Departments (`DepartmentResource`)
+Cabang atau kantor di bawah organisasi.
 
-Unit kerja, dapat terhubung ke banyak lokasi (M2M via `department_locations`).
+1. Klik **Lokasi** → **Tambah**
+2. Pilih **organisasi** induk
+3. Isi nama dan alamat lengkap
+4. Simpan
 
-### Rooms (`RoomResource`)
+## Departemen
 
-Ruangan dalam lokasi.
+Unit kerja yang dapat terhubung ke satu atau lebih lokasi.
 
-| Field | Keterangan |
-|-------|------------|
-| `location_id` | Lokasi induk |
-| `name` | Nama ruang |
-| `capacity` | Kapasitas |
+1. Klik **Departemen** → **Tambah**
+2. Isi nama departemen
+3. Pilih lokasi yang terkait
+4. Simpan
 
-## Katalog Produk (Reference)
+## Ruangan
 
-### Categories (`CategoryResource`)
+Ruang fisik dalam suatu lokasi.
 
-| Field | Keterangan |
-|-------|------------|
-| `name` | Nama kategori |
-| `type` | `asset`, `accessory`, `consumable`, `license` |
+1. Klik **Ruangan** → **Tambah**
+2. Pilih **lokasi** induk
+3. Isi nama ruangan dan kapasitas (opsional)
+4. Simpan
 
-Import tersedia via `CategoryImporter`.
+## Penyusutan
 
-### Manufactures (`ManufactureResource`)
+Aturan penyusutan nilai aset untuk laporan keuangan.
 
-Data produsen: nama, URL dukungan, garansi lookup. Import via `ManufactureImporter`.
+1. Klik **Penyusutan** → **Tambah**
+2. Isi nama aturan, metode, persentase, dan nilai residu
+3. Simpan
+4. Hubungkan aturan penyusutan ke **model** barang di grup Referensi
 
-### Models (`ModelResource`)
+## Satuan
 
-Template spesifikasi produk.
+Satuan ukuran barang (pcs, unit, rim, dll.).
 
-| Field | Keterangan |
-|-------|------------|
-| `name`, `model_number` | Identifikasi produk |
-| `category_id` | Kategori |
-| `manufacture_id` | Produsen |
-| `depreciation_id` | Skema depresiasi |
-| `unit_id` | Satuan |
-| `min_amount` | Stok minimum (alert) |
-| `end_of_life` | Umur pakai (bulan) |
-| `audit_interval` | Interval audit (bulan) |
+1. Klik **Satuan**
+2. Tambah atau kelola satuan dari halaman tersebut
 
-Mendukung media (foto produk). Import via `ModelImporter`.
+## Data Referensi (Katalog Produk)
 
-### Suppliers (`SupplierResource`)
+Selain data master, lengkapi katalog di grup **Referensi** sebelum menambah barang:
 
-Pemasok pengadaan dengan alamat dan kontak. Relasi geo lookup untuk negara/provinsi/kota.
+| Menu | Fungsi |
+|------|--------|
+| **Kategori** | Jenis barang (elektronik, furniture, consumable, dll.) |
+| **Pabrikan** | Produsen |
+| **Model** | Template produk — hubungkan ke kategori, pabrikan, dan penyusutan |
+| **Pemasok** | Vendor pengadaan |
 
-## Keuangan & Satuan (Master Data)
-
-### Depreciations (`DepreciationResource`)
-
-Skema penyusutan straight-line.
-
-| Field | Keterangan |
-|-------|------------|
-| `months` | Periode depresiasi |
-| `minimum_value` | Persentase nilai residu minimum |
-| `method` | `amount` (garis lurus) |
-
-### Units (`UnitResource`)
-
-Satuan pengukuran (pcs, box, set, dll.) — pola Manage dengan inline create/edit.
-
-## Referensi Geografis
-
-Tabel lookup tanpa FK database:
-
-- `countries` — kode negara
-- `provinces` — kode provinsi per negara
-- `cities` — kode kota per provinsi
-
-Digunakan oleh Location dan Supplier untuk autocomplete alamat.
-
-## Hierarki
-
-```mermaid
-flowchart TB
-    Org[Organization] --> Loc[Location]
-    Org --> Dept[Department]
-    Dept -.->|M2M| Loc
-    Loc --> Room[Room]
-    Cat[Category] --> Model[Model]
-    Mfr[Manufacture] --> Model
-    Depr[Depreciation] --> Model
-    Unit[Unit] --> Model
-    Model --> Item[Item]
-    Supp[Supplier] --> Item
-    Loc --> Item
-    Dept --> Item
-    Room --> Item
-```
+> {primary} Urutan pengisian disarankan
+>
+> Isi **Organisasi → Lokasi → Departemen → Ruangan**, lalu **Kategori → Pabrikan → Model**, baru tambahkan **Barang**.
 
 ## Langkah Selanjutnya
 
+- [Barang](/{{route}}/{{version}}/modul/inventori)
 - [Impor & Ekspor](/{{route}}/{{version}}/modul/impor-ekspor)
-- [Referensi Database](/{{route}}/{{version}}/referensi/database)

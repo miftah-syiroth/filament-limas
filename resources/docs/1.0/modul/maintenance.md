@@ -1,63 +1,56 @@
-# Maintenance
+# Pemeliharaan
 
-Modul perawatan dan perbaikan aset.
+Modul **Pemeliharaan** mengelola tiket perawatan dan perbaikan aset — dari laporan masuk hingga selesai.
 
-**Resource:** `MaintenanceResource` · **Model:** `App\Models\Maintenance`
+## Siapa yang Bisa Mengakses
 
-## Halaman
+Operator dan admin dengan izin **Pemeliharaan**.
 
-Pola **Manage** — list, view, filter. Tiket baru dibuat dari sub-halaman Item atau dari hasil audit.
+## Cara Membuka
 
-## Data Maintenance
+- Sidebar → grup **Laporan** → **Pemeliharaan**
+- Atau dari tab **Pemeliharaan** pada halaman detail barang
 
-| Field | Keterangan |
-|-------|------------|
-| `item_id` | Item yang dirawat |
-| `item_audit_id` | Audit pemicu (opsional) |
-| `type` | Tipe — lihat [MaintenanceType](/{{route}}/{{version}}/referensi/enum#maintenancetype) |
-| `status` | Status — lihat [MaintenanceStatus](/{{route}}/{{version}}/referensi/enum#maintenancestatus) |
-| `reported_at` | Waktu dilaporkan |
-| `started_at` | Waktu mulai pengerjaan |
-| `completed_at` | Waktu selesai |
-| `cost` | Biaya perbaikan (IDR) |
-| `notes` | Catatan teknisi |
+## Membuat Tiket Pemeliharaan
 
-## Siklus Status
+1. Buka **Pemeliharaan** atau tab pemeliharaan pada barang
+2. Klik **Tambah pemeliharaan**
+3. Isi:
+   - **Barang** yang dirawat
+   - **Tipe** — Preventif, Perbaikan, Upgrade, atau Inspeksi
+   - **Tanggal laporan**
+   - **Catatan** keluhan atau rencana perawatan
+4. Simpan — status awal: **Dilaporkan**
 
-```mermaid
-stateDiagram-v2
-    [*] --> reported
-    reported --> in_progress
-    in_progress --> completed
-    reported --> cancelled
-    in_progress --> cancelled
-    completed --> [*]
-    cancelled --> [*]
-```
+## Menindaklanjuti Tiket
 
-## Tipe Maintenance
+1. Buka tiket dari daftar
+2. Perbarui status sesuai progres:
+   - **Dilaporkan** → baru masuk
+   - **Sedang berjalan** — isi tanggal mulai
+   - **Selesai** — isi tanggal selesai dan biaya (jika ada)
+   - **Dibatalkan** — jika tidak jadi dilakukan
+3. Jika perlu, ubah **status barang** (misalnya dari Aktif ke Sedang diperbaiki)
 
-| Tipe | Keterangan |
-|------|------------|
-| `preventive` | Perawatan berkala |
-| `repair` | Perbaikan kerusakan |
-| `upgrade` | Peningkatan spesifikasi |
-| `inspection` | Inspeksi teknis |
+## Tipe Pemeliharaan
 
-## Dashboard
+| Tipe | Kegunaan |
+|------|----------|
+| Preventif | Perawatan terjadwal |
+| Perbaikan | Memperbaiki kerusakan |
+| Upgrade | Peningkatan spesifikasi |
+| Inspeksi | Pemeriksaan rutin |
 
-Widget **Maintenance belum selesai** menghitung tiket dengan status `reported` atau `in_progress`. Grafik **MaintenanceByTypeChart** menampilkan distribusi per tipe.
+## Peringatan di Dasbor
+
+Tiket berstatus **Dilaporkan** atau **Sedang berjalan** muncul sebagai peringatan di dasbor.
 
 ## Ekspor
 
-`MaintenanceExporter` — ekspor data maintenance.
-
-## Relasi
-
-- Terkait **Item Audit** jika dibuat dari hasil inspeksi
-- Perubahan status item dapat tercatat di **Item State Logs**
+Gunakan tombol **Ekspor** di daftar pemeliharaan untuk mengunduh laporan.
 
 ## Langkah Selanjutnya
 
-- [Pergerakan Stok](/{{route}}/{{version}}/modul/pergerakan-stok)
-- [Referensi Database](/{{route}}/{{version}}/referensi/database#maintenances)
+- [Audit Barang](/{{route}}/{{version}}/modul/audit)
+- [Barang](/{{route}}/{{version}}/modul/inventori)
+- [Laporan](/{{route}}/{{version}}/modul/laporan)

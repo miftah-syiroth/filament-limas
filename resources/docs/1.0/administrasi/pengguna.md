@@ -1,62 +1,45 @@
 # Pengguna
 
-Manajemen akun pengguna sistem.
+Menu **Pengguna** digunakan administrator untuk mengelola akun yang dapat login ke SIRIS.
 
-**Resource:** `UserResource` · **Model:** `App\Models\User`
+## Siapa yang Bisa Mengakses
 
-## Halaman
+**Admin** dan **super admin** dengan izin kelola pengguna.
 
-| Halaman | Keterangan |
-|---------|------------|
-| List | Daftar pengguna |
-| Create | Tambah pengguna baru |
-| View | Detail pengguna |
-| Edit | Ubah data dan role |
+## Cara Membuka
 
-## Data Pengguna
+Sidebar → grup **Administrasi** → **Pengguna**
 
-| Field | Keterangan |
-|-------|------------|
-| `name` | Nama lengkap |
-| `email` | Email unik (digunakan login & SSO) |
-| `password` | Password (di-hash) |
-| `oauth` | Atribut SSO schemaless (Spatie) |
+## Melihat Daftar Pengguna
 
-## Role
+Tabel menampilkan nama, email, dan peran setiap pengguna. Gunakan pencarian untuk menemukan akun tertentu.
 
-Setiap pengguna harus memiliki **minimal satu role** agar dapat login. Role diassign melalui form Edit User (relasi Spatie Permission).
+## Menambah Pengguna Baru
 
-## Two-Factor Authentication
-
-Pengguna dapat mengaktifkan 2FA melalui `/settings/two-factor` setelah login. Status 2FA dikelola oleh Laravel Fortify.
-
-## Akses Panel
-
-Method `User::canAccessPanel()` mengizinkan akses panel admin untuk role:
-
-- `super_admin`
-- `admin`
-- `operator`
-
-## Profil di Panel
-
-Halaman profil Filament (`EditProfile`) hanya mengizinkan perubahan **password**. Nama dan email tidak dapat diubah dari panel.
-
-## Activity Log
-
-Perubahan data pengguna tercatat via Spatie Activity Log (`LogsActivity` trait).
-
-## Membuat Pengguna Baru
-
-1. Buka **Users** → Create
-2. Isi nama, email, password
-3. Assign role (wajib agar user dapat login)
+1. Klik **Tambah**
+2. Isi **nama lengkap**, **email**, dan **password**
+3. Pilih **peran** — wajib minimal satu peran
 4. Simpan
 
 > {warning} Syarat login
 >
-> User tanpa role tidak dapat login via password maupun SSO.
+> Pengguna **tanpa peran** tidak dapat login, baik via password maupun SSO My UHB. Pastikan setiap akun memiliki peran yang sesuai.
+
+## Mengubah Pengguna
+
+1. Buka pengguna → klik **Ubah**
+2. Perbarui data atau reset password
+3. Ubah **peran** jika diperlukan
+4. Simpan
+
+## Autentikasi Dua Faktor
+
+Pengguna dapat mengaktifkan 2FA sendiri melalui pengaturan profil. Admin tidak wajib mengaturnya, tetapi disarankan untuk akun dengan akses tinggi.
+
+## Login SSO
+
+Jika pengguna login via My UHB, email di akun SIRIS harus **sama** dengan email My UHB. Lihat [SSO My UHB](/{{route}}/{{version}}/autentikasi/sso).
 
 ## Langkah Selanjutnya
 
-- [Peran dan Izin](/{{route}}/{{version}}/administrasi/peran-izin)
+- [Peran & Izin](/{{route}}/{{version}}/administrasi/peran-izin)

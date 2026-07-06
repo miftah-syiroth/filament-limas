@@ -1,72 +1,61 @@
-# Login dan Autentikasi Dua Faktor
+# Login & Autentikasi Dua Faktor
 
-## Halaman Login
+Panduan ini menjelaskan cara masuk ke SIRIS dan mengelola autentikasi dua faktor (2FA) dari sudut pandang pengguna.
 
-URL: `/login`
+## Cara Login
 
-Halaman login menggunakan komponen Livewire Flux (`resources/views/pages/auth/login.blade.php`) dengan:
+1. Buka halaman login di `/login`
+2. Masukkan **email** dan **password** akun Anda
+3. Centang **Ingat saya** jika menggunakan perangkat pribadi yang aman
+4. Klik tombol login
 
-- Form email dan password
-- Opsi "Ingat saya"
-- Tombol SSO (jika OAuth dikonfigurasi)
-- Link ke pengaturan 2FA setelah login
+Setelah berhasil, Anda diarahkan ke panel admin di `/admin`.
 
-## Proses Login Password
+> {note} Syarat login
+>
+> Akun Anda harus sudah terdaftar dan memiliki **minimal satu peran** (admin, operator, atau super admin). Tanpa peran, login akan ditolak meskipun email dan password benar.
 
-Logika autentikasi kustom di `FortifyServiceProvider`:
+## Login via SSO
 
-1. Cari user berdasarkan email **yang memiliki role**
-2. Verifikasi password dengan `Hash::check`
-3. Jika gagal, kembalikan `null` → Fortify menolak login
-
-```php
-User::query()
-    ->where('email', $email)
-    ->whereHas('roles')
-    ->first();
-```
-
-Session `auth_login_method` diset ke `password` (default) saat login berhasil.
-
-## Rate Limiting
-
-| Aksi | Batas |
-|------|-------|
-| Login | 5 percobaan per menit per email+IP |
-| Two-factor challenge | 5 percobaan per menit per session login ID |
+Jika tombol **My UHB** (atau nama provider SSO lain) tampil di halaman login, Anda dapat masuk tanpa password. Lihat [SSO My UHB](/{{route}}/{{version}}/autentikasi/sso).
 
 ## Autentikasi Dua Faktor (2FA)
 
-2FA diaktifkan melalui Fortify dengan fitur:
+2FA menambah lapisan keamanan dengan kode dari aplikasi authenticator di ponsel Anda.
 
-- `confirm` — user harus mengonfirmasi 2FA setelah setup
-- `confirmPassword` — memerlukan konfirmasi password sebelum mengelola 2FA
+### Mengaktifkan 2FA
 
-### Mengelola 2FA
+1. Login ke panel admin
+2. Buka **Pengaturan profil** (ikon akun di pojok kanan atas)
+3. Pilih menu pengaturan **Autentikasi dua faktor**
+4. Ikuti petunjuk untuk memindai QR code dengan aplikasi authenticator (Google Authenticator, Authy, dll.)
+5. Masukkan kode verifikasi untuk mengonfirmasi
+6. **Simpan kode pemulihan** di tempat aman — dipakai jika ponsel tidak tersedia
 
-Setelah login, buka `/settings/two-factor` untuk:
+### Login dengan 2FA Aktif
 
-- Mengaktifkan aplikasi authenticator (TOTP)
-- Memindai QR code
-- Menyimpan recovery codes
+1. Masukkan email dan password seperti biasa
+2. Anda diarahkan ke halaman verifikasi 2FA
+3. Masukkan kode 6 digit dari aplikasi authenticator, **atau** gunakan salah satu kode pemulihan
 
-### Challenge 2FA
+### Menonaktifkan 2FA
 
-Jika 2FA aktif, setelah password benar pengguna diarahkan ke `/two-factor-challenge` untuk memasukkan kode TOTP atau recovery code.
+Buka pengaturan profil → Autentikasi dua faktor → nonaktifkan. Anda mungkin diminta memasukkan password untuk konfirmasi.
 
 ## Logout
 
-Logout dilakukan via Fortify (`POST /logout`). Session diinvalidasi dan token CSRF di-regenerate.
+Klik menu akun di pojok kanan atas panel admin, lalu pilih **Keluar**.
 
 ## Kesalahan Umum
 
-| Gejala | Penyebab | Solusi |
-|--------|----------|--------|
-| Login gagal meski password benar | User tidak punya role | Assign role via UserResource |
-| Tidak bisa akses `/admin` | Role bukan admin/operator | Periksa `User::canAccessPanel()` |
-| 2FA challenge gagal | Waktu perangkat tidak sinkron | Sinkronkan jam perangkat |
+| Gejala | Kemungkinan penyebab | Solusi |
+|--------|---------------------|--------|
+| Login gagal meski password benar | Akun belum punya peran | Hubungi admin untuk assign peran |
+| Tidak bisa akses panel admin | Peran tidak memiliki izin panel | Hubungi admin |
+| Kode 2FA selalu ditolak | Jam perangkat tidak akurat | Sinkronkan waktu ponsel/komputer |
+| Lupa password | — | Gunakan tautan lupa password di halaman login, atau hubungi admin |
 
 ## Langkah Selanjutnya
 
-- [SSO My UHB](/{{route}}/{{version}}/autentikasi/sso) — login tanpa password
-- [Peran dan Izin](/{{route}}/{{version}}/administrasi/peran-izin)
+- [SSO My UHB](/{{route}}/{{version}}/autentikasi/sso)
+- [Navigasi panel](/{{route}}/{{version}}/panel-admin/navigasi)

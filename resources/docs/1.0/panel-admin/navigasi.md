@@ -1,85 +1,89 @@
 # Navigasi Panel
 
-Sidebar panel admin diorganisir dalam grup navigasi yang didefinisikan di `App\Enums\NavigationGroup`.
+Sidebar panel admin mengelompokkan menu berdasarkan fungsi. Label menu mengikuti bahasa antarmuka yang Anda pilih (Indonesia/Inggris).
 
-## Grup Navigasi
+## Menu Utama (atas)
 
-| Grup | Resource / Halaman |
-|------|-------------------|
-| *(tanpa grup — atas)* | Items, Borrowings |
-| **Reference** | Models, Categories, Manufactures, Suppliers |
-| **Reports** | Item Audits, Maintenances, Borrowing Items, Activity Logs |
-| **Administration** | Users, Roles (Shield) |
-| **Master Data** | Organizations, Locations, Departments, Rooms, Depreciations, Units |
+Menu ini selalu tampil di bagian atas sidebar:
 
-## Resource per Grup
+| Menu | Fungsi |
+|------|--------|
+| **Dasbor** | Ringkasan KPI, grafik, dan peringatan |
+| **Barang** | Daftar dan pengelolaan aset inventori |
+| **Peminjaman** | Transaksi peminjaman sementara |
 
-### Inventori (atas)
+## Grup Referensi
 
-| Resource | Model | Halaman |
-|----------|-------|---------|
-| **Items** | `Item` | List, Create, View, Edit + sub-halaman |
-| **Borrowings** | `Borrowing` | List, Create, View, Edit |
+Data katalog produk yang dipakai saat mencatat barang:
 
-### Reference
+| Menu | Fungsi |
+|------|--------|
+| **Model** | Template produk (nama, kategori, pabrikan) |
+| **Kategori** | Pengelompokan jenis barang |
+| **Pabrikan** | Daftar produsen |
+| **Pemasok** | Daftar vendor pengadaan |
 
-| Resource | Model | Halaman |
-|----------|-------|---------|
-| **Models** | `Model` | CRUD + View, Import |
-| **Categories** | `Category` | CRUD + View, Import |
-| **Manufactures** | `Manufacture` | CRUD + View, Import |
-| **Suppliers** | `Supplier` | CRUD + View |
+## Grup Data Master
 
-### Reports
+Struktur organisasi dan pengaturan pendukung:
 
-| Resource | Model | Halaman |
-|----------|-------|---------|
-| **Item Audits** | `ItemAudit` | Manage (list + view) |
-| **Maintenances** | `Maintenance` | Manage + Export |
-| **Borrowing Items** | `BorrowingItem` | Manage + Export |
-| **Activity Logs** | `ActivityLog` | Manage (read-only) |
+| Menu | Fungsi |
+|------|--------|
+| **Organisasi** | Institusi pemilik aset |
+| **Lokasi** | Cabang atau kantor |
+| **Departemen** | Unit kerja |
+| **Ruangan** | Ruang dalam suatu lokasi |
+| **Penyusutan** | Aturan penyusutan nilai aset |
+| **Satuan** | Satuan ukuran (pcs, unit, dll.) |
 
-### Administration
+## Grup Laporan
 
-| Resource | Model | Halaman |
-|----------|-------|---------|
-| **Users** | `User` | CRUD + View |
-| **Roles** | `Role` | CRUD + View (Shield) |
+Akses cepat ke data operasional dan historis:
 
-### Master Data
+| Menu | Fungsi |
+|------|--------|
+| **Audit barang** | Daftar inspeksi fisik |
+| **Pemeliharaan** | Daftar tiket perawatan |
+| **Barang dipinjam** | Detail item dalam transaksi peminjaman |
+| **Riwayat aktivitas** | Log perubahan data (baca saja) |
+| **Barang depresiasi** | Laporan nilai buku aset |
 
-| Resource | Model | Halaman |
-|----------|-------|---------|
-| **Organizations** | `Organization` | CRUD + View |
-| **Locations** | `Location` | CRUD + View |
-| **Departments** | `Department` | CRUD + View |
-| **Rooms** | `Room` | CRUD + View |
-| **Depreciations** | `Depreciation` | CRUD + View |
-| **Units** | `Unit` | Manage (inline create/edit) |
+## Grup Administrasi
 
-## Sub-halaman Item
+Hanya tampil bagi pengguna dengan izin administrasi:
 
-Dari halaman View/Edit Item, navigasi tab ke:
+| Menu | Fungsi |
+|------|--------|
+| **Pengguna** | Kelola akun pengguna |
+| **Peran** | Kelola peran dan izin akses |
 
-| Sub-halaman | Keterangan |
-|-------------|------------|
-| Stock Movements | Pergerakan stok consumable |
-| Borrowing History | Riwayat peminjaman item |
-| State Logs | Jejak perubahan posisi/status |
-| Audits | Audit fisik item |
-| Maintenances | Tiket perawatan item |
+## Grup Bantuan
 
-## Halaman Laporan Kustom
+| Menu | Fungsi |
+|------|--------|
+| **Dokumentasi** | Membuka panduan pengguna ini (tab baru) |
 
-| Halaman | Grup | Keterangan |
-|---------|------|------------|
-| Depreciation Items | Reports | Tabel nilai buku depresiasi |
+## Tab pada Halaman Barang
 
-## Izin Akses
+Saat membuka detail suatu barang, tab tambahan tersedia di bagian atas:
 
-Visibilitas menu dan aksi dikontrol oleh Filament Shield. Lihat [Peran dan Izin](/{{route}}/{{version}}/administrasi/peran-izin).
+| Tab | Fungsi |
+|-----|--------|
+| **Stok** | Pergerakan stok (consumable) |
+| **Pemeliharaan** | Riwayat pemeliharaan item |
+| **Audit** | Riwayat audit item |
+| **Transfer & status** | Perubahan lokasi/permanent transfer |
+| **Peminjaman** | Riwayat peminjaman item |
+
+## Pencarian Global
+
+Gunakan kotak pencarian di bagian atas panel untuk menemukan barang berdasarkan nomor seri, nama, model, lokasi, departemen, ruangan, atau penanggung jawab.
+
+## Izin Menu
+
+Menu yang Anda lihat bergantung pada **peran dan izin** akun Anda. Jika menu tertentu tidak muncul, hubungi administrator.
 
 ## Langkah Selanjutnya
 
-- [Dashboard](/{{route}}/{{version}}/panel-admin/dashboard)
-- [Modul Inventori](/{{route}}/{{version}}/modul/inventori)
+- [Dasbor](/{{route}}/{{version}}/panel-admin/dashboard)
+- [Barang](/{{route}}/{{version}}/modul/inventori)

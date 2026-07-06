@@ -1,81 +1,62 @@
-# Peran dan Izin
+# Peran & Izin
 
-SIRIS menggunakan **Filament Shield** di atas **Spatie Laravel Permission** untuk kontrol akses berbasis peran (RBAC).
+SIRIS menggunakan **peran** untuk menentukan apa yang dapat dilihat dan dilakukan setiap pengguna di panel admin.
+
+## Siapa yang Bisa Mengakses
+
+**Super admin** dan **admin** dengan izin kelola peran.
+
+## Cara Membuka
+
+Sidebar → grup **Administrasi** → **Peran**
 
 ## Peran Bawaan
 
-| Peran | Keterangan |
-|-------|------------|
-| `super_admin` | Akses penuh — bypass semua gate Shield |
-| `admin` | Administrator — semua permissions di-sync via RoleSeeder |
-| `operator` | Operator harian — permissions terbatas |
-
-Enum: `App\Enums\RoleName`
-
-## Resource
-
-**RoleResource** (extends Shield `RoleResource`) mengelola peran dan permissions di grup **Administration**.
-
-### Peran Sistem
-
-Peran bawaan (`super_admin`, `admin`, `operator`) **tidak dapat diubah** pada halaman edit — hanya peran kustom yang dapat dimodifikasi.
-
-## Generate Permissions
-
-```bash
-php artisan shield:generate --panel=admin --all --option=policies_and_permissions --ignore-existing-policies
-```
-
-Atau via Makefile:
-
-```bash
-make shield-generate
-```
-
-Perintah ini:
-
-1. Membuat permission per resource/action Filament
-2. Membuat policy di `app/Policies/`
-3. Mendaftarkan permission ke database
-
-## Sync ke Role Admin
-
-```bash
-php artisan db:seed --class=RoleSeeder
-```
-
-RoleSeeder memberikan **semua permissions** ke role `admin`.
-
-## Super Admin Bypass
-
-Konfigurasi `config/filament-shield.php` mengaktifkan intercept gate untuk `super_admin` — role ini melewati semua pengecekan permission.
-
-## Policies
-
-Policy otomatis di-generate per model, contoh:
-
-- `ItemPolicy` — view, create, update, delete item
-- `UserPolicy` — dengan guard tambahan untuk role bawaan
-- `RolePolicy` — proteksi role sistem
-
-## Halaman Kustom
-
-Halaman seperti `DepreciationItemsPage` menggunakan trait `HasPageShield` untuk permission akses halaman.
-
-## Matriks Akses Umum
-
-| Area | super_admin | admin | operator |
-|------|:-----------:|:-----:|:--------:|
-| Inventori CRUD | ✓ | ✓ | Sesuai permission |
-| Laporan (read) | ✓ | ✓ | Sesuai permission |
-| User management | ✓ | ✓ | ✗ |
-| Role management | ✓ | Terbatas | ✗ |
+| Peran | Keterangan umum |
+|-------|-----------------|
+| **Super Admin** | Akses penuh ke seluruh fitur tanpa batasan |
+| **Admin** | Mengelola inventori, data master, laporan, dan pengguna |
+| **Operator** | Fokus operasional harian — peminjaman, audit, stok |
 
 > {note} Operator
 >
-> Permission operator dapat disesuaikan per kebutuhan institusi melalui RoleResource.
+> Izin operator dapat disesuaikan oleh admin institusi melalui halaman **Peran** jika kebutuhan berbeda.
+
+## Apa yang Dikontrol Peran?
+
+Setiap peran memiliki izin per menu dan per aksi, misalnya:
+
+- Melihat daftar barang
+- Menambah atau mengubah barang
+- Mengekspor laporan
+- Mengelola pengguna
+
+Menu yang tidak memiliki izin **tidak akan muncul** di sidebar pengguna tersebut.
+
+## Mengelola Peran Kustom
+
+1. Buka **Peran** → **Tambah** (untuk peran baru) atau pilih peran yang ada
+2. Centang izin yang sesuai untuk setiap menu
+3. Simpan
+
+> {warning} Peran bawaan
+>
+> Peran **super admin**, **admin**, dan **operator** tidak dapat diubah strukturnya. Untuk kebutuhan khusus, buat **peran kustom** baru.
+
+## Perbandingan Singkat
+
+| Kemampuan | Super Admin | Admin | Operator |
+|-----------|:-----------:|:-----:|:--------:|
+| Kelola barang & peminjaman | Ya | Ya | Sesuai izin |
+| Lihat laporan | Ya | Ya | Sesuai izin |
+| Kelola data master | Ya | Ya | Terbatas |
+| Kelola pengguna & peran | Ya | Ya | Tidak |
+
+## Menetapkan Peran ke Pengguna
+
+Peran diberikan saat membuat atau mengubah pengguna di menu **Pengguna**. Satu pengguna dapat memiliki lebih dari satu peran.
 
 ## Langkah Selanjutnya
 
-- [Referensi Enum](/{{route}}/{{version}}/referensi/enum)
-- [Testing](/{{route}}/{{version}}/pengembangan/testing)
+- [Pengguna](/{{route}}/{{version}}/administrasi/pengguna)
+- [Navigasi panel](/{{route}}/{{version}}/panel-admin/navigasi)

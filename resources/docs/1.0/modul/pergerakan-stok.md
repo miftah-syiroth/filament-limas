@@ -1,49 +1,43 @@
 # Pergerakan Stok
 
-Modul untuk mencatat pergerakan stok **consumable** (barang habis pakai) yang tidak dilacak per unit.
+**Pergerakan stok** digunakan untuk barang **habis pakai (consumable)** — mencatat stok masuk dan keluar secara permanen.
 
-**Sub-halaman:** Item → tab Stock Movements · **Model:** `App\Models\StockMovement`
+## Siapa yang Bisa Mengakses
 
-## Kapan Digunakan
+Operator dan admin dengan izin pergerakan stok pada barang.
 
-Gunakan stock movement untuk item dengan `is_individual_tracking = false` atau kategori tipe `consumable`. Untuk aset individual, gunakan [Peminjaman](/{{route}}/{{version}}/modul/peminjaman) atau [Riwayat Status](/{{route}}/{{version}}/modul/riwayat-status).
+## Cara Membuka
 
-## Tipe Pergerakan
-
-| Tipe | Keterangan | Dampak Qty |
-|------|------------|------------|
-| `in` | Stok masuk | Bertambah |
-| `out` | Stok keluar | Berkurang |
-| `adjustment` | Koreksi stok | Sesuai nilai |
-
-Lihat [StockMovementType](/{{route}}/{{version}}/referensi/enum#stockmovementtype).
-
-## Data
-
-| Field | Keterangan |
-|-------|------------|
-| `item_id` | Item consumable |
-| `type` | in / out / adjustment |
-| `quantity` | Jumlah (positif/negatif sesuai tipe) |
-| `notes` | Keterangan pergerakan |
-
-## Alert Stok Minimum
-
-Model produk (`models.min_amount`) mendefinisikan stok minimum. Dashboard menampilkan widget **Critical consumables** untuk item di bawah ambang batas.
-
-## Dashboard
-
-| Widget | Keterangan |
-|--------|------------|
-| Today stock movements | Pergerakan hari ini |
-| Critical consumables | Stok di bawah minimum |
-| Top consumable chart | Consumable paling aktif |
+1. Buka detail barang kategori consumable
+2. Klik tab **Stok**
 
 > {note} Bukan untuk pemindahan fisik
 >
-> Stock movement mengubah **kuantitas** stok secara permanen, bukan posisi fisik aset. Untuk pemindahan lokasi sementara, gunakan modul Peminjaman.
+> Pergerakan stok mengubah **jumlah** stok, bukan memindahkan aset ke lokasi lain. Untuk pemindahan sementara gunakan [Peminjaman](/{{route}}/{{version}}/modul/peminjaman). Untuk pindah permanen gunakan [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status).
+
+## Kapan Menggunakan?
+
+- Stok ATK masuk dari pengadaan baru
+- Stok keluar karena pemakaian harian
+- Koreksi jumlah stok setelah opname
+
+## Mencatat Pergerakan Stok
+
+1. Buka barang consumable → tab **Stok**
+2. Klik **Tambah stok**
+3. Pilih **tipe**:
+   - **Masuk (In)** — tambah stok (kuantitas positif)
+   - **Keluar (Out)** — kurangi stok (kuantitas negatif)
+4. Isi **kuantitas** dan **catatan**
+5. Simpan
+
+Sistem mencegah stok menjadi negatif.
+
+## Peringatan Stok Minimum
+
+Jika stok consumable di bawah batas minimum yang ditetapkan, peringatan muncul di **dasbor**.
 
 ## Langkah Selanjutnya
 
-- [Riwayat Status](/{{route}}/{{version}}/modul/riwayat-status)
-- [Referensi Database](/{{route}}/{{version}}/referensi/database#stock_movements)
+- [Barang](/{{route}}/{{version}}/modul/inventori)
+- [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status)

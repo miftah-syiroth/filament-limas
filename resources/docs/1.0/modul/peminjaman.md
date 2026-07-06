@@ -1,87 +1,66 @@
 # Peminjaman
 
-Modul untuk **pemindahan posisi sementara** aset ke lokasi lain, kemudian mengembalikannya ke posisi semula.
+Modul **Peminjaman** digunakan untuk memindahkan aset **sementara** ke lokasi lain, lalu mengembalikannya ke posisi semula.
 
-**Resource:** `BorrowingResource` · **Model:** `App\Models\Borrowing`, `BorrowingItem`
+## Siapa yang Bisa Mengakses
 
-## Konsep
+Operator dan admin dengan izin **Peminjaman**.
 
-Peminjaman di SIRIS bukan modul event — ini adalah mekanisme untuk:
+## Cara Membuka
 
-1. Memindahkan aset sementara (laptop, proyektor, kursi, dll.)
-2. Mencatat snapshot posisi asal (`from_*`)
-3. Mengupdate posisi item ke tujuan (`to_*`)
-4. Mengembalikan ke posisi asal saat check-in
+Sidebar → **Peminjaman** (menu utama)
 
-## Halaman
+## Kapan Menggunakan Peminjaman?
 
-| Halaman | Keterangan |
-|---------|------------|
-| List | Daftar transaksi peminjaman |
-| Create | Form kustom dengan pemilih item (tabel + qty) |
-| View | Detail transaksi + items |
-| Edit | Ubah data transaksi |
+Gunakan peminjaman untuk aset yang **dipindahkan sementara**, misalnya:
 
-## Data Header (`borrowings`)
+- Laptop dipinjam ke ruang rapat
+- Proyektor dipakai untuk acara di gedung lain
+- Kursi dipindah sementara untuk kegiatan
 
-| Field | Keterangan |
-|-------|------------|
-| `user_id` | Admin pencatat (opsional) |
-| `to_location_id` | Tujuan sementara — lokasi |
-| `to_department_id` | Tujuan — departemen |
-| `to_room_id` | Tujuan — ruang |
-| `borrowed_at` | Waktu mulai |
-| `due_at` | Batas pengembalian |
-| `returned_at` | Waktu semua item kembali |
-| `status` | `active` atau `returned` |
-| `notes` | Keterangan bebas (alasan, acara, PIC) |
+Untuk **perpindahan permanen** lokasi atau penanggung jawab, gunakan tab **Transfer & status** pada halaman barang.
 
-Minimal satu dari `to_location_id`, `to_department_id`, `to_room_id` wajib diisi.
+## Membuat Peminjaman Baru
 
-## Data Line Item (`borrowing_items`)
+1. Klik **Tambah Peminjaman**
+2. Isi **Peminjam** (opsional — siapa yang meminjam)
+3. Tentukan **tujuan** — minimal satu dari: Lokasi tujuan, Departemen tujuan, atau Ruang tujuan
+4. Isi **Tanggal peminjaman** dan **Batas peminjaman**
+5. Tambahkan **item** yang dipinjam beserta jumlahnya
+6. Isi **Catatan** jika perlu (alasan, acara, PIC)
+7. Simpan
 
-| Field | Keterangan |
-|-------|------------|
-| `item_id` | Aset yang dipinjam |
-| `quantity` | Jumlah unit |
-| `from_location_id` | Snapshot lokasi asal |
-| `from_department_id` | Snapshot departemen asal |
-| `from_room_id` | Snapshot ruang asal |
-| `to_*` | Override tujuan per item (default dari header) |
-| `checked_out_at` | Waktu keluar |
-| `checked_in_at` | Waktu kembali |
-| `condition_out` / `condition_in` | Kondisi fisik saat keluar/masuk |
+Sistem mencatat posisi asal setiap barang dan memperbarui lokasinya ke tujuan sementara.
 
-## Alur Bisnis
+## Melihat Detail Peminjaman
 
-```mermaid
-flowchart LR
-    A[Buat Borrowing] --> B[Pilih Item + Tujuan]
-    B --> C[Snapshot from_*]
-    C --> D[Update item ke to_*]
-    D --> E[checked_out_at]
-    E --> F[Check-in: restore from_*]
-    F --> G[returned_at]
-```
+Dari daftar peminjaman, klik transaksi untuk melihat:
 
-1. **Buat** — pilih item, tujuan sementara, tanggal, catatan
-2. **Keluar** — simpan `from_*`, update `items` ke `to_*`, set `checked_out_at`
-3. **Kembali** — restore posisi dari `from_*`, set `checked_in_at`
-4. Semua line selesai → `status = returned`, `returned_at = now()`
+- Status (**Aktif** atau **Dikembalikan**)
+- Daftar barang yang dipinjam
+- Tanggal keluar dan batas pengembalian
+- Kondisi barang saat keluar/masuk (jika diisi)
 
-## Overdue
+## Mengembalikan Barang
 
-Transaksi dianggap terlambat jika `due_at` sudah lewat dan masih ada item tanpa `checked_in_at`.
+1. Buka peminjaman yang masih **Aktif**
+2. Klik aksi **Kembalikan** (atau isi tanggal pengembalian)
+3. Konfirmasi — barang dikembalikan ke lokasi asal
 
-## Relation Manager
+## Filter Berguna
 
-`ItemsRelationManager` pada halaman View/Edit Borrowing mengelola line items.
+- **Status** — Aktif / Dikembalikan
+- **Terlambat** — peminjaman melewati batas tanggal
 
-## Laporan
+## Status Peminjaman
 
-**BorrowingItemResource** (grup Reports) menampilkan semua line item peminjaman dengan opsi ekspor (`BorrowingItemExporter`).
+| Status | Arti |
+|--------|------|
+| Aktif | Barang masih dipinjam |
+| Dikembalikan | Semua barang sudah kembali |
 
 ## Langkah Selanjutnya
 
-- [Audit](/{{route}}/{{version}}/modul/audit)
-- [Referensi Database](/{{route}}/{{version}}/referensi/database#borrowings)
+- [Barang](/{{route}}/{{version}}/modul/inventori)
+- [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status)
+- [Laporan](/{{route}}/{{version}}/modul/laporan)

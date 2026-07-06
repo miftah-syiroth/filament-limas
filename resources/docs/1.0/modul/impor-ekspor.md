@@ -1,53 +1,61 @@
 # Impor & Ekspor
 
-SIRIS mendukung impor massal dan ekspor data melalui fitur Filament Import/Export (Maatwebsite Excel).
+SIRIS mendukung pengunggahan dan pengunduhan data dalam format spreadsheet (`.xlsx`) untuk mempercepat input data massal.
 
-## Impor
+## Siapa yang Bisa Mengakses
 
-| Importer | Resource | Data |
-|----------|----------|------|
-| `CategoryImporter` | Categories | Kategori aset |
-| `ManufactureImporter` | Manufactures | Produsen |
-| `ModelImporter` | Models | Template produk |
-| `ItemImporter` | Items | Unit inventori |
+Admin dan operator dengan izin impor/ekspor pada menu terkait.
 
-### Cara Impor
+## Impor Data
 
-1. Buka resource terkait → tombol **Import**
-2. Upload file spreadsheet (format sesuai template importer)
-3. Review dan konfirmasi
-4. Sistem memvalidasi dan menyimpan record
+### Langkah umum
+
+1. Buka menu resource yang mendukung impor (misalnya **Barang**, **Kategori**, **Model**)
+2. Klik tombol **Impor**
+3. Unduh **template** jika tersedia
+4. Isi spreadsheet sesuai format kolom template
+5. Unggah file
+6. Tinjau pratinjau dan konfirmasi
+
+### Menu yang mendukung impor
+
+| Menu | Keterangan |
+|------|------------|
+| Kategori | Data kategori barang |
+| Pabrikan | Data produsen |
+| Model | Template produk |
+| Barang | Data aset inventori |
 
 > {primary} Urutan impor
 >
-> Impor data master terlebih dahulu (categories → manufactures → models) sebelum mengimpor items, karena item memerlukan referensi model dan lokasi.
+> Impor **kategori → pabrikan → model** terlebih dahulu sebelum mengimpor barang, karena barang memerlukan referensi model dan lokasi yang sudah ada.
 
-## Ekspor
+## Ekspor Data
 
-| Exporter | Resource / Halaman | Data |
-|----------|-------------------|------|
-| `ItemExporter` | Items | Seluruh data item |
-| `ItemAuditExporter` | Item Audits | Data audit |
-| `MaintenanceExporter` | Maintenances | Tiket maintenance |
-| `BorrowingItemExporter` | Borrowing Items | Line item peminjaman |
-| `DepreciationItemExporter` | Depreciation Items Page | Laporan nilai buku |
+### Langkah umum
 
-### Cara Ekspor
+1. Buka menu atau laporan yang mendukung ekspor
+2. Klik tombol **Ekspor**
+3. Pilih kolom yang ingin disertakan (jika diminta)
+4. Unduh file hasil
 
-1. Buka resource atau halaman laporan
-2. Klik tombol **Export**
-3. Pilih kolom (jika tersedia)
-4. Download file hasil
+### Menu yang mendukung ekspor
 
-## Format
+| Menu / Laporan | Data |
+|----------------|------|
+| Barang | Seluruh data inventori |
+| Audit barang | Data audit |
+| Pemeliharaan | Tiket pemeliharaan |
+| Barang dipinjam | Detail item peminjaman |
+| Barang depresiasi | Laporan nilai buku |
 
-Ekspor/impor menggunakan format spreadsheet yang kompatibel dengan **Maatwebsite Excel** (`.xlsx`). Kolom mengikuti struktur form resource terkait.
+## Tips
 
-## Aktivitas
-
-Impor dan ekspor tercatat di tabel `imports` / `exports` (sistem Filament) dan dapat dilacak melalui activity log.
+- Pastikan format tanggal dan angka mengikuti template
+- Periksa kembali data sebelum konfirmasi impor — kesalahan massal sulit diperbaiki
+- Simpan file ekspor sebagai cadangan berkala
 
 ## Langkah Selanjutnya
 
-- [Inventori](/{{route}}/{{version}}/modul/inventori)
-- [Pengguna](/{{route}}/{{version}}/administrasi/pengguna)
+- [Data Master](/{{route}}/{{version}}/modul/data-master)
+- [Barang](/{{route}}/{{version}}/modul/inventori)

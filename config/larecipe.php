@@ -147,14 +147,14 @@ return [
 
     'seo' => [
         'author' => 'Universitas Harapan Bangsa',
-        'description' => 'Dokumentasi sistem manajemen aset dan inventori Universitas Harapan Bangsa.',
-        'keywords' => 'SIRIS, inventori, aset, Laravel, Filament',
+        'description' => 'Panduan pengguna SIRIS — sistem informasi inventori Universitas Harapan Bangsa.',
+        'keywords' => 'SIRIS, panduan pengguna, inventori, aset, peminjaman, audit, pemeliharaan',
         'og' => [
-            'title' => 'SIRIS — Dokumentasi',
+            'title' => 'SIRIS — Panduan Pengguna',
             'type' => 'article',
             'url' => '',
             'image' => '',
-            'description' => 'Dokumentasi sistem manajemen aset dan inventori Universitas Harapan Bangsa.',
+            'description' => 'Panduan pengguna SIRIS — sistem informasi inventori Universitas Harapan Bangsa.',
         ],
     ],
 
