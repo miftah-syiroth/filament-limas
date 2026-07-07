@@ -51,5 +51,5 @@ Setelah data master siap, lengkapi katalog di grup sidebar **Referensi** sebelum
 
 - [Login](/{{route}}/{{version}}/autentikasi/login) — masuk ke sistem
 - [Kategori](/{{route}}/{{version}}/modul/data-master) — konsep tipe barang (Aset, Aksesoris, dan Habis Pakai)
-- [Model](/{{route}}/{{version}}/modul/inventori) — mencatat data spesifikasi model barang.
-- [Barang](/{{route}}/{{version}}/modul/inventori) — mencatat kondisi individu barang, lokasi barang, dan serial number. 
+- [Model](/{{route}}/{{version}}/modul/item) — mencatat data spesifikasi model barang.
+- [Barang](/{{route}}/{{version}}/modul/item) — mencatat kondisi individu barang, lokasi barang, dan serial number. 

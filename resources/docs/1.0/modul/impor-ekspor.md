@@ -58,4 +58,4 @@ Admin dan operator dengan izin impor/ekspor pada menu terkait.
 ## Langkah Selanjutnya
 
 - [Data Master](/{{route}}/{{version}}/modul/data-master)
-- [Barang](/{{route}}/{{version}}/modul/inventori)
+- [Barang](/{{route}}/{{version}}/modul/item)

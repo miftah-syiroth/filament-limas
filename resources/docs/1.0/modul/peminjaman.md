@@ -1,66 +1,151 @@
 # Peminjaman
 
-Modul **Peminjaman** digunakan untuk memindahkan aset **sementara** ke lokasi lain, lalu mengembalikannya ke posisi semula.
+Modul **Peminjaman** digunakan untuk memindahkan aset **sementara** ke lokasi lain, lalu mengembalikannya ke posisi semula. Peminjaman tidak mengubah kepemilikan atau lokasi permanen barang — untuk itu gunakan [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status).
 
-## Siapa yang Bisa Mengakses
+---
 
-Operator dan admin dengan izin **Peminjaman**.
+- [Cara Membuka](#cara-membuka)
+- [Konsep Peminjaman](#konsep-peminjaman)
+- [Membuat Peminjaman](#membuat-peminjaman)
+- [Melihat Detail Peminjaman](#melihat-detail-peminjaman)
+- [Mengubah Peminjaman](#mengubah-peminjaman)
+- [Mengembalikan Barang](#mengembalikan-barang)
+- [Menghapus Peminjaman](#menghapus-peminjaman)
+- [Status dan Filter](#status-dan-filter)
+- [Hubungan dengan Barang](#hubungan-dengan-barang)
+- [Langkah Selanjutnya](#langkah-selanjutnya)
 
+<a name="cara-membuka"></a>
 ## Cara Membuka
 
-Sidebar → **Peminjaman** (menu utama)
+1. Masuk ke panel admin SIRIS
+2. Klik **Peminjaman** di sidebar (grup **Fitur Utama**)
 
-## Kapan Menggunakan Peminjaman?
+Akses modul ini memerlukan izin **Peminjaman**. Riwayat peminjaman per barang juga dapat dilihat dari tab **Peminjaman** pada halaman detail [Barang](/{{route}}/{{version}}/modul/item).
 
-Gunakan peminjaman untuk aset yang **dipindahkan sementara**, misalnya:
+<a name="konsep-peminjaman"></a>
+## Konsep Peminjaman
+
+Satu transaksi peminjaman dapat mencakup **beberapa barang**. Setiap barang tercatat sebagai baris terpisah dengan kuantitas, tanggal keluar/masuk, dan kondisi fisik saat keluar dan masuk.
+
+**Kapan memakai peminjaman:**
 
 - Laptop dipinjam ke ruang rapat
 - Proyektor dipakai untuk acara di gedung lain
 - Kursi dipindah sementara untuk kegiatan
 
-Untuk **perpindahan permanen** lokasi atau penanggung jawab, gunakan tab **Transfer & status** pada halaman barang.
+**Kapan tidak memakai peminjaman:**
 
-## Membuat Peminjaman Baru
+- Perpindahan permanen lokasi atau departemen → [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status)
+- Stok habis pakai masuk atau keluar → [Pergerakan Stok](/{{route}}/{{version}}/modul/pergerakan-stok)
 
-1. Klik **Tambah Peminjaman**
-2. Isi **Peminjam** (opsional — siapa yang meminjam)
-3. Tentukan **tujuan** — minimal satu dari: Lokasi tujuan, Departemen tujuan, atau Ruang tujuan
-4. Isi **Tanggal peminjaman** dan **Batas peminjaman**
-5. Tambahkan **item** yang dipinjam beserta jumlahnya
-6. Isi **Catatan** jika perlu (alasan, acara, PIC)
-7. Simpan
+Hanya barang berstatus **Aktif** dengan sisa kuantitas yang belum dipinjam yang dapat dimasukkan ke peminjaman baru.
 
-Sistem mencatat posisi asal setiap barang dan memperbarui lokasinya ke tujuan sementara.
+<a name="membuat-peminjaman"></a>
+## Membuat Peminjaman
 
+Pembuatan peminjaman dilakukan lewat pemilihan barang dari tabel, bukan form repeater biasa.
+
+1. Buka **Peminjaman** → klik **Tambah Peminjaman**
+2. Pada tabel **Pilih Item**, cari dan filter barang yang dapat dipinjam
+3. Centang baris barang yang ingin dipinjam
+4. Isi **Jumlah** pada kolom kuantitas setiap baris (minimal 1, tidak boleh melebihi jumlah yang dapat dipinjam)
+5. Pilih aksi massal **Buat Pinjaman Barang**
+6. Pada modal yang muncul, isi:
+   - **Tanggal peminjaman** dan **Batas peminjaman**
+   - Minimal satu tujuan: **Lokasi tujuan**, **Departemen tujuan**, atau **Ruang tujuan**
+   - **Catatan** (opsional — alasan, acara, PIC)
+7. Konfirmasi — sistem membuat transaksi peminjaman dan mencatat posisi asal setiap barang
+
+Setelah berhasil, Anda diarahkan ke halaman detail peminjaman.
+
+<a name="melihat-detail-peminjaman"></a>
 ## Melihat Detail Peminjaman
 
 Dari daftar peminjaman, klik transaksi untuk melihat:
 
-- Status (**Aktif** atau **Dikembalikan**)
-- Daftar barang yang dipinjam
-- Tanggal keluar dan batas pengembalian
-- Kondisi barang saat keluar/masuk (jika diisi)
+- **Peminjam** (pengguna yang membuat transaksi)
+- **Tujuan** — lokasi, departemen, ruang
+- **Status** — Aktif atau Dikembalikan
+- **Tanggal** — peminjaman, batas, dan pengembalian
+- **Catatan**
+- **Daftar item** — barang yang dipinjam beserta kuantitas, tanggal keluar/masuk, dan kondisi
 
+<a name="mengubah-peminjaman"></a>
+## Mengubah Peminjaman
+
+1. Buka peminjaman dari daftar → klik **Ubah**
+2. Perbarui field yang diizinkan:
+   - **Tanggal peminjaman** dan **Batas peminjaman**
+   - **Lokasi tujuan**, **Departemen tujuan**, **Ruang tujuan**
+   - **Catatan**
+3. Klik **Simpan**
+
+**Field terkunci:**
+
+- **Tanggal pengembalian** — tidak dapat diisi manual selama masih ada barang yang belum dikembalikan (belum ada tanggal masuk)
+
+**Menambah barang ke peminjaman aktif:**
+
+1. Buka detail atau halaman ubah peminjaman
+2. Pada bagian **Item**, klik **Tambah item**
+3. Pilih barang, isi jumlah, tanggal keluar, dan kondisi keluar
+4. Simpan
+
+Barang yang sudah ada di peminjaman yang sama tidak dapat ditambahkan ulang.
+
+<a name="mengembalikan-barang"></a>
 ## Mengembalikan Barang
 
+Pengembalian dilakukan **per baris barang**, bukan lewat satu tombol di level transaksi.
+
 1. Buka peminjaman yang masih **Aktif**
-2. Klik aksi **Kembalikan** (atau isi tanggal pengembalian)
-3. Konfirmasi — barang dikembalikan ke lokasi asal
+2. Pada tabel **Item**, centang baris barang yang dikembalikan
+3. Pilih aksi massal **Kembalikan Semua**
+4. Isi **Tanggal masuk** dan **Kondisi masuk** (kondisi mengikuti skala audit: Sangat baik hingga Tidak layak)
+5. Konfirmasi
 
-## Filter Berguna
+Ketika **semua** baris sudah memiliki tanggal masuk, status peminjaman otomatis berubah menjadi **Dikembalikan** dan tanggal pengembalian diisi oleh sistem.
 
-- **Status** — Aktif / Dikembalikan
-- **Terlambat** — peminjaman melewati batas tanggal
+> {note} Peminjaman sudah dikembalikan
+>
+> Baris barang pada peminjaman berstatus **Dikembalikan** tidak dapat diubah lagi.
 
-## Status Peminjaman
+<a name="menghapus-peminjaman"></a>
+## Menghapus Peminjaman
+
+Penghapusan dapat dilakukan dari halaman **Ubah** (tombol hapus di header) atau lewat aksi massal di daftar peminjaman.
+
+- Penghapusan biasa (**soft delete**) — transaksi disembunyikan tetapi dapat dipulihkan lewat filter **Terhapus**
+- **Hapus permanen** — menghapus transaksi beserta semua baris peminjaman terkait
+
+Pastikan data peminjaman sudah tidak diperlukan sebelum menghapus permanen.
+
+<a name="status-dan-filter"></a>
+## Status dan Filter
 
 | Status | Arti |
 |--------|------|
-| Aktif | Barang masih dipinjam |
-| Dikembalikan | Semua barang sudah kembali |
+| **Aktif** | Masih ada barang yang dipinjam |
+| **Dikembalikan** | Semua barang sudah kembali |
 
+**Filter berguna di daftar:**
+
+- **Status** — Aktif / Dikembalikan
+- **Terlambat** — peminjaman yang melewati batas tanggal (belum dikembalikan, atau dikembalikan setelah batas)
+
+Peminjaman terlambat ditandai ikon peringatan pada kolom **Batas peminjaman**.
+
+<a name="hubungan-dengan-barang"></a>
+## Hubungan dengan Barang
+
+- Setiap baris peminjaman merujuk ke satu [Barang](/{{route}}/{{version}}/modul/item)
+- Kuantitas yang dapat dipinjam = kuantitas barang dikurangi jumlah yang sedang dipinjam (aktif)
+- Riwayat peminjaman per barang tersedia di tab **Peminjaman** pada detail barang (baca saja, dengan tautan ke transaksi)
+
+<a name="langkah-selanjutnya"></a>
 ## Langkah Selanjutnya
 
-- [Barang](/{{route}}/{{version}}/modul/inventori)
+- [Barang](/{{route}}/{{version}}/modul/item)
 - [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status)
-- [Laporan](/{{route}}/{{version}}/modul/laporan)
+- [Audit Barang](/{{route}}/{{version}}/modul/audit)

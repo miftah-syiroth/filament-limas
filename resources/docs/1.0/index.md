@@ -3,16 +3,16 @@
     - [Inisialisasi](/{{route}}/{{version}}/memulai/inisialisasi)
 - ## Autentikasi
     - [Login](/{{route}}/{{version}}/autentikasi/login)
+- ## Antarmuka
+    - [Dasbor](/{{route}}/{{version}}/panel-admin/dashboard)
+    - [Tabel](/{{route}}/{{version}}/panel-admin/table)
 - ## Fitur Utama
-    - [Barang](/{{route}}/{{version}}/modul/inventori)
+    - [Barang](/{{route}}/{{version}}/modul/item)
     - [Peminjaman](/{{route}}/{{version}}/modul/peminjaman)
     - [Audit Barang](/{{route}}/{{version}}/modul/audit)
     - [Pemeliharaan](/{{route}}/{{version}}/modul/maintenance)
     - [Pergerakan Stok](/{{route}}/{{version}}/modul/pergerakan-stok)
     - [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status)
-- ## Antarmuka
-    - [Navigasi](/{{route}}/{{version}}/panel-admin/navigasi)
-    - [Dasbor](/{{route}}/{{version}}/panel-admin/dashboard)
 - ## Data Referensi
     - [Pemasok](/{{route}}/{{version}}/referensi/pemasok)
     - [Pabrikan](/{{route}}/{{version}}/referensi/pabrikan)

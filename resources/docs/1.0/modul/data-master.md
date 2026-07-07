@@ -78,5 +78,5 @@ Selain data master, lengkapi katalog di grup **Referensi** sebelum menambah bara
 
 ## Langkah Selanjutnya
 
-- [Barang](/{{route}}/{{version}}/modul/inventori)
+- [Barang](/{{route}}/{{version}}/modul/item)
 - [Impor & Ekspor](/{{route}}/{{version}}/modul/impor-ekspor)
