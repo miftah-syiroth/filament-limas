@@ -7,6 +7,7 @@ use App\Filament\Infolists\Components\QrCodeEntry;
 use App\Models\BorrowingItem;
 use App\Models\Item;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
@@ -18,12 +19,14 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -45,8 +48,8 @@ class ItemsRelationManager extends RelationManager
             ->components([
                 Select::make('item_id')
                     ->label(__('borrowing.relation.item'))
-                    ->options(fn (?BorrowingItem $record): array => $this->getItemSelectOptions($record))
-                    ->getSearchResultsUsing(fn (string $search, ?BorrowingItem $record): array => $this->searchItemSelectOptions($search, $record))
+                    ->options(fn(?BorrowingItem $record): array => $this->getItemSelectOptions($record))
+                    ->getSearchResultsUsing(fn(string $search, ?BorrowingItem $record): array => $this->searchItemSelectOptions($search, $record))
                     ->getOptionLabelUsing(function (?string $value): ?string {
                         if (! $value) {
                             return null;
@@ -80,7 +83,7 @@ class ItemsRelationManager extends RelationManager
                     ->numeric()
                     ->required()
                     ->minValue(1)
-                    ->maxValue(fn (Get $get): ?int => $get('borrowable_quantity')),
+                    ->maxValue(fn(Get $get): ?int => $get('borrowable_quantity')),
                 DatePicker::make('checked_out_at')
                     ->label(__('borrowing.relation.checked_out_at'))
                     ->default(now()->toDateString())
@@ -93,13 +96,13 @@ class ItemsRelationManager extends RelationManager
                 DatePicker::make('checked_in_at')
                     ->label(__('borrowing.relation.checked_in_at'))
                     ->live()
-                    ->required(fn (Get $get): bool => ! empty($get('condition_in'))),
+                    ->required(fn(Get $get): bool => ! empty($get('condition_in'))),
                 Select::make('condition_in')
                     ->label(__('borrowing.relation.condition_in'))
                     ->options(ItemAuditCondition::class)
                     ->native(false)
                     ->live()
-                    ->required(fn (Get $get): bool => ! empty($get('checked_in_at'))),
+                    ->required(fn(Get $get): bool => ! empty($get('checked_in_at'))),
                 Textarea::make('notes')
                     ->label(__('borrowing.relation.notes'))
                     ->columnSpanFull(),
@@ -175,7 +178,7 @@ class ItemsRelationManager extends RelationManager
                                 Grid::make(1)
                                     ->schema([
                                         QrCodeEntry::make('qr_code')
-                                            ->state(fn (BorrowingItem $record): string => $record->item->serial_number)
+                                            ->state(fn(BorrowingItem $record): string => $record->item->serial_number)
                                             ->hiddenLabel(),
                                     ])
                                     ->columnSpan(1),
@@ -237,15 +240,50 @@ class ItemsRelationManager extends RelationManager
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('return')
+                        ->label(__('borrowing.relation.return_items'))
+                        ->icon(Heroicon::DocumentCheck)
+                        ->color('primary')
+                        ->authorizeIndividualRecords('update')
+                        ->fillForm(function (): array {
+                            return [
+                                'checked_in_at' => now()->toDateString(),
+                            ];
+                        })
+                        ->schema([
+                            DatePicker::make('checked_in_at')
+                                ->label(__('borrowing.relation.modal_date'))
+                                ->required(),
+                            Select::make('condition_in')
+                                ->label(__('borrowing.relation.condition_in'))
+                                ->options(ItemAuditCondition::class)
+                                ->native(false)
+                                ->required(),
+                            Textarea::make('notes')
+                                ->label(__('borrowing.relation.notes'))
+                                ->columnSpanFull(),
+                        ])
+                        ->action(function (Collection $records, array $data): void {
+                            $recordIds = $records->pluck('id');
+                            BorrowingItem::whereIn('id', $recordIds)->update($data);
+                        })
+                        ->successNotificationTitle(__('borrowing.relation.return_items_success'))
+                        ->failureNotificationTitle(function (int $successCount, int $totalCount): string {
+                            if ($successCount) {
+                                return __('borrowing.relation.return_items_failure', ['successCount' => $successCount, 'totalCount' => $totalCount]);
+                            }
+                    
+                            return __('borrowing.relation.return_items_failure', ['successCount' => 0, 'totalCount' => $totalCount]);
+                        }),
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
-                        ->action(fn (Collection $records) => $records->each->delete()),
+                        ->action(fn(Collection $records) => $records->each->delete()),
                     ForceDeleteBulkAction::make()
                         ->authorizeIndividualRecords('forceDelete')
-                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                        ->action(fn(Collection $records) => $records->each->forceDelete()),
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore')
-                        ->action(fn (Collection $records) => $records->each->restore()),
+                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }
@@ -258,7 +296,7 @@ class ItemsRelationManager extends RelationManager
         return $this->itemSelectQuery($record)
             ->limit(50)
             ->get()
-            ->mapWithKeys(fn (Item $item): array => [
+            ->mapWithKeys(fn(Item $item): array => [
                 $item->id => $this->formatItemOptionLabel($item),
             ])
             ->all();
@@ -272,11 +310,11 @@ class ItemsRelationManager extends RelationManager
         return $this->itemSelectQuery($record)
             ->where(function (Builder $query) use ($search): void {
                 $query->where('serial_number', 'ilike', "%{$search}%")
-                    ->orWhereHas('model', fn (Builder $q) => $q->where('name', 'ilike', "%{$search}%"));
+                    ->orWhereHas('model', fn(Builder $q) => $q->where('name', 'ilike', "%{$search}%"));
             })
             ->limit(50)
             ->get()
-            ->mapWithKeys(fn (Item $item): array => [
+            ->mapWithKeys(fn(Item $item): array => [
                 $item->id => $this->formatItemOptionLabel($item),
             ])
             ->all();
@@ -285,7 +323,7 @@ class ItemsRelationManager extends RelationManager
     protected function itemSelectQuery(?BorrowingItem $record): Builder
     {
         $excludedItemIds = $this->getOwnerRecord()->items
-            ->when($record, fn ($items) => $items->where('id', '!=', $record->id))
+            ->when($record, fn($items) => $items->where('id', '!=', $record->id))
             ->pluck('item_id');
 
         return Item::query()
@@ -297,7 +335,7 @@ class ItemsRelationManager extends RelationManager
                     $query->orWhere('id', $record->item_id);
                 }
             })
-            ->when($excludedItemIds->isNotEmpty(), fn (Builder $query) => $query->whereNotIn('id', $excludedItemIds));
+            ->when($excludedItemIds->isNotEmpty(), fn(Builder $query) => $query->whereNotIn('id', $excludedItemIds));
     }
 
     protected function formatItemOptionLabel(Item $item): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\BorrowingStatus;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\BorrowingItem;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -29,6 +30,11 @@ class BorrowingItemPolicy
 
     public function update(AuthUser $authUser, BorrowingItem $borrowingItem): bool
     {
+        // jika borrowing status sudah returned, maka tidak dapat diupdate
+        if ($borrowingItem->borrowing->status === BorrowingStatus::Returned) {
+            return false;
+        }
+
         return $authUser->can('Update:BorrowingItem');
     }
 

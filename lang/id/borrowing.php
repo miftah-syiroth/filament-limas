@@ -90,5 +90,8 @@ return [
         'modal_fieldset_out' => 'Keluar',
         'modal_fieldset_in' => 'Masuk',
         'modal_date' => 'Tanggal',
+        'return_items' => 'Kembalikan Semua',
+        'return_items_success' => 'Semua item berhasil dikembalikan.',
+        'return_items_failure' => 'Gagal mengembalikan :successCount dari :totalCount item.',
     ],
 ];

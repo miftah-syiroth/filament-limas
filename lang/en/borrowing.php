@@ -90,5 +90,8 @@ return [
         'modal_fieldset_out' => 'Checked out',
         'modal_fieldset_in' => 'Checked in',
         'modal_date' => 'Date',
+        'return_items' => 'Return All',
+        'return_items_success' => 'All items returned successfully.',
+        'return_items_failure' => 'Failed to return :successCount of :totalCount items.',
     ],
 ];

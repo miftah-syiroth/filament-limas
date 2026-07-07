@@ -25,12 +25,12 @@ class BorrowingItem extends Model
         'condition_in',
         'notes',
 
-        'from_location_id',
-        'from_department_id',
-        'from_room_id',
-        'to_location_id',
-        'to_department_id',
-        'to_room_id',
+        'from_location_id', // secara data belum dimanfaatkan
+        'from_department_id', // secara data belum dimanfaatkan
+        'from_room_id', // secara data belum dimanfaatkan
+        'to_location_id', // secara data belum dimanfaatkan
+        'to_department_id', // secara data belum dimanfaatkan
+        'to_room_id', // secara data belum dimanfaatkan
     ];
 
     protected $casts = [
