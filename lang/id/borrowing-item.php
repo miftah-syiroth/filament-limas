@@ -12,6 +12,7 @@ return [
 
     'infolist' => [
         'item_serial' => 'Nomor seri',
+        'model_name' => 'Model',
         'borrowing' => 'Peminjaman',
         'quantity' => 'Jumlah',
         'checked_out_at' => 'Waktu keluar',
@@ -34,6 +35,8 @@ return [
         'condition_out' => 'Kondisi keluar',
         'checked_in_at' => 'Waktu kembali',
         'condition_in' => 'Kondisi masuk',
+        'created_at' => 'Dibuat pada',
+        'deleted_at' => 'Dihapus pada',
     ],
 
     'actions' => [

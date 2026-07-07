@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Borrowing extends Model
 {
@@ -89,5 +89,25 @@ class Borrowing extends Model
     public function items(): HasMany
     {
         return $this->hasMany(BorrowingItem::class, 'borrowing_id');
+    }
+
+    public function markReturnedIfAllItemsCheckedIn(): void
+    {
+        if (! $this->items()->exists()) {
+            return;
+        }
+
+        if ($this->items()->whereNull('checked_in_at')->exists()) {
+            return;
+        }
+
+        if ($this->status === BorrowingStatus::Returned && $this->returned_at !== null) {
+            return;
+        }
+
+        $this->update([
+            'status' => BorrowingStatus::Returned,
+            'returned_at' => $this->returned_at ?? now(),
+        ]);
     }
 }

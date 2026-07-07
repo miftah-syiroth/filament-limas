@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ItemAuditCondition;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,6 +40,21 @@ class BorrowingItem extends Model
         'condition_out' => ItemAuditCondition::class,
     ];
 
+    protected function overdue(): Attribute
+    {
+        return Attribute::make(
+            get: function (): bool {
+                return $this->checked_in_at === null && $this->borrowing->due_at < now()->startOfDay();
+            },
+        );
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(fn (BorrowingItem $item) => $item->borrowing()->first()?->markReturnedIfAllItemsCheckedIn());
+        static::deleted(fn (BorrowingItem $item) => $item->borrowing()->first()?->markReturnedIfAllItemsCheckedIn());
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -67,7 +83,7 @@ class BorrowingItem extends Model
     {
         return $this->belongsTo(Department::class, 'from_department_id');
     }
-    
+
     public function toLocation(): BelongsTo
     {
         return $this->belongsTo(Location::class, 'to_location_id');

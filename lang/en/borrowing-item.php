@@ -34,6 +34,8 @@ return [
         'condition_out' => 'Condition (out)',
         'checked_in_at' => 'Checked in',
         'condition_in' => 'Condition (in)',
+        'created_at' => 'Created at',
+        'deleted_at' => 'Deleted at',
     ],
 
     'actions' => [
