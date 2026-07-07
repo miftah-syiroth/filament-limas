@@ -26,7 +26,7 @@ Menu **Penyusutan** mendefinisikan bagaimana nilai aset berkurang seiring masa p
 2. Isi field berikut:
    - **Nama** — wajib, nama aturan (mis. *Laptop 4 tahun*)
    - **Masa manfaat (bulan)** — wajib, lama penyusutan dalam bulan
-   - **Batas Nilai Terendah (%)** — wajib, persentase nilai residu minimum (lihat teks bantuan di form)
+   - **Batas Nilai Terendah (%)** — wajib, nilai residu minimum. Dihitung dari presentase terhadap nilai awal.
    - **Metode** — wajib, saat ini tersedia **Garis lurus**
    - **Catatan** — opsional
 3. Klik **Simpan**
@@ -40,7 +40,7 @@ Setelah aturan dibuat, hubungkan ke **Model** yang sesuai di grup **Referensi**.
 2. Perbarui field yang diperlukan
 3. Klik **Simpan**
 
-> {note} Dampak perubahan
+> {info} Dampak perubahan
 >
 > Mengubah aturan penyusutan dapat memengaruhi perhitungan nilai buku barang yang terhubung ke model terkait.
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Borrowings\Tables;
 
 use App\Enums\BorrowingStatus;
+use App\Models\Borrowing;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -13,8 +14,10 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class BorrowingsTable
 {
@@ -23,9 +26,6 @@ class BorrowingsTable
         return $table
             ->defaultSort('borrowed_at', direction: 'desc')
             ->columns([
-                TextColumn::make('user.name')
-                    ->label(__('borrowing.table.borrower'))
-                    ->searchable(),
                 TextColumn::make('borrowed_at')
                     ->label(__('borrowing.table.borrowed_at'))
                     ->date('j M Y')
@@ -33,7 +33,14 @@ class BorrowingsTable
                 TextColumn::make('due_at')
                     ->label(__('borrowing.table.due_at'))
                     ->date('j M Y')
-                    ->sortable(),
+                    ->sortable()
+                    ->icon(function (Borrowing $record): string | null {
+                        if ($record->overdue) {
+                            return 'heroicon-o-exclamation-triangle';
+                        }
+                        return null;
+                    })
+                    ->iconColor('primary'),
                 TextColumn::make('returned_at')
                     ->label(__('borrowing.table.returned_at'))
                     ->date('j M Y')
@@ -46,12 +53,22 @@ class BorrowingsTable
                 TextColumn::make('status')
                     ->label(__('borrowing.table.status'))
                     ->badge(),
-                IconColumn::make('overdue')
-                    ->label(__('borrowing.table.overdue'))
-                    ->alignCenter()
-                    ->boolean(),
+                TextColumn::make('toLocation.name')
+                    ->label(__('borrowing.table.to_location'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('toDepartment.name')
+                    ->label(__('borrowing.table.to_department'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('toRoom.name')
+                    ->label(__('borrowing.table.to_room'))
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('borrowing.table.created_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->label(__('borrowing.table.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -63,24 +80,27 @@ class BorrowingsTable
                     ->options(BorrowingStatus::class),
                 TernaryFilter::make('overdue')
                     ->label(__('borrowing.filters.overdue'))
+                    ->native(false)
                     ->placeholder(__('borrowing.filters.overdue_placeholder'))
                     ->trueLabel(__('borrowing.filters.overdue_true'))
                     ->falseLabel(__('borrowing.filters.overdue_false'))
                     ->queries(
-                        true: fn (Builder $query) => $query->where(function (Builder $q) {
+                        true: fn(Builder $query) => $query->where(function (Builder $q) {
                             return $q->whereNull('returned_at')->where('due_at', '<', now()->startOfDay());
                         })->orWhere(function (Builder $q) {
                             return $q->whereNotNull('returned_at')->whereColumn('returned_at', '>', 'due_at');
                         }),
-                        false: fn (Builder $query) => $query->where(function (Builder $q) {
+                        false: fn(Builder $query) => $query->where(function (Builder $q) {
                             return $q->whereNull('returned_at')->where('due_at', '>=', now()->startOfDay());
                         })->orWhere(function (Builder $q) {
                             return $q->whereNotNull('returned_at')->whereColumn('returned_at', '<=', 'due_at');
                         }),
-                        blank: fn (Builder $query) => $query,
+                        blank: fn(Builder $query) => $query,
                     ),
-
+                TrashedFilter::make()
+                    ->native(false),
             ])
+            ->filtersFormColumns(3)
             ->recordActions([
                 ViewAction::make()
                     ->hiddenLabel(),
@@ -89,9 +109,20 @@ class BorrowingsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
+                    ForceDeleteBulkAction::make()
+                        ->authorizeIndividualRecords('forceDelete')
+                        ->action(function (Collection $records) {
+                            $records->each(function (Borrowing $borrowing) {
+                                $borrowing->items()->forceDelete();
+                                $borrowing->forceDelete();
+                            });
+                        }),
+                    RestoreBulkAction::make()
+                        ->authorizeIndividualRecords('restore')
+                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

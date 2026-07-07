@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Borrowings\Pages;
 
-use App\Enums\BorrowingStatus;
 use App\Filament\Resources\Borrowings\BorrowingResource;
 use App\Filament\Resources\Models\ModelResource;
 use App\Models\Borrowing;
@@ -322,36 +321,4 @@ class CreateBorrowing extends CreateRecord implements HasActions, HasSchemas, Ha
             return $borrowing;
         });
     }
-
-    // protected function mutateFormDataBeforeCreate(array $data): array
-    // {
-    //     $data['status'] = BorrowingStatus::Active;
-
-    //     foreach ($data['items'] ?? [] as $key => $item) {
-    //         $data['items'][$key]['checked_out_at'] = $data['borrowed_at'];
-    //     }
-
-    //     return $data;
-    // }
-
-    // protected function handleRecordCreation(array $data): Model
-    // {
-    //     return DB::transaction(function () use ($data) {
-    //         $borrowing = Borrowing::create($data);
-
-    //         foreach ($data['items'] ?? [] as $key => $item) {
-    //             // update or Create
-    //             BorrowingItem::updateOrCreate([
-    //                 'borrowing_id' => $borrowing->id,
-    //                 'item_id' => $item['item_id'],
-    //             ], [
-    //                 'quantity' => $item['quantity'],
-    //                 'checked_out_at' => $data['borrowed_at'],
-    //                 'condition_out' => $item['condition_out'],
-    //             ]);
-    //         }
-
-    //         return $borrowing;
-    //     });
-    // }
 }

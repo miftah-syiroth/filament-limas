@@ -4,7 +4,10 @@ namespace App\Filament\Resources\Borrowings\Schemas;
 
 use App\Enums\ItemAuditCondition;
 use App\Models\BorrowingItem;
+use App\Models\Department;
 use App\Models\Item;
+use App\Models\Location;
+use App\Models\Room;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
@@ -16,6 +19,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class BorrowingForm
 {
@@ -27,13 +31,6 @@ class BorrowingForm
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        Select::make('user_id')
-                            ->label(__('borrowing.form.user'))
-                            ->relationship('user', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->native(false)
-                            ->required(),
                         DatePicker::make('borrowed_at')
                             ->label(__('borrowing.form.borrowed_at'))
                             ->required()
@@ -51,94 +48,44 @@ class BorrowingForm
                                     ->exists();
                             })
                             ->visibleOn('edit'),
+                        Select::make('to_location_id')
+                            ->label(__('borrowing.form.to_location'))
+                            ->options(Location::pluck('name', 'id'))
+                            ->searchable()
+                            ->live()
+                            ->afterStateUpdated(function (Set $set): void {
+                                $set('to_department_id', null);
+                                $set('to_room_id', null);
+                            })
+                            ->preload(),
+                        Select::make('to_department_id')
+                            ->label(__('borrowing.form.to_department'))
+                            ->options(function (Get $get): Collection {
+                                $locationId = $get('to_location_id');
+                                if (! $locationId) {
+                                    return collect();
+                                }
+
+                                return Department::whereHas('locations', fn(Builder $query) => $query->where('location_id', $locationId))
+                                    ->pluck('name', 'id');
+                            })
+                            ->searchable()
+                            ->preload(),
+                        Select::make('to_room_id')
+                            ->label(__('borrowing.form.to_room'))
+                            ->options(function (Get $get): Collection {
+                                $locationId = $get('to_location_id');
+                                if (! $locationId) {
+                                    return collect();
+                                }
+
+                                return Room::where('location_id', $locationId)
+                                    ->pluck('name', 'id');
+                            })
+                            ->searchable()
+                            ->preload(),
                         Textarea::make('notes')
                             ->label(__('borrowing.form.notes')),
-                    ]),
-                Section::make(__('borrowing.form.section_items'))
-                    ->hiddenOn('edit')
-                    ->columnSpanFull()
-                    ->schema([
-                        Repeater::make('items')
-                            ->columns(3)
-                            ->schema([
-                                Select::make('item_id')
-                                    ->label(__('borrowing.form.item'))
-                                    ->options(
-                                        Item::borrowable()
-                                            ->with('activeBorrowingItems')
-                                            ->limit(10)
-                                            ->get()
-                                            ->mapWithKeys(fn (Item $item): array => [
-                                                $item->id => "{$item->serial_number} - {$item->model->name}",
-                                            ])->all()
-                                    )
-                                    ->searchable()
-                                    ->getSearchResultsUsing(function (string $search): array {
-                                        return Item::borrowable()
-                                            ->where(function ($query) use ($search) {
-                                                $query->where('serial_number', 'ilike', "{$search}%")
-                                                    ->orWhere('name', 'ilike', "%{$search}%")
-                                                    ->orWhereHas('model', function (Builder $query) use ($search) {
-                                                        $query->where('name', 'ilike', "%{$search}%")
-                                                            ->orWhereHas('category', function (Builder $query) use ($search) {
-                                                                $query->where('name', 'ilike', "%{$search}%");
-                                                            });
-                                                    });
-                                            })
-                                            ->limit(20)
-                                            ->get()
-                                            ->mapWithKeys(fn (Item $item): array => [
-                                                $item->id => "{$item->serial_number} - {$item->model?->name}",
-                                            ])
-                                            ->all();
-                                    })
-                                    ->getOptionLabelUsing(function ($value): ?string {
-                                        $item = Item::find($value);
-
-                                        return $item?->serial_number
-                                            ? $item?->serial_number.' - '.$item?->model?->name
-                                            : null;
-                                    })
-                                    ->required()
-                                    ->live()
-                                    ->preload()
-                                    ->native(false)
-                                    ->afterStateUpdated(function (Set $set, $state): void {
-                                        $set('quantity', null);
-                                        $set('condition_out', null);
-                                        if ($state) {
-                                            $item = Item::with(['latestAudit', 'activeBorrowingItems'])
-                                                ->find($state);
-                                            $set('quantity', $item?->borrowable_quantity ?? 1);
-                                            $set('condition_out', $item?->latestAudit?->condition?->value);
-                                        }
-                                    }),
-                                TextInput::make('quantity')
-                                    ->label(__('borrowing.form.quantity'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->required()
-                                    ->default(1)
-                                    ->live()
-                                    ->maxValue(fn (Get $get): ?int => Item::find($get('item_id'))?->quantity),
-                                Select::make('condition_out')
-                                    ->label(__('borrowing.form.condition_out'))
-                                    ->options(ItemAuditCondition::class)
-                                    ->native(false)
-                                    ->required(),
-                            ])
-                            ->mutateRelationshipDataBeforeCreateUsing(function (array $data, Get $get): array {
-                                $borrowedAt = $get('borrowed_at')
-                                    ? Carbon::parse($get('borrowed_at'))->startOfDay()
-                                    : now();
-                                $data['checked_out_at'] = $borrowedAt;
-                                $data['condition_in'] = $data['condition_out'] ?? null;
-
-                                return $data;
-                            })
-                            ->defaultItems(1)
-                            ->minItems(1)
-                            ->addActionLabel(__('borrowing.form.add_item_repeater')),
                     ]),
             ]);
     }

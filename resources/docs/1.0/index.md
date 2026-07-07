@@ -3,16 +3,6 @@
     - [Inisialisasi](/{{route}}/{{version}}/memulai/inisialisasi)
 - ## Autentikasi
     - [Login](/{{route}}/{{version}}/autentikasi/login)
-- ## Data Master
-    - [Organisasi](/{{route}}/{{version}}/master/organisasi)
-    - [Lokasi](/{{route}}/{{version}}/master/lokasi)
-    - [Department](/{{route}}/{{version}}/master/department)
-    - [Ruangan](/{{route}}/{{version}}/master/ruangan)
-    - [Satuan](/{{route}}/{{version}}/master/satuan)
-    - [Penyusutan](/{{route}}/{{version}}/master/penyusutan)
-- ## Antarmuka
-    - [Navigasi](/{{route}}/{{version}}/panel-admin/navigasi)
-    - [Dasbor](/{{route}}/{{version}}/panel-admin/dashboard)
 - ## Fitur Utama
     - [Barang](/{{route}}/{{version}}/modul/inventori)
     - [Peminjaman](/{{route}}/{{version}}/modul/peminjaman)
@@ -20,9 +10,21 @@
     - [Pemeliharaan](/{{route}}/{{version}}/modul/maintenance)
     - [Pergerakan Stok](/{{route}}/{{version}}/modul/pergerakan-stok)
     - [Transfer & Status](/{{route}}/{{version}}/modul/riwayat-status)
-- ## Data & Referensi
-    - [Data Master](/{{route}}/{{version}}/modul/data-master)
-    - [Impor & Ekspor](/{{route}}/{{version}}/modul/impor-ekspor)
+- ## Antarmuka
+    - [Navigasi](/{{route}}/{{version}}/panel-admin/navigasi)
+    - [Dasbor](/{{route}}/{{version}}/panel-admin/dashboard)
+- ## Data Referensi
+    - [Pemasok](/{{route}}/{{version}}/referensi/pemasok)
+    - [Pabrikan](/{{route}}/{{version}}/referensi/pabrikan)
+    - [Kategori](/{{route}}/{{version}}/referensi/kategori)
+    - [Model](/{{route}}/{{version}}/referensi/model)
+- ## Data Master
+    - [Organisasi](/{{route}}/{{version}}/master/organisasi)
+    - [Lokasi](/{{route}}/{{version}}/master/lokasi)
+    - [Department](/{{route}}/{{version}}/master/department)
+    - [Ruangan](/{{route}}/{{version}}/master/ruangan)
+    - [Satuan](/{{route}}/{{version}}/master/satuan)
+    - [Penyusutan](/{{route}}/{{version}}/master/penyusutan)
 - ## Laporan
     - [Laporan](/{{route}}/{{version}}/modul/laporan)
 - ## Administrasi

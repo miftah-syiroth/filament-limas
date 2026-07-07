@@ -26,8 +26,10 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -44,50 +46,43 @@ class ItemsRelationManager extends RelationManager
             ->components([
                 Select::make('item_id')
                     ->label(__('borrowing.relation.item'))
-                    ->searchable()
                     ->options(Item::query()
-                        ->limit(20)
+                        ->borrowable()
+                        ->whereNotIn('id', $this->getOwnerRecord()->items->pluck('item_id'))
+                        ->with('model')
+                        ->limit(50)
                         ->get()
-                        ->mapWithKeys(fn (Item $item): array => [
-                            $item->id => "{$item->serial_number} - {$item->model?->name}",
-                        ])
-                        ->all())
-                    ->getSearchResultsUsing(fn (string $search): array => Item::query()
-                        ->where('serial_number', 'ilike', "{$search}%")
-                        ->orWhere('name', 'ilike', "%{$search}%")
-                        ->limit(20)
-                        ->get()
-                        ->mapWithKeys(fn (Item $item): array => [
-                            $item->id => "{$item->serial_number} - {$item->model?->name}",
-                        ])
-                        ->all())
-                    ->getOptionLabelUsing(fn ($value): ?string => Item::find($value)?->serial_number
-                        ? Item::find($value)?->serial_number.' - '.Item::find($value)?->model?->name
-                        : null)
+                        ->mapWithKeys(fn(Item $item): array => [
+                            $item->id => "{$item->serial_number} - {$item->model->name}",
+                        ]))
+                    ->preload()
+                    ->searchable()
                     ->required()
                     ->live()
-                    ->preload()
-                    ->native(false)
                     ->afterStateUpdated(function (Set $set, $state): void {
                         $set('quantity', null);
                         $set('condition_out', null);
                         if ($state) {
                             $item = Item::with('latestAudit')->find($state);
-                            $set('quantity', $item?->quantity ?? 1);
+                            $set('borrowable_quantity', $item?->borrowableQuantity);
+                            $set('quantity', $item?->borrowableQuantity ?? 1);
                             $set('condition_out', $item?->latestAudit?->condition?->value);
                         }
-                    }),
+                    })
+                    ->columnSpanFull(),
+                TextInput::make('borrowable_quantity')
+                    ->label(__('borrowing.relation.borrowable_quantity'))
+                    ->required()
+                    ->disabled(),
                 TextInput::make('quantity')
                     ->label(__('borrowing.relation.quantity'))
                     ->numeric()
-                    ->minValue(1)
                     ->required()
-                    ->default(1)
-                    ->live()
-                    ->maxValue(fn (Get $get): ?int => Item::find($get('item_id'))?->quantity),
+                    ->minValue(1)
+                    ->maxValue(fn(Get $get): ?int => $get('borrowable_quantity')),
                 DatePicker::make('checked_out_at')
                     ->label(__('borrowing.relation.checked_out_at'))
-                    ->default(now()->format('m/d/Y'))
+                    ->default(now()->toDateString())
                     ->required(),
                 Select::make('condition_out')
                     ->label(__('borrowing.relation.condition_out'))
@@ -97,15 +92,16 @@ class ItemsRelationManager extends RelationManager
                 DatePicker::make('checked_in_at')
                     ->label(__('borrowing.relation.checked_in_at'))
                     ->live()
-                    ->required(fn (Get $get): bool => ! empty($get('condition_in'))),
+                    ->required(fn(Get $get): bool => ! empty($get('condition_in'))),
                 Select::make('condition_in')
                     ->label(__('borrowing.relation.condition_in'))
                     ->options(ItemAuditCondition::class)
                     ->native(false)
                     ->live()
-                    ->required(fn (Get $get): bool => ! empty($get('checked_in_at'))),
+                    ->required(fn(Get $get): bool => ! empty($get('checked_in_at'))),
                 Textarea::make('notes')
-                    ->label(__('borrowing.relation.notes')),
+                    ->label(__('borrowing.relation.notes'))
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -139,11 +135,30 @@ class ItemsRelationManager extends RelationManager
                 TextColumn::make('notes')
                     ->label(__('borrowing.relation.notes'))
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('created_at')
+                    ->label(__('borrowing.relation.created_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->label(__('borrowing.relation.deleted_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->headerActions([
                 CreateAction::make()
                     ->label(__('borrowing.relation.add_item'))
-                    ->authorize('create', $this->getOwnerRecord()),
+                    ->closeModalByClickingAway(false)
+                    ->using(function (array $data): BorrowingItem {
+                        $data['from_location_id'] = $this->getOwnerRecord()->to_location_id;
+                        $data['from_department_id'] = $this->getOwnerRecord()->to_department_id;
+                        $data['from_room_id'] = $this->getOwnerRecord()->to_room_id;
+                        $data['to_location_id'] = $this->getOwnerRecord()->from_location_id;
+                        $data['to_department_id'] = $this->getOwnerRecord()->from_department_id;
+                        $data['to_room_id'] = $this->getOwnerRecord()->from_room_id;
+                        return $this->getOwnerRecord()->items()->create($data);
+                    }),
             ])
             ->recordActions([
                 Action::make('view')
@@ -158,7 +173,7 @@ class ItemsRelationManager extends RelationManager
                                 Grid::make(1)
                                     ->schema([
                                         QrCodeEntry::make('qr_code')
-                                            ->state(fn (BorrowingItem $record): string => $record->item->serial_number)
+                                            ->state(fn(BorrowingItem $record): string => $record->item->serial_number)
                                             ->hiddenLabel(),
                                     ])
                                     ->columnSpan(1),
@@ -206,20 +221,22 @@ class ItemsRelationManager extends RelationManager
                     ]),
                 EditAction::make()
                     ->hiddenLabel(),
-                DeleteAction::make()
-                    ->hiddenLabel(),
+            ])
+            ->filters([
+                TrashedFilter::make()
+                    ->native(false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
-                        ->action(fn (Collection $records) => $records->each->delete()),
+                        ->action(fn(Collection $records) => $records->each->delete()),
                     ForceDeleteBulkAction::make()
                         ->authorizeIndividualRecords('forceDelete')
-                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                        ->action(fn(Collection $records) => $records->each->forceDelete()),
                     RestoreBulkAction::make()
                         ->authorizeIndividualRecords('restore')
-                        ->action(fn (Collection $records) => $records->each->restore()),
+                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

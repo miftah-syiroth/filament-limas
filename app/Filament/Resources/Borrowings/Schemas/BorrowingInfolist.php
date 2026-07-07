@@ -24,11 +24,11 @@ class BorrowingInfolist
                     ->schema([
                         TextEntry::make('user.name')
                             ->label(__('borrowing.infolist.borrower')),
-                        TextEntry::make('to_location.name')
+                        TextEntry::make('toLocation.name')
                             ->label(__('borrowing.infolist.to_location')),
-                        TextEntry::make('to_department.name')
+                        TextEntry::make('toDepartment.name')
                             ->label(__('borrowing.infolist.to_department')),
-                        TextEntry::make('to_room.name')
+                        TextEntry::make('toRoom.name')
                             ->label(__('borrowing.infolist.to_room')),
                         TextEntry::make('status')
                             ->label(__('borrowing.infolist.status'))
