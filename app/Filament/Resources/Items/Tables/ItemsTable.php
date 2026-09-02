@@ -172,7 +172,11 @@ class ItemsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     BulkAction::make('barcodeprint')
-                        ->action(),
+                        ->label('Print barcode')
+                        ->icon(Heroicon::OutlinedPrinter)
+                        ->url(fn (Collection $records): string => route('items.barcodes.print', [
+                            'items' => $records->pluck('id')->implode(','),
+                        ]), shouldOpenInNewTab: true),
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
                         ->action(fn (Collection $records) => $records->each->delete()),
