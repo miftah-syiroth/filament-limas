@@ -6,13 +6,13 @@ use App\Enums\ItemStatus;
 use App\Filament\Exports\ItemExporter;
 use App\Filament\Imports\ItemImporter;
 use App\Filament\Resources\Models\ModelResource;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\ImportAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -171,12 +171,11 @@ class ItemsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('barcodeprint')
+                        ->action(),
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
                         ->action(fn (Collection $records) => $records->each->delete()),
-                    RestoreBulkAction::make()
-                        ->authorizeIndividualRecords('restore')
-                        ->action(fn (Collection $records) => $records->each->restore()),
                     ForceDeleteBulkAction::make()
                         ->authorizeIndividualRecords('forceDelete')
                         ->action(fn (Collection $records) => $records->each->forceDelete()),

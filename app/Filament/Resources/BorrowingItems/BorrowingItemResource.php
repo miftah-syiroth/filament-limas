@@ -14,11 +14,9 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -194,9 +192,6 @@ class BorrowingItemResource extends Resource
                     ForceDeleteBulkAction::make()
                         ->authorizeIndividualRecords('forceDelete')
                         ->action(fn(Collection $records) => $records->each->forceDelete()),
-                    RestoreBulkAction::make()
-                        ->authorizeIndividualRecords('restore')
-                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

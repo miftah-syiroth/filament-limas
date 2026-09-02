@@ -8,7 +8,6 @@ use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -128,9 +127,6 @@ class ManageStockMovements extends ManageRelatedRecords
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
                         ->action(fn(Collection $records) => $records->each->delete()),
-                    RestoreBulkAction::make()
-                        ->authorizeIndividualRecords('restore')
-                        ->action(fn(Collection $records) => $records->each->restore()),
                 ]),
             ]);
     }

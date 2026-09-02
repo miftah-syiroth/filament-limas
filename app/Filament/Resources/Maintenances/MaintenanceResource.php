@@ -162,13 +162,6 @@ class MaintenanceResource extends Resource
                     ->label(__('maintenance.actions.export'))
                     ->icon(Heroicon::OutlinedArrowDownTray)
                     ->fileDisk('public'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    // DeleteBulkAction::make(),
-                    // ForceDeleteBulkAction::make(),
-                    // RestoreBulkAction::make(),
-                ]),
             ]);
     }
 
