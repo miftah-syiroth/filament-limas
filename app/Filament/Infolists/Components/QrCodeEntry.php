@@ -2,8 +2,11 @@
 
 namespace App\Filament\Infolists\Components;
 
+use App\Models\BorrowingItem;
+use App\Models\Item;
+use App\Services\ItemBarcodeLabelGenerator;
 use Filament\Infolists\Components\Entry;
-use Milon\Barcode\Facades\DNS1DFacade;
+use Illuminate\Database\Eloquent\Model;
 
 class QrCodeEntry extends Entry
 {
@@ -11,14 +14,37 @@ class QrCodeEntry extends Entry
 
     public function getQrCodeImage(): string
     {
-        $value = (string) $this->getState();
+        $item = $this->resolveItem();
 
-        $barcode = DNS1DFacade::getBarcodePNG($value, 'C128', 2, 60, [1, 1, 1], true);
-
-        if ($barcode === false || $barcode === '') {
+        if ($item === null || blank($item->serial_number)) {
             return '';
         }
 
-        return '<img src="data:image/png;base64,'.$barcode.'" alt="barcode" />';
+        if (! $item->relationLoaded('model')) {
+            $item->load('model');
+        }
+
+        $png = app(ItemBarcodeLabelGenerator::class)->renderLabel($item);
+
+        return '<img src="data:image/png;base64,'.base64_encode($png).'" alt="'.e((string) $item->serial_number).'" style="width:50mm;height:25mm" />';
+    }
+
+    private function resolveItem(): ?Item
+    {
+        $record = $this->getRecord();
+
+        if ($record instanceof Item) {
+            return $record;
+        }
+
+        if ($record instanceof BorrowingItem) {
+            return $record->item;
+        }
+
+        if ($record instanceof Model && $record->relationLoaded('item') && $record->getRelation('item') instanceof Item) {
+            return $record->getRelation('item');
+        }
+
+        return null;
     }
 }

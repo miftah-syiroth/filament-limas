@@ -184,6 +184,8 @@ class ItemsTable
                         ->authorizeIndividualRecords('forceDelete')
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 ]),
-            ]);
+            ])
+            ->selectCurrentPageOnly()
+            ->paginated([10, 20, 50]);
     }
 }
