@@ -26,7 +26,7 @@ class QrCodeEntry extends Entry
 
         $png = app(ItemBarcodeLabelGenerator::class)->renderLabel($item);
 
-        return '<img src="data:image/png;base64,'.base64_encode($png).'" alt="'.e((string) $item->serial_number).'" style="width:50mm;height:25mm" />';
+        return '<img src="data:image/png;base64,'.base64_encode($png).'" alt="'.e((string) $item->serial_number).'" style="width:50mm;height:20mm" />';
     }
 
     private function resolveItem(): ?Item

@@ -66,7 +66,7 @@ test('downloads a png sheet for selected item barcodes', function (): void {
     expect($response->streamedContent())->toStartWith("\x89PNG");
 });
 
-test('downloads a zip of png sheets when more than forty items are selected', function (): void {
+test('downloads a zip of png sheets when more than one page of items are selected', function (): void {
     $user = createBarcodePrintUser();
     $organization = Organization::create(['name' => 'Zip Organization']);
     $location = Location::create([
@@ -77,7 +77,9 @@ test('downloads a zip of png sheets when more than forty items are selected', fu
         'name' => 'Zip Model',
     ]);
 
-    $itemIds = collect(range(1, 41))->map(function (int $index) use ($model, $location): string {
+    $overflowCount = ItemBarcodeLabelGenerator::LABELS_PER_PAGE + 1;
+
+    $itemIds = collect(range(1, $overflowCount))->map(function (int $index) use ($model, $location): string {
         return Item::create([
             'model_id' => $model->id,
             'location_id' => $location->id,
@@ -96,7 +98,7 @@ test('downloads a zip of png sheets when more than forty items are selected', fu
     expect($response->headers->get('content-disposition'))->toContain('item-barcodes.zip');
 });
 
-test('renders a single barcode label at fifty by twenty five millimeters', function (): void {
+test('renders a single barcode label at fifty by twenty millimeters', function (): void {
     [$item] = createBarcodePrintItem('LABEL001');
     $item->load('model');
 
@@ -108,5 +110,5 @@ test('renders a single barcode label at fifty by twenty five millimeters', funct
         ->and($size[0])->toBe($generator->labelWidthPx())
         ->and($size[1])->toBe($generator->labelHeightPx())
         ->and($generator->labelWidthPx())->toBe(591)
-        ->and($generator->labelHeightPx())->toBe(295);
+        ->and($generator->labelHeightPx())->toBe(236);
 });

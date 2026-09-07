@@ -15,7 +15,7 @@ class ItemBarcodeLabelGenerator
 
     public const float LABEL_WIDTH_MM = 50.0;
 
-    public const float LABEL_HEIGHT_MM = 25.0;
+    public const float LABEL_HEIGHT_MM = 20.0;
 
     public const float A4_WIDTH_MM = 210.0;
 
@@ -23,9 +23,12 @@ class ItemBarcodeLabelGenerator
 
     public const int COLUMNS = 4;
 
-    public const int ROWS = 10;
+    /** 13 × 20mm labels + 2mm gaps fit on A4 with ~6.5mm page margins. */
+    public const int ROWS = 13;
 
-    public const float INNER_PADDING_MM = 2.0;
+    public const float INNER_PADDING_MM = 1.5;
+
+    public const float LABEL_GAP_MM = 2.0;
 
     public const int LABELS_PER_PAGE = self::COLUMNS * self::ROWS;
 
@@ -82,19 +85,20 @@ class ItemBarcodeLabelGenerator
         $serial = (string) $item->serial_number;
         $modelName = (string) ($item->model?->name ?? '');
 
-        $serialFontSize = 11.0;
-        $modelFontSize = 8.0;
-        $lineGap = $this->mmToPx(0.8);
-        $textBlockHeight = (int) ceil($serialFontSize * 1.35 + $modelFontSize * 1.35 + $lineGap);
-        $barcodeBottom = $contentBottom - $textBlockHeight - $lineGap;
+        $serialFontSize = 12.0;
+        $modelFontSize = 12.0;
+        $lineGap = $this->mmToPx(0.4);
+        $barcodeToTextGap = $this->mmToPx(0.6);
+        $textBlockHeight = (int) ceil($serialFontSize * 1.25 + $modelFontSize * 1.25 + $lineGap);
+        $barcodeBottom = $contentBottom - $textBlockHeight - $barcodeToTextGap;
         $barcodeAreaHeight = max(1, $barcodeBottom - $contentTop);
 
         $this->drawBarcode($image, $serial, $padding, $contentTop, $contentWidth, $barcodeAreaHeight);
 
-        $textY = $barcodeBottom + (int) ceil($serialFontSize);
+        $textY = $barcodeBottom + $barcodeToTextGap + (int) ceil($serialFontSize);
         $this->drawCenteredText($image, $serial, $serialFontSize, $black, $padding, $textY, $contentWidth, bold: true);
 
-        $textY += (int) ceil($serialFontSize * 1.35) + $lineGap;
+        $textY += (int) ceil($serialFontSize * 1.25) + $lineGap;
         if ($modelName !== '') {
             $this->drawCenteredText($image, $modelName, $modelFontSize, $black, $padding, $textY, $contentWidth, bold: false);
         }
@@ -121,9 +125,10 @@ class ItemBarcodeLabelGenerator
         $sheetHeight = $this->sheetHeightPx();
         $labelWidth = $this->labelWidthPx();
         $labelHeight = $this->labelHeightPx();
+        $gap = $this->mmToPx(self::LABEL_GAP_MM);
 
-        $gridWidth = self::COLUMNS * $labelWidth;
-        $gridHeight = self::ROWS * $labelHeight;
+        $gridWidth = (self::COLUMNS * $labelWidth) + ((self::COLUMNS - 1) * $gap);
+        $gridHeight = (self::ROWS * $labelHeight) + ((self::ROWS - 1) * $gap);
         $offsetX = (int) floor(($sheetWidth - $gridWidth) / 2);
         $offsetY = (int) floor(($sheetHeight - $gridHeight) / 2);
 
@@ -138,8 +143,8 @@ class ItemBarcodeLabelGenerator
         foreach ($items->values()->take(self::LABELS_PER_PAGE) as $index => $item) {
             $col = $index % self::COLUMNS;
             $row = intdiv($index, self::COLUMNS);
-            $destX = $offsetX + ($col * $labelWidth);
-            $destY = $offsetY + ($row * $labelHeight);
+            $destX = $offsetX + ($col * ($labelWidth + $gap));
+            $destY = $offsetY + ($row * ($labelHeight + $gap));
 
             $labelPng = $this->renderLabel($item);
             $label = imagecreatefromstring($labelPng);
