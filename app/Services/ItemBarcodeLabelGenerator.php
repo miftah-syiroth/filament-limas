@@ -78,29 +78,56 @@ class ItemBarcodeLabelGenerator
         imagefilledrectangle($image, 0, 0, $width - 1, $height - 1, $white);
         imagerectangle($image, 0, 0, $width - 1, $height - 1, $border);
 
-        $contentWidth = $width - (2 * $padding);
+        $contentLeft = $padding;
         $contentTop = $padding;
+        $contentRight = $width - $padding;
         $contentBottom = $height - $padding;
+        $contentHeight = max(1, $contentBottom - $contentTop);
 
         $serial = (string) $item->serial_number;
         $modelName = (string) ($item->model?->name ?? '');
+        $locationLine = $this->formatLocationRoom(
+            (string) ($item->location?->name ?? ''),
+            (string) ($item->room?->name ?? ''),
+        );
 
-        $serialFontSize = 12.0;
-        $modelFontSize = 12.0;
-        $lineGap = $this->mmToPx(0.4);
-        $barcodeToTextGap = $this->mmToPx(0.6);
-        $textBlockHeight = (int) ceil($serialFontSize * 1.25 + $modelFontSize * 1.25 + $lineGap);
-        $barcodeBottom = $contentBottom - $textBlockHeight - $barcodeToTextGap;
-        $barcodeAreaHeight = max(1, $barcodeBottom - $contentTop);
+        $logoGap = $this->mmToPx(1.0);
+        $logoWidth = $this->drawLogo($image, $contentLeft, $contentTop, $contentHeight);
+        $col2X = $contentLeft + ($logoWidth > 0 ? $logoWidth + $logoGap : 0);
+        $col2Width = max(1, $contentRight - $col2X);
 
-        $this->drawBarcode($image, $serial, $padding, $contentTop, $contentWidth, $barcodeAreaHeight);
+        $serialFontSize = 14.0;
+        $bodyFontSize = 12.0;
+        $lineGap = $this->mmToPx(0.3);
+        $serialLineHeight = (int) ceil($serialFontSize * 1.25);
+        $bodyLineHeight = (int) ceil($bodyFontSize * 1.25);
 
-        $textY = $barcodeBottom + $barcodeToTextGap + (int) ceil($serialFontSize);
-        $this->drawCenteredText($image, $serial, $serialFontSize, $black, $padding, $textY, $contentWidth, bold: true);
-
-        $textY += (int) ceil($serialFontSize * 1.25) + $lineGap;
+        $textLinesBelowBarcode = 0;
         if ($modelName !== '') {
-            $this->drawCenteredText($image, $modelName, $modelFontSize, $black, $padding, $textY, $contentWidth, bold: false);
+            $textLinesBelowBarcode++;
+        }
+        if ($locationLine !== '') {
+            $textLinesBelowBarcode++;
+        }
+
+        $reservedBelowBarcode = ($textLinesBelowBarcode * $bodyLineHeight)
+            + ($textLinesBelowBarcode > 0 ? $textLinesBelowBarcode * $lineGap : 0);
+        $serialBlockHeight = $serialLineHeight + $lineGap;
+        $barcodeAreaHeight = max(1, $contentHeight - $serialBlockHeight - $reservedBelowBarcode);
+
+        $cursorY = $contentTop + (int) ceil($serialFontSize);
+        $this->drawCenteredText($image, $serial, $serialFontSize, $black, $col2X, $cursorY, $col2Width, bold: true);
+
+        $barcodeTop = $contentTop + $serialBlockHeight;
+        $this->drawBarcode($image, $serial, $col2X, $barcodeTop, $col2Width, $barcodeAreaHeight);
+
+        $cursorY = $barcodeTop + $barcodeAreaHeight + $lineGap + (int) ceil($bodyFontSize);
+        if ($modelName !== '') {
+            $this->drawCenteredText($image, $modelName, $bodyFontSize, $black, $col2X, $cursorY, $col2Width, bold: false);
+            $cursorY += $bodyLineHeight + $lineGap;
+        }
+        if ($locationLine !== '') {
+            $this->drawCenteredText($image, $locationLine, $bodyFontSize, $black, $col2X, $cursorY, $col2Width, bold: false);
         }
 
         ob_start();
@@ -216,6 +243,63 @@ class ItemBarcodeLabelGenerator
         ])->deleteFileAfterSend(true);
     }
 
+    private function formatLocationRoom(string $locationName, string $roomName): string
+    {
+        $parts = array_values(array_filter([$locationName, $roomName], fn (string $part): bool => $part !== ''));
+
+        return implode('; ', $parts);
+    }
+
+    /**
+     * Draw the logo at full content height; width follows aspect ratio (no horizontal stretch).
+     *
+     * @param  \GdImage  $image
+     * @return int Drawn logo width in pixels (0 when missing/unreadable)
+     */
+    private function drawLogo($image, int $x, int $y, int $maxHeight): int
+    {
+        $path = public_path('logo.png');
+        if (! is_file($path)) {
+            return 0;
+        }
+
+        $logo = @imagecreatefrompng($path);
+        if ($logo === false) {
+            return 0;
+        }
+
+        $srcWidth = imagesx($logo);
+        $srcHeight = imagesy($logo);
+        if ($srcWidth < 1 || $srcHeight < 1) {
+            imagedestroy($logo);
+
+            return 0;
+        }
+
+        $scale = $maxHeight / $srcHeight;
+        $destWidth = max(1, (int) floor($srcWidth * $scale));
+        $destHeight = max(1, (int) floor($srcHeight * $scale));
+        $destY = $y + (int) floor(($maxHeight - $destHeight) / 2);
+
+        imagealphablending($image, true);
+        imagesavealpha($image, true);
+        imagecopyresampled(
+            $image,
+            $logo,
+            $x,
+            $destY,
+            0,
+            0,
+            $destWidth,
+            $destHeight,
+            $srcWidth,
+            $srcHeight,
+        );
+        imagedestroy($logo);
+
+        return $destWidth;
+    }
+
     /**
      * @param  \GdImage  $image
      */
@@ -271,6 +355,10 @@ class ItemBarcodeLabelGenerator
         int $maxWidth,
         bool $bold,
     ): void {
+        if ($text === '') {
+            return;
+        }
+
         $font = $this->fontPath($bold);
         $fitted = $this->fitText($text, $font, $fontSize, $maxWidth);
         $box = imagettfbbox($fontSize, 0, $font, $fitted);

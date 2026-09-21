@@ -20,9 +20,7 @@ class QrCodeEntry extends Entry
             return '';
         }
 
-        if (! $item->relationLoaded('model')) {
-            $item->load('model');
-        }
+        $item->loadMissing(['model', 'location', 'room']);
 
         $png = app(ItemBarcodeLabelGenerator::class)->renderLabel($item);
 

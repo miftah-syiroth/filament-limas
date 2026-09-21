@@ -5,6 +5,7 @@ use App\Models\Location;
 use App\Models\Model as InventoryModel;
 use App\Models\Organization;
 use App\Models\Permission;
+use App\Models\Room;
 use App\Models\User;
 use App\Services\ItemBarcodeLabelGenerator;
 
@@ -22,7 +23,7 @@ function createBarcodePrintUser(): User
 }
 
 /**
- * @return array{0: Item, 1: InventoryModel, 2: Location}
+ * @return array{0: Item, 1: InventoryModel, 2: Location, 3: Room}
  */
 function createBarcodePrintItem(string $serialNumber = 'ABC12345'): array
 {
@@ -31,16 +32,21 @@ function createBarcodePrintItem(string $serialNumber = 'ABC12345'): array
         'organization_id' => $organization->id,
         'name' => 'Test Location',
     ]);
+    $room = Room::create([
+        'location_id' => $location->id,
+        'name' => 'Test Room',
+    ]);
     $model = InventoryModel::create([
         'name' => 'Test Model',
     ]);
     $item = Item::create([
         'model_id' => $model->id,
         'location_id' => $location->id,
+        'room_id' => $room->id,
         'serial_number' => $serialNumber,
     ]);
 
-    return [$item, $model, $location];
+    return [$item, $model, $location, $room];
 }
 
 test('guests cannot download item barcodes', function (): void {
@@ -73,16 +79,21 @@ test('downloads a zip of png sheets when more than one page of items are selecte
         'organization_id' => $organization->id,
         'name' => 'Zip Location',
     ]);
+    $room = Room::create([
+        'location_id' => $location->id,
+        'name' => 'Zip Room',
+    ]);
     $model = InventoryModel::create([
         'name' => 'Zip Model',
     ]);
 
     $overflowCount = ItemBarcodeLabelGenerator::LABELS_PER_PAGE + 1;
 
-    $itemIds = collect(range(1, $overflowCount))->map(function (int $index) use ($model, $location): string {
+    $itemIds = collect(range(1, $overflowCount))->map(function (int $index) use ($model, $location, $room): string {
         return Item::create([
             'model_id' => $model->id,
             'location_id' => $location->id,
+            'room_id' => $room->id,
             'serial_number' => sprintf('SN%06d', $index),
         ])->id;
     });
@@ -100,7 +111,7 @@ test('downloads a zip of png sheets when more than one page of items are selecte
 
 test('renders a single barcode label at ninety by twenty five millimeters', function (): void {
     [$item] = createBarcodePrintItem('LABEL001');
-    $item->load('model');
+    $item->load(['model', 'location', 'room']);
 
     $generator = app(ItemBarcodeLabelGenerator::class);
     $png = $generator->renderLabel($item);
@@ -111,4 +122,19 @@ test('renders a single barcode label at ninety by twenty five millimeters', func
         ->and($size[1])->toBe($generator->labelHeightPx())
         ->and($generator->labelWidthPx())->toBe(1063)
         ->and($generator->labelHeightPx())->toBe(295);
+});
+
+test('renders a barcode label when room is missing', function (): void {
+    [$item] = createBarcodePrintItem('NOROOM01');
+    $item->update(['room_id' => null]);
+    $item->unsetRelation('room');
+    $item->load(['model', 'location', 'room']);
+
+    $generator = app(ItemBarcodeLabelGenerator::class);
+    $png = $generator->renderLabel($item);
+    $size = getimagesizefromstring($png);
+
+    expect($size)->not->toBeFalse()
+        ->and($size[0])->toBe($generator->labelWidthPx())
+        ->and($size[1])->toBe($generator->labelHeightPx());
 });

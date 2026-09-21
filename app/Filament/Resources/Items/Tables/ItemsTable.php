@@ -48,7 +48,7 @@ class ItemsTable
                 TextColumn::make('model.category.type')
                     ->label(__('items.table.type'))
                     ->badge()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('name')
                     ->label(__('items.table.name'))
                     ->searchable()
@@ -79,29 +79,29 @@ class ItemsTable
                     })
                     ->numeric()
                     ->alignCenter(),
-                TextColumn::make('purchase_date')
-                    ->label(__('items.table.purchase_date'))
-                    ->date()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('purchase_price')
-                    ->label(__('items.table.purchase_price'))
-                    ->money('IDR', locale: 'id', decimalPlaces: 0)
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('eol_date')
-                    ->label(__('items.table.eol_date'))
-                    ->date()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('warranty_months')
-                    ->label(__('items.table.warranty_months'))
-                    ->numeric()
-                    ->alignCenter()
-                    ->suffix(__('items.table.warranty_suffix'))
-                    ->toggleable(isToggledHiddenByDefault: true),
-                IconColumn::make('is_individual_tracking')
-                    ->label(__('items.table.individual'))
-                    ->alignCenter()
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // TextColumn::make('purchase_date')
+                //     ->label(__('items.table.purchase_date'))
+                //     ->date()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // TextColumn::make('purchase_price')
+                //     ->label(__('items.table.purchase_price'))
+                //     ->money('IDR', locale: 'id', decimalPlaces: 0)
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // TextColumn::make('eol_date')
+                //     ->label(__('items.table.eol_date'))
+                //     ->date()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // TextColumn::make('warranty_months')
+                //     ->label(__('items.table.warranty_months'))
+                //     ->numeric()
+                //     ->alignCenter()
+                //     ->suffix(__('items.table.warranty_suffix'))
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // IconColumn::make('is_individual_tracking')
+                //     ->label(__('items.table.individual'))
+                //     ->alignCenter()
+                //     ->boolean()
+                //     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('items.table.deleted_at'))
                     ->dateTime()
@@ -176,6 +176,7 @@ class ItemsTable
                         ->icon(Heroicon::OutlinedPrinter)
                         ->action(function (Collection $records) {
                             $params = $records->pluck('id')->implode(',');
+
                             return redirect()->route('items.barcodes.print', ['items' => $params]);
                         })
                         ->deselectRecordsAfterCompletion(),

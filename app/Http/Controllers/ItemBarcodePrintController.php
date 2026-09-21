@@ -26,7 +26,7 @@ class ItemBarcodePrintController extends Controller
 
         $items = Item::query()
             ->whereKey($itemIds)
-            ->with('model')
+            ->with(['model', 'location', 'room'])
             ->get()
             ->sortBy(fn (Item $item): int => (int) $itemPositions->get($item->getKey(), 0))
             ->values();
