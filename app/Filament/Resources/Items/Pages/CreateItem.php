@@ -10,7 +10,6 @@ use App\Filament\Resources\Items\Schemas\ItemCreateForm;
 use App\Models\Item;
 use App\Models\Model as ItemModel;
 use App\Models\StockMovement;
-use App\Support\ItemSerialNumber;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -39,7 +38,7 @@ class CreateItem extends CreateRecord
                 $count = (int) ($row['quantity'] ?? 1);
 
                 for ($i = 0; $i < $count; $i++) {
-                    $created = Item::create($this->itemAttributes($data, $model, $row, $isIndividualTracking, $status, $nextAuditDate, 1));
+                    $created = Item::createWithUniqueSerial($this->itemAttributes($data, $model, $row, $isIndividualTracking, $status, $nextAuditDate, 1));
                     $first ??= $created;
                 }
 
@@ -47,7 +46,7 @@ class CreateItem extends CreateRecord
             }
 
             $quantity = (int) ($row['quantity'] ?? 1);
-            $created = Item::create($this->itemAttributes($data, $model, $row, $isIndividualTracking, $status, $nextAuditDate, $quantity));
+            $created = Item::createWithUniqueSerial($this->itemAttributes($data, $model, $row, $isIndividualTracking, $status, $nextAuditDate, $quantity));
             $first ??= $created;
 
             StockMovement::create([
@@ -77,7 +76,6 @@ class CreateItem extends CreateRecord
     ): array {
         return [
             'model_id' => $data['model_id'],
-            'serial_number' => ItemSerialNumber::generate(),
             'location_id' => $row['location_id'],
             'department_id' => $row['department_id'] ?? null,
             'room_id' => $row['room_id'] ?? null,

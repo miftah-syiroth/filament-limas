@@ -15,7 +15,6 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\ImportAction;
 use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -78,30 +77,8 @@ class ItemsTable
                         return max(0, $record->quantity - $record->activeBorrowingItems->sum('quantity'));
                     })
                     ->numeric()
-                    ->alignCenter(),
-                // TextColumn::make('purchase_date')
-                //     ->label(__('items.table.purchase_date'))
-                //     ->date()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // TextColumn::make('purchase_price')
-                //     ->label(__('items.table.purchase_price'))
-                //     ->money('IDR', locale: 'id', decimalPlaces: 0)
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // TextColumn::make('eol_date')
-                //     ->label(__('items.table.eol_date'))
-                //     ->date()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // TextColumn::make('warranty_months')
-                //     ->label(__('items.table.warranty_months'))
-                //     ->numeric()
-                //     ->alignCenter()
-                //     ->suffix(__('items.table.warranty_suffix'))
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // IconColumn::make('is_individual_tracking')
-                //     ->label(__('items.table.individual'))
-                //     ->alignCenter()
-                //     ->boolean()
-                //     ->toggleable(isToggledHiddenByDefault: true),
+                    ->alignCenter()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('deleted_at')
                     ->label(__('items.table.deleted_at'))
                     ->dateTime()

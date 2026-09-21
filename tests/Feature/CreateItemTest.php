@@ -9,7 +9,9 @@ use App\Models\Location;
 use App\Models\Model as InventoryModel;
 use App\Models\Organization;
 use App\Models\StockMovement;
+use App\Support\ItemSerialNumber;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\UniqueConstraintViolationException;
 
 /**
  * @return array{model: InventoryModel, location1: Location, location2: Location}
@@ -140,4 +142,58 @@ test('batch create throws when no repeater rows are provided', function () {
         'is_individual_tracking' => true,
         'items' => [],
     ]))->toThrow(RuntimeException::class, 'No items created.');
+});
+
+test('createWithUniqueSerial retries when serial_number collides then succeeds', function () {
+    $fixtures = createItemBatchFixtures();
+
+    Item::create([
+        'model_id' => $fixtures['model']->id,
+        'location_id' => $fixtures['location1']->id,
+        'serial_number' => 'COLLIDE1',
+        'quantity' => 1,
+        'status' => ItemStatus::Active,
+    ]);
+
+    $sequence = ['COLLIDE1', 'UNIQUE01'];
+    ItemSerialNumber::fake(function () use (&$sequence): string {
+        return array_shift($sequence) ?? 'FALLBACK';
+    });
+
+    $item = Item::createWithUniqueSerial([
+        'model_id' => $fixtures['model']->id,
+        'location_id' => $fixtures['location1']->id,
+        'quantity' => 1,
+        'status' => ItemStatus::Active,
+    ]);
+
+    expect($item->serial_number)->toBe('UNIQUE01')
+        ->and(Item::count())->toBe(2);
+});
+
+test('createWithUniqueSerial throws after five serial_number collisions', function () {
+    $fixtures = createItemBatchFixtures();
+
+    Item::create([
+        'model_id' => $fixtures['model']->id,
+        'location_id' => $fixtures['location1']->id,
+        'serial_number' => 'COLLIDE1',
+        'quantity' => 1,
+        'status' => ItemStatus::Active,
+    ]);
+
+    ItemSerialNumber::fake(fn (): string => 'COLLIDE1');
+
+    expect(fn () => Item::createWithUniqueSerial([
+        'model_id' => $fixtures['model']->id,
+        'location_id' => $fixtures['location1']->id,
+        'quantity' => 1,
+        'status' => ItemStatus::Active,
+    ]))->toThrow(UniqueConstraintViolationException::class);
+
+    expect(Item::count())->toBe(1);
+});
+
+afterEach(function (): void {
+    ItemSerialNumber::fake(null);
 });

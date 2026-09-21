@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
+use App\Support\ItemSerialNumber;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -77,6 +79,30 @@ class Item extends BaseModel implements HasMedia
                 $item->is_individual_tracking = false;
             }
         });
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
+    public static function createWithUniqueSerial(array $attributes, int $maxAttempts = 5): static
+    {
+        $lastException = null;
+
+        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+            $attributes['serial_number'] = ItemSerialNumber::generate();
+
+            try {
+                return static::create($attributes);
+            } catch (UniqueConstraintViolationException $exception) {
+                $lastException = $exception;
+
+                if (! str_contains(strtolower($exception->getMessage()), 'serial_number')) {
+                    throw $exception;
+                }
+            }
+        }
+
+        throw $lastException;
     }
 
     public function getActivitylogOptions(): LogOptions
