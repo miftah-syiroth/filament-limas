@@ -4,7 +4,7 @@ namespace App\Filament\Resources\Items\Schemas;
 
 use App\Filament\Infolists\Components\QrCodeEntry;
 use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
@@ -107,7 +107,7 @@ class ItemInfolist
                             ->schema([
                                 QrCodeEntry::make('serial_number')
                                     ->hiddenLabel(),
-                                SpatieMediaLibraryImageEntry::make('images')
+                                ImageEntry::make('images')
                                     ->hiddenLabel(),
                             ]),
                     ]),

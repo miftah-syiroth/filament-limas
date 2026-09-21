@@ -8,8 +8,8 @@ use App\Filament\Resources\Items\ItemResource;
 use App\Models\ItemStateLog;
 use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Actions\CreateAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -35,9 +35,10 @@ class ManageItemStateLogs extends ManageRelatedRecords
 
     protected static string $relationship = 'stateLogs';
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         $item = $this->getOwnerRecord();
+
         return __('items.pages.state_logs.title', [
             'item' => $item->serial_number ?? $item->name,
         ]);
@@ -62,8 +63,8 @@ class ManageItemStateLogs extends ManageRelatedRecords
                 Select::make('from_location_id')
                     ->label(__('items.pages.state_logs.location_from'))
                     ->relationship('fromLocation', 'name')
-                    ->default(fn(): ?string => $this->getOwnerRecord()->location_id)
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
+                    ->default(fn (): ?string => $this->getOwnerRecord()->location_id)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->disabled()
                     ->dehydrated()
                     ->saved(),
@@ -72,11 +73,11 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->relationship(
                         name: 'toLocation',
                         titleAttribute: 'name',
-                        modifyQueryUsing: function (Builder $query): Builder {
-                            return $query->where('id', '!=', $this->getOwnerRecord()->location_id);
-                        },
+                        // modifyQueryUsing: function (Builder $query): Builder {
+                        //     return $query->where('id', '!=', $this->getOwnerRecord()->location_id);
+                        // },
                     )
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->live()
                     ->afterStateUpdated(function (Set $set): void {
                         $set('to_department_id', null);
@@ -89,8 +90,8 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         name: 'fromDepartment',
                         titleAttribute: 'name'
                     )
-                    ->default(fn(): ?string => $this->getOwnerRecord()->department_id)
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
+                    ->default(fn (): ?string => $this->getOwnerRecord()->department_id)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->disabled()
                     ->dehydrated()
                     ->saved(),
@@ -100,29 +101,34 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         name: 'toDepartment',
                         titleAttribute: 'name',
                         modifyQueryUsing: function (Builder $query, Get $get): Builder {
-                            return $query->when(
-                                $locationId = $get('to_location_id') ?? $this->getOwnerRecord()->location_id,
-                                fn(Builder $q): Builder => $q->whereHas('locations', fn(Builder $q): Builder => $q->where('location_id', $locationId))
-                            )->when(
-                                $departmentId = $this->getOwnerRecord()->department_id,
-                                fn(Builder $q): Builder => $q->where('id', '!=', $departmentId)
-                            );
+                            $locationId = $get('to_location_id');
+
+                            if (blank($locationId)) {
+                                return $query->whereKey([]);
+                            }
+
+                            return $query
+                                ->whereHas(
+                                    'locations',
+                                    fn (Builder $locations): Builder => $locations->where('location_id', $locationId),
+                                )
+                                ->when(
+                                    filled($this->getOwnerRecord()->department_id),
+                                    fn (Builder $departments): Builder => $departments->whereKeyNot($this->getOwnerRecord()->department_id),
+                                );
                         },
                     )
                     ->searchable()
                     ->preload()
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
-                    ->required(function (Get $get): bool {
-                        return $get('to_location_id') !== null;
-                    })->requiredWithoutAll('to_location_id,to_room_id'),
+                    ->visible(fn (Get $get): bool => $this->hasSelectedTransferLocation($get)),
                 Select::make('from_room_id')
                     ->label(__('items.pages.state_logs.room_from'))
                     ->relationship(
                         name: 'fromRoom',
                         titleAttribute: 'name'
                     )
-                    ->default(fn(): ?string => $this->getOwnerRecord()->room_id)
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
+                    ->default(fn (): ?string => $this->getOwnerRecord()->room_id)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
                     ->disabled()
                     ->dehydrated()
                     ->saved(),
@@ -132,26 +138,31 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         name: 'toRoom',
                         titleAttribute: 'name',
                         modifyQueryUsing: function (Builder $query, Get $get): Builder {
-                            return $query->when(
-                                $locationId = $get('to_location_id') ?? $this->getOwnerRecord()->location_id,
-                                fn(Builder $q): Builder => $q->where('location_id', $locationId)
-                            )->when(
-                                $roomId = $this->getOwnerRecord()->room_id,
-                                fn(Builder $q): Builder => $q->where('id', '!=', $roomId)
-                            );
+                            $locationId = $get('to_location_id');
+
+                            if (blank($locationId)) {
+                                return $query->whereKey([]);
+                            }
+
+                            return $query
+                                ->where('location_id', $locationId)
+                                ->when(
+                                    filled($this->getOwnerRecord()->room_id),
+                                    fn (Builder $rooms): Builder => $rooms->whereKeyNot($this->getOwnerRecord()->room_id),
+                                );
                         },
                     )
                     ->searchable()
                     ->preload()
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Transfer->value)
+                    ->visible(fn (Get $get): bool => $this->hasSelectedTransferLocation($get))
                     ->required(function (Get $get): bool {
                         return $get('to_location_id') !== null;
                     })->requiredWithoutAll('to_location_id,to_department_id'),
                 Select::make('from_user_id')
                     ->label(__('items.pages.state_logs.user_from'))
                     ->relationship('fromUser', 'name')
-                    ->default(fn(): ?string => $this->getOwnerRecord()->user_id)
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value)
+                    ->default(fn (): ?string => $this->getOwnerRecord()->user_id)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value)
                     ->disabled()
                     ->dehydrated()
                     ->saved(),
@@ -163,19 +174,19 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         modifyQueryUsing: function (Builder $query): Builder {
                             return $query->when(
                                 $userId = $this->getOwnerRecord()->user_id,
-                                fn(Builder $q): Builder => $q->where('id', '!=', $userId)
+                                fn (Builder $q): Builder => $q->where('id', '!=', $userId)
                             );
                         },
                     )
                     ->searchable()
                     ->preload()
-                    ->required(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value)
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value),
+                    ->required(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::Assignment->value),
                 Select::make('from_status')
                     ->label(__('items.pages.state_logs.status_from'))
                     ->options(ItemStatus::class)
-                    ->default(fn(): ?string => $this->getOwnerRecord()->status->value)
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value)
+                    ->default(fn (): ?string => $this->getOwnerRecord()->status->value)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value)
                     ->disabled()
                     ->dehydrated()
                     ->saved(),
@@ -185,13 +196,13 @@ class ManageItemStateLogs extends ManageRelatedRecords
                         $currentStatus = $this->getOwnerRecord()->status;
 
                         return collect(ItemStatus::cases())
-                            ->reject(fn(ItemStatus $status): bool => $status === $currentStatus)
-                            ->mapWithKeys(fn(ItemStatus $status): array => [$status->value => $status->getLabel()])
+                            ->reject(fn (ItemStatus $status): bool => $status === $currentStatus)
+                            ->mapWithKeys(fn (ItemStatus $status): array => [$status->value => $status->getLabel()])
                             ->all();
                     })
                     ->native(false)
-                    ->required(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value)
-                    ->visible(fn(Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value),
+                    ->required(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value)
+                    ->visible(fn (Get $get): bool => ($get('event_type')?->value ?? $get('event_type')) === ItemStateEventType::StatusChange->value),
                 Textarea::make('notes')
                     ->label(__('items.pages.state_logs.notes')),
             ]);
@@ -229,6 +240,13 @@ class ManageItemStateLogs extends ManageRelatedRecords
         }
 
         return $data;
+    }
+
+    private function hasSelectedTransferLocation(Get $get): bool
+    {
+        $eventType = $get('event_type')?->value ?? $get('event_type');
+
+        return $eventType === ItemStateEventType::Transfer->value && filled($get('to_location_id'));
     }
 
     public function table(Table $table): Table
@@ -291,7 +309,7 @@ class ManageItemStateLogs extends ManageRelatedRecords
                 Action::make('view')
                     ->label('')
                     ->icon('heroicon-o-eye')
-                    ->modalHeading(fn(ItemStateLog $record): string => __('items.pages.state_logs.modal_heading', [
+                    ->modalHeading(fn (ItemStateLog $record): string => __('items.pages.state_logs.modal_heading', [
                         'type' => $record->event_type->getLabel(),
                     ]))
                     ->modalSubmitAction(false)
@@ -350,13 +368,13 @@ class ManageItemStateLogs extends ManageRelatedRecords
                 CreateAction::make()
                     ->label(__('items.pages.state_logs.add_transfer'))
                     ->closeModalByClickingAway(false)
-                    ->mutateDataUsing(fn(array $data): array => $this->nullifyFromWhenToIsNull($data)),
+                    ->mutateDataUsing(fn (array $data): array => $this->nullifyFromWhenToIsNull($data)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
-                        ->action(fn(Collection $records) => $records->each->delete()),
+                        ->action(fn (Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

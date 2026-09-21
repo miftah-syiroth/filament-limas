@@ -141,7 +141,8 @@ class ItemCreateForm
                                             )
                                     )
                                     ->searchable()
-                                    ->preload(),
+                                    ->preload()
+                                    ->required(),
                                 Select::make('room_id')
                                     ->label(__('items.form.room'))
                                     ->relationship(
@@ -155,13 +156,13 @@ class ItemCreateForm
                                             )
                                     )
                                     ->searchable()
-                                    ->preload(),
+                                    ->preload()
+                                    ->required(),
                                 TextInput::make('quantity')
                                     ->label(__('items.form.quantity'))
-                                    ->required()
                                     ->numeric()
                                     ->minValue(1)
-                                    ->default(1)
+                                    ->required()
                                     ->saved(),
                             ])
                             ->columns(2)

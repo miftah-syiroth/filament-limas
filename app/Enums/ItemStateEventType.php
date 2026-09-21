@@ -14,9 +14,9 @@ enum ItemStateEventType: string implements HasLabel
     public function getLabel(): string|Htmlable|null
     {
         return match ($this) {
-            self::Transfer => 'Transfer',
-            self::Assignment => 'Assignment',
-            self::StatusChange => 'Status Change',
+            self::Transfer => 'Pindah Lokasi',
+            self::Assignment => 'Pindah Penanggung Jawab',
+            self::StatusChange => 'Ubah Status',
         };
     }
 }

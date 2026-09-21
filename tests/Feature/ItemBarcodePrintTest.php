@@ -98,7 +98,7 @@ test('downloads a zip of png sheets when more than one page of items are selecte
     expect($response->headers->get('content-disposition'))->toContain('item-barcodes.zip');
 });
 
-test('renders a single barcode label at fifty by twenty millimeters', function (): void {
+test('renders a single barcode label at ninety by twenty five millimeters', function (): void {
     [$item] = createBarcodePrintItem('LABEL001');
     $item->load('model');
 
@@ -109,6 +109,6 @@ test('renders a single barcode label at fifty by twenty millimeters', function (
     expect($size)->not->toBeFalse()
         ->and($size[0])->toBe($generator->labelWidthPx())
         ->and($size[1])->toBe($generator->labelHeightPx())
-        ->and($generator->labelWidthPx())->toBe(591)
-        ->and($generator->labelHeightPx())->toBe(236);
+        ->and($generator->labelWidthPx())->toBe(1063)
+        ->and($generator->labelHeightPx())->toBe(295);
 });

@@ -17,6 +17,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Item extends BaseModel implements HasMedia
 {
@@ -78,11 +79,6 @@ class Item extends BaseModel implements HasMedia
         });
     }
 
-    // public function registerMediaCollections(): void
-    // {
-    //     $this->addMediaCollection('images');
-    // }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -101,6 +97,22 @@ class Item extends BaseModel implements HasMedia
                 return max(0, $this->quantity - $borrowed);
             }
         );
+    }
+
+    protected function images(): Attribute
+    {
+        return Attribute::get(function (): array {
+            $media = $this->getMedia();
+
+            if ($media->isEmpty()) {
+                $media = $this->model?->getMedia() ?? collect();
+            }
+
+            return $media
+                ->map(fn (Media $file): string => $file->getUrl())
+                ->values()
+                ->all();
+        });
     }
 
     protected function depreciatedPrice(): Attribute

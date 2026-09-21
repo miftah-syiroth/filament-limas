@@ -13,18 +13,18 @@ class ItemBarcodeLabelGenerator
 {
     public const int DPI = 300;
 
-    public const float LABEL_WIDTH_MM = 50.0;
+    public const float LABEL_WIDTH_MM = 90.0;
 
-    public const float LABEL_HEIGHT_MM = 20.0;
+    public const float LABEL_HEIGHT_MM = 25.0;
 
-    public const float A4_WIDTH_MM = 210.0;
+    public const float A4_WIDTH_MM = 297.0;
 
-    public const float A4_HEIGHT_MM = 297.0;
+    public const float A4_HEIGHT_MM = 210.0;
 
-    public const int COLUMNS = 4;
+    public const int COLUMNS = 3;
 
-    /** 13 × 20mm labels + 2mm gaps fit on A4 with ~6.5mm page margins. */
-    public const int ROWS = 13;
+    /** 7 × 25mm labels + 2mm gaps fit on A4 landscape with ~11.5mm page margins. */
+    public const int ROWS = 7;
 
     public const float INNER_PADDING_MM = 1.5;
 
