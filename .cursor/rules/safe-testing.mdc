@@ -1,0 +1,19 @@
+---
+description: Never wipe the local/dev database
+alwaysApply: true
+---
+
+# Safe testing and database commands
+
+## Do not wipe databases
+
+Never run destructive DB commands against the app database (the one in `.env`):
+
+- `php artisan migrate:fresh`
+- `php artisan migrate:refresh`
+- `php artisan db:wipe`
+- `php artisan schema:dump` with drop, `DROP DATABASE`, `dropAllTables`
+
+`RefreshDatabase` / `LazilyRefreshDatabase` in PHPUnit is allowed. `phpunit.xml` already sets `DB_DATABASE=testing`. Do not override that to the development database.
+
+If a migration must be applied, use `php artisan migrate` (forward only) on the testing connection, or ask the user first.

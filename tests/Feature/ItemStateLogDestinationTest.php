@@ -2,6 +2,7 @@
 
 use App\Enums\ItemStateEventType;
 use App\Enums\ItemStatus;
+use App\Filament\Resources\Items\Pages\ManageItemStateLogs;
 use App\Models\Department;
 use App\Models\Item;
 use App\Models\ItemStateLog;
@@ -9,6 +10,8 @@ use App\Models\Location;
 use App\Models\Model as InventoryModel;
 use App\Models\Organization;
 use App\Models\Room;
+use Filament\Actions\CreateAction;
+use Filament\Actions\Exceptions\Cancel;
 
 /**
  * @return array{item: Item, otherLocation: Location, otherDepartment: Department}
@@ -44,11 +47,23 @@ function createStateLogItem(): array
     return compact('item', 'otherLocation', 'otherDepartment');
 }
 
-test('state log omits destinations that match the item current values', function () {
+/**
+ * @param  array<string, mixed>  $data
+ * @return array<string, mixed>
+ */
+function invokeNullifyFromWhenToIsNull(array $data): array
+{
+    $page = new ManageItemStateLogs;
+    $method = new ReflectionMethod(ManageItemStateLogs::class, 'nullifyFromWhenToIsNull');
+    $method->setAccessible(true);
+
+    return $method->invoke($page, $data, CreateAction::make());
+}
+
+test('nullify clears matching transfer destinations on from and to', function () {
     ['item' => $item, 'otherLocation' => $otherLocation] = createStateLogItem();
 
-    $log = ItemStateLog::create([
-        'item_id' => $item->id,
+    $data = invokeNullifyFromWhenToIsNull([
         'event_type' => ItemStateEventType::Transfer,
         'from_location_id' => $item->location_id,
         'to_location_id' => $otherLocation->id,
@@ -56,8 +71,18 @@ test('state log omits destinations that match the item current values', function
         'to_department_id' => $item->department_id,
         'from_room_id' => $item->room_id,
         'to_room_id' => $item->room_id,
-        'from_status' => $item->status,
-        'to_status' => $item->status,
+    ]);
+
+    expect($data['from_location_id'])->toBe($item->location_id)
+        ->and($data['to_location_id'])->toBe($otherLocation->id)
+        ->and($data['from_department_id'])->toBeNull()
+        ->and($data['to_department_id'])->toBeNull()
+        ->and($data['from_room_id'])->toBeNull()
+        ->and($data['to_room_id'])->toBeNull();
+
+    $log = ItemStateLog::create([
+        'item_id' => $item->id,
+        ...$data,
     ]);
 
     expect($log->from_location_id)->toBe($item->location_id)
@@ -65,9 +90,7 @@ test('state log omits destinations that match the item current values', function
         ->and($log->from_department_id)->toBeNull()
         ->and($log->to_department_id)->toBeNull()
         ->and($log->from_room_id)->toBeNull()
-        ->and($log->to_room_id)->toBeNull()
-        ->and($log->from_status)->toBeNull()
-        ->and($log->to_status)->toBeNull();
+        ->and($log->to_room_id)->toBeNull();
 
     $item->refresh();
 
@@ -77,17 +100,26 @@ test('state log omits destinations that match the item current values', function
         ->and($item->status)->toBe(ItemStatus::Active);
 });
 
-test('state log keeps a destination that differs from the item current value', function () {
+test('nullify keeps a destination that differs and clears matching from and to', function () {
     ['item' => $item, 'otherDepartment' => $otherDepartment] = createStateLogItem();
     $currentLocationId = $item->location_id;
 
-    $log = ItemStateLog::create([
-        'item_id' => $item->id,
+    $data = invokeNullifyFromWhenToIsNull([
         'event_type' => ItemStateEventType::Transfer,
         'from_location_id' => $currentLocationId,
         'to_location_id' => $currentLocationId,
         'from_department_id' => $item->department_id,
         'to_department_id' => $otherDepartment->id,
+    ]);
+
+    expect($data['from_location_id'])->toBeNull()
+        ->and($data['to_location_id'])->toBeNull()
+        ->and($data['from_department_id'])->toBe($item->department_id)
+        ->and($data['to_department_id'])->toBe($otherDepartment->id);
+
+    $log = ItemStateLog::create([
+        'item_id' => $item->id,
+        ...$data,
     ]);
 
     expect($log->from_location_id)->toBeNull()
@@ -99,4 +131,18 @@ test('state log keeps a destination that differs from the item current value', f
 
     expect($item->location_id)->toBe($currentLocationId)
         ->and($item->department_id)->toBe($otherDepartment->id);
+});
+
+test('nullify cancels create when all transfer destinations are unchanged', function () {
+    ['item' => $item] = createStateLogItem();
+
+    expect(fn () => invokeNullifyFromWhenToIsNull([
+        'event_type' => ItemStateEventType::Transfer,
+        'from_location_id' => $item->location_id,
+        'to_location_id' => $item->location_id,
+        'from_department_id' => $item->department_id,
+        'to_department_id' => $item->department_id,
+        'from_room_id' => $item->room_id,
+        'to_room_id' => $item->room_id,
+    ]))->toThrow(Cancel::class);
 });

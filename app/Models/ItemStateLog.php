@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\ItemStateEventType;
 use App\Enums\ItemStatus;
-use BackedEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -55,55 +54,9 @@ class ItemStateLog extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (ItemStateLog $stateLog): void {
-            $stateLog->discardDestinationsMatchingCurrentItem();
-        });
-
         static::created(function (ItemStateLog $stateLog): void {
             $stateLog->syncItem();
         });
-    }
-
-    public function discardDestinationsMatchingCurrentItem(): void
-    {
-        $item = $this->item;
-
-        if ($item === null) {
-            return;
-        }
-
-        $pairs = [
-            'location_id' => ['from_location_id', 'to_location_id'],
-            'department_id' => ['from_department_id', 'to_department_id'],
-            'room_id' => ['from_room_id', 'to_room_id'],
-            'user_id' => ['from_user_id', 'to_user_id'],
-            'status' => ['from_status', 'to_status'],
-        ];
-
-        foreach ($pairs as $currentAttribute => [$fromAttribute, $toAttribute]) {
-            $destination = $this->comparableStateValue($this->getAttribute($toAttribute));
-            $current = $this->comparableStateValue($item->getAttribute($currentAttribute));
-
-            if ($destination === null || $destination !== $current) {
-                continue;
-            }
-
-            $this->setAttribute($fromAttribute, null);
-            $this->setAttribute($toAttribute, null);
-        }
-    }
-
-    private function comparableStateValue(mixed $value): ?string
-    {
-        if ($value instanceof BackedEnum) {
-            $value = $value->value;
-        }
-
-        if ($value === null || $value === '') {
-            return null;
-        }
-
-        return (string) $value;
     }
 
     public function syncItem(): void
