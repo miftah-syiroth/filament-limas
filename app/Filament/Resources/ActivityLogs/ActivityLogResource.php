@@ -50,7 +50,7 @@ class ActivityLogResource extends Resource
                     ->placeholder('-'),
                 TextEntry::make('created_at')
                     ->label(__('activitylog.infolist.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->placeholder('-'),
                 TextEntry::make('subject_type')
                     ->label(__('activitylog.infolist.subject_type'))

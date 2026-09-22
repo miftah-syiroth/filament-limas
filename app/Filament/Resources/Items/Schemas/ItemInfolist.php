@@ -91,10 +91,10 @@ class ItemInfolist
                                             ->label(__('items.form.room')),
                                         TextEntry::make('last_audit_date')
                                             ->label(__('items.infolist.last_audit'))
-                                            ->dateTime('j M Y'),
+                                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                                         TextEntry::make('next_audit_date')
                                             ->label(__('items.infolist.next_audit'))
-                                            ->dateTime('j M Y'),
+                                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                                     ]),
 
                             ]),

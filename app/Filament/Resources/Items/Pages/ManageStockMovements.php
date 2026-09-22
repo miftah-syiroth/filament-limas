@@ -109,7 +109,7 @@ class ManageStockMovements extends ManageRelatedRecords
                     ->sortable(),
                 TextColumn::make('deleted_at')
                     ->label(__('items.table.deleted_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

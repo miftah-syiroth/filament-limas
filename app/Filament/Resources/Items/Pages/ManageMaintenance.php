@@ -58,6 +58,7 @@ class ManageMaintenance extends ManageRelatedRecords
         return $schema
             ->components([
                 Select::make('type')
+                    ->label('Jenis Perbaikan')
                     ->options(MaintenanceType::class)
                     ->native(false)
                     ->required(),
@@ -144,15 +145,15 @@ class ManageMaintenance extends ManageRelatedRecords
                     }),
                 TextColumn::make('reported_at')
                     ->label(__('items.pages.maintenance.reported_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable(),
                 TextColumn::make('started_at')
                     ->label(__('items.pages.maintenance.started_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable(),
                 TextColumn::make('completed_at')
                     ->label(__('items.pages.maintenance.completed_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge(),
@@ -166,8 +167,7 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('items.table.deleted_at'))
-                    ->dateTime()
-                    ->sortable()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -179,7 +179,7 @@ class ManageMaintenance extends ManageRelatedRecords
                     ->authorize('create', $this->getOwnerRecord())
                     ->label(__('items.pages.maintenance.add'))
                     ->after(function (array $data): void {
-                        if (filled($data['to_status'] ?? null)) {
+                        if (filled($data['to_status'] ?? null) && $data['to_status'] !== $data['from_status']) {
                             ItemStateLog::create([
                                 'item_id' => $this->getOwnerRecord()->id,
                                 'maintenance_id' => $this->getOwnerRecord()->latestMaintenance->id,
@@ -212,8 +212,6 @@ class ManageMaintenance extends ManageRelatedRecords
                             ]);
                         }
                     }),
-                DeleteAction::make()
-                    ->hiddenLabel(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

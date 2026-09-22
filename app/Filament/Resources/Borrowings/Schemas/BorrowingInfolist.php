@@ -41,13 +41,13 @@ class BorrowingInfolist
                                     ->schema([
                                         TextEntry::make('borrowed_at')
                                             ->label(__('borrowing.infolist.borrowed_at'))
-                                            ->dateTime('j M Y'),
+                                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                                         TextEntry::make('due_at')
                                             ->label(__('borrowing.infolist.due_at'))
-                                            ->dateTime('j M Y'),
+                                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                                         TextEntry::make('returned_at')
                                             ->label(__('borrowing.infolist.returned_at'))
-                                            ->dateTime('j M Y')
+                                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                                             ->placeholder('-'),
                                     ]),
                             ]),

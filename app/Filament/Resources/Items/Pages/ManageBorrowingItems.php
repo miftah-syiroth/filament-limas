@@ -7,10 +7,14 @@ use App\Filament\Resources\Items\ItemResource;
 use App\Models\BorrowingItem;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class ManageBorrowingItems extends ManageRelatedRecords
 {
@@ -35,7 +39,7 @@ class ManageBorrowingItems extends ManageRelatedRecords
                     ->searchable(),
                 TextColumn::make('borrowing.due_at')
                     ->label(__('items.pages.borrowing.due_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable(),
                 TextColumn::make('borrowing.status')
                     ->label(__('items.pages.borrowing.status'))
@@ -43,7 +47,7 @@ class ManageBorrowingItems extends ManageRelatedRecords
                     ->color('primary'),
                 TextColumn::make('checked_out_at')
                     ->label(__('items.pages.borrowing.checked_out_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable(),
                 TextColumn::make('condition_out')
                     ->label(__('items.pages.borrowing.condition_out'))
@@ -52,7 +56,7 @@ class ManageBorrowingItems extends ManageRelatedRecords
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('checked_in_at')
                     ->label(__('items.pages.borrowing.checked_in_at'))
-                    ->dateTime('j M Y'),
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                 TextColumn::make('condition_in')
                     ->label(__('items.pages.borrowing.condition_in'))
                     ->badge()
@@ -62,12 +66,26 @@ class ManageBorrowingItems extends ManageRelatedRecords
                     ->label(__('items.pages.borrowing.quantity'))
                     ->numeric()
                     ->alignCenter(),
+                TextColumn::make('deleted_at')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
+
+            ])
+            ->filters([
+                TrashedFilter::make()
+                    ->native(false),
             ])
             ->recordActions([
                 Action::make('view')
                     ->label(__('items.pages.borrowing.view_borrowing'))
                     ->icon('heroicon-o-eye')
-                    ->url(fn (BorrowingItem $record): string => BorrowingResource::getUrl('view', ['record' => $record->borrowing->id])),
+                    ->url(fn(BorrowingItem $record): string => BorrowingResource::getUrl('view', ['record' => $record->borrowing->id])),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
+                        ->authorizeIndividualRecords('delete')
+                        ->action(fn(Collection $records) => $records->each->delete()),
+                ]),
             ]);
     }
 }

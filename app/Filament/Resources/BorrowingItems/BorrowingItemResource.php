@@ -86,7 +86,7 @@ class BorrowingItemResource extends Resource
                     ->placeholder('-'),
                 TextEntry::make('checked_out_at')
                     ->label(__('borrowing-item.infolist.checked_out_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->placeholder('-'),
                 TextEntry::make('condition_out')
                     ->label(__('borrowing-item.infolist.condition_out'))
@@ -94,7 +94,7 @@ class BorrowingItemResource extends Resource
                     ->placeholder('-'),
                 TextEntry::make('checked_in_at')
                     ->label(__('borrowing-item.infolist.checked_in_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->placeholder('-'),
                 TextEntry::make('condition_in')
                     ->label(__('borrowing-item.infolist.condition_in'))
@@ -131,14 +131,14 @@ class BorrowingItemResource extends Resource
                     ->alignCenter(),
                 TextColumn::make('checked_out_at')
                     ->label(__('borrowing-item.table.checked_out_at'))
-                    ->dateTime('j M Y'),
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                 TextColumn::make('condition_out')
                     ->label(__('borrowing-item.table.condition_out'))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('checked_in_at')
                     ->label(__('borrowing-item.table.checked_in_at'))
-                    ->dateTime('j M Y'),
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                 TextColumn::make('condition_in')
                     ->label(__('borrowing-item.table.condition_in'))
                     ->badge()
@@ -154,12 +154,12 @@ class BorrowingItemResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('borrowing-item.table.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('borrowing-item.table.deleted_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

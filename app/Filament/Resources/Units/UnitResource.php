@@ -67,11 +67,11 @@ class UnitResource extends Resource
                     ->label(__('unit.infolist.name')),
                 TextEntry::make('created_at')
                     ->label(__('unit.infolist.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
                     ->label(__('unit.infolist.updated_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->placeholder('-'),
             ]);
     }
@@ -89,12 +89,12 @@ class UnitResource extends Resource
                     ->counts('models'),
                 TextColumn::make('created_at')
                     ->label(__('unit.table.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('unit.table.updated_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

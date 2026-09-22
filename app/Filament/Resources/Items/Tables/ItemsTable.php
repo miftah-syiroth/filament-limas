@@ -81,7 +81,7 @@ class ItemsTable
                     ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('deleted_at')
                     ->label(__('items.table.deleted_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -160,9 +160,6 @@ class ItemsTable
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
                         ->action(fn (Collection $records) => $records->each->delete()),
-                    ForceDeleteBulkAction::make()
-                        ->authorizeIndividualRecords('forceDelete')
-                        ->action(fn (Collection $records) => $records->each->forceDelete()),
                 ]),
             ])
             ->selectCurrentPageOnly()

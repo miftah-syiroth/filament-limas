@@ -41,17 +41,17 @@ class UsersTable
                     ->badge(),
                 TextColumn::make('created_at')
                     ->label(__('user.table.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('user.table.updated_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('two_factor_confirmed_at')
                     ->label(__('user.table.two_factor_confirmed_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

@@ -30,7 +30,7 @@ class RoomInfolist
                             ->placeholder('-'),
                         TextEntry::make('created_at')
                             ->label(__('room.infolist.created_at'))
-                            ->dateTime()
+                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                             ->placeholder('-'),
                     ])
             ]);

@@ -39,11 +39,6 @@ class ManageItemAudits extends ManageRelatedRecords
 
     protected static string $relationship = 'audits';
 
-    // public static function getRelationshipTitle(): string
-    // {
-    //     return __('items.pages.audits.relationship_title');
-    // }
-
     public function getTitle(): string | Htmlable
     {
         $item = $this->getOwnerRecord();
@@ -78,10 +73,12 @@ class ManageItemAudits extends ManageRelatedRecords
                         $set('next_audit_at', Carbon::parse($state)->addMonths($auditInterval));
                     }),
                 Select::make('condition')
+                    ->label('Kondisi')
                     ->options(ItemAuditCondition::class)
                     ->native(false)
                     ->required(),
                 Select::make('result')
+                    ->label('Hasil')
                     ->options(ItemAuditResult::class)
                     ->native(false)
                     ->required(),
@@ -107,7 +104,8 @@ class ManageItemAudits extends ManageRelatedRecords
                             ->options(ItemStatus::class)
                             ->default(fn(): ?string => $this->getOwnerRecord()?->status?->value)
                             ->disabled()
-                            ->dehydrated(),
+                            ->dehydrated()
+                            ->saved(),
                         Select::make('to_status')
                             ->label(__('items.pages.audits.status_to'))
                             ->options(ItemStatus::class)
@@ -123,7 +121,7 @@ class ManageItemAudits extends ManageRelatedRecords
             ->columns([
                 TextColumn::make('audited_at')
                     ->label(__('items.pages.audits.audited_at'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable(),
                 TextColumn::make('condition'),
                 TextColumn::make('result'),
@@ -133,7 +131,7 @@ class ManageItemAudits extends ManageRelatedRecords
                     ->boolean(),
                 TextColumn::make('next_audit_at')
                     ->label(__('items.pages.audits.next_audit'))
-                    ->dateTime('j M Y')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable(),
                 TextColumn::make('code')
                     ->label(__('items.pages.audits.code'))
@@ -145,8 +143,7 @@ class ManageItemAudits extends ManageRelatedRecords
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('items.table.deleted_at'))
-                    ->dateTime()
-                    ->sortable()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -154,14 +151,15 @@ class ManageItemAudits extends ManageRelatedRecords
                     ->native(false),
             ])
             ->recordActions([
-                ViewAction::make()->hiddenLabel(),
+                ViewAction::make()
+                    ->hiddenLabel(),
             ])
             ->headerActions([
                 CreateAction::make()
                     ->authorize('create', $this->getOwnerRecord())
                     ->label(__('items.pages.audits.add'))
                     ->after(function (array $data): void {
-                        if (filled($data['to_status'] ?? null)) {
+                        if (filled($data['to_status'] ?? null) && $data['to_status'] !== $data['from_status']) {
                             ItemStateLog::create([
                                 'item_id' => $this->getOwnerRecord()->id,
                                 'item_audit_id' => $this->getOwnerRecord()->latestAudit->id,

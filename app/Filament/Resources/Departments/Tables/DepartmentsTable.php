@@ -33,7 +33,7 @@ class DepartmentsTable
                     ->counts('items'),
                 TextColumn::make('created_at')
                     ->label(__('department.table.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -22,11 +22,11 @@ class UserInfolist
                             ->label(__('user.infolist.email')),
                         TextEntry::make('email_verified_at')
                             ->label(__('user.infolist.email_verified_at'))
-                            ->dateTime()
+                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                             ->placeholder('-'),
                         TextEntry::make('created_at')
                             ->label(__('user.infolist.created_at'))
-                            ->dateTime()
+                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                             ->placeholder('-'),
                         // TextEntry::make('two_factor_secret')
                         //     ->label(__('user.infolist.two_factor_secret'))
@@ -36,7 +36,7 @@ class UserInfolist
                         //     ->placeholder('-'),
                         // TextEntry::make('two_factor_confirmed_at')
                         //     ->label(__('user.infolist.two_factor_confirmed_at'))
-                        //     ->dateTime()
+                        //     ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                         //     ->placeholder('-'),
                     ]),
             ]);

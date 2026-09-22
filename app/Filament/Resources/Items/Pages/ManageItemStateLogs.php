@@ -379,12 +379,6 @@ class ManageItemStateLogs extends ManageRelatedRecords
                     ->label(__('items.pages.state_logs.add_transfer'))
                     ->closeModalByClickingAway(false)
                     ->mutateDataUsing(fn (array $data, CreateAction $action): array => $this->nullifyFromWhenToIsNull($data, $action))
-                    // ->using(function (array $data, string $model): Model {
-                    //     return $model::create([
-                    //         ...$data, 
-                    //         'item_id' => $this->getOwnerRecord()->id,
-                    //     ]);
-                    // })
             ]);
     }
 }

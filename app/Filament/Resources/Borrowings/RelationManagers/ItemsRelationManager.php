@@ -122,14 +122,14 @@ class ItemsRelationManager extends RelationManager
                     ->alignCenter(),
                 TextColumn::make('checked_out_at')
                     ->label(__('borrowing.relation.checked_out_at'))
-                    ->dateTime('j M Y'),
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                 TextColumn::make('condition_out')
                     ->label(__('borrowing.relation.condition_out'))
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('checked_in_at')
                     ->label(__('borrowing.relation.checked_in_at'))
-                    ->dateTime('j M Y'),
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                 TextColumn::make('condition_in')
                     ->label(__('borrowing.relation.condition_in'))
                     ->badge()
@@ -139,12 +139,12 @@ class ItemsRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('borrowing.relation.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('borrowing.relation.deleted_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -199,7 +199,7 @@ class ItemsRelationManager extends RelationManager
                                     ->schema([
                                         TextEntry::make('checked_out_at')
                                             ->label(__('borrowing.relation.modal_date'))
-                                            ->dateTime('j M Y'),
+                                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                                         TextEntry::make('condition_out')
                                             ->hiddenLabel()
                                             ->badge()
@@ -210,7 +210,7 @@ class ItemsRelationManager extends RelationManager
                                     ->schema([
                                         TextEntry::make('checked_in_at')
                                             ->label(__('borrowing.relation.modal_date'))
-                                            ->dateTime('j M Y'),
+                                            ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta'),
                                         TextEntry::make('condition_in')
                                             ->hiddenLabel()
                                             ->badge()

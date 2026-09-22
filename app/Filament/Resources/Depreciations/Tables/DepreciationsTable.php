@@ -33,7 +33,7 @@ class DepreciationsTable
                     ->counts('models'),
                 TextColumn::make('created_at')
                     ->label(__('depreciation.table.created_at'))
-                    ->dateTime()
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

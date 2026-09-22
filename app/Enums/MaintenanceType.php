@@ -14,6 +14,11 @@ enum MaintenanceType: string implements HasLabel
 
     public function getLabel(): string|Htmlable|null
     {
-        return __('maintenance.types.'.$this->value);
+        return match ($this) {
+            self::Preventive => 'Preventif',
+            self::Repair => 'Perbaikan',
+            self::Upgrade => 'Upgrade',
+            self::Inspection => 'Inspeksi',
+        };
     }
 }
