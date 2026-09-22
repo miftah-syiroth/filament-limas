@@ -34,9 +34,10 @@ class SupplierPolicy
 
     public function delete(AuthUser $authUser, Supplier $supplier): bool
     {
-        if ($supplier->items->count() > 0) {
+        if ($supplier->items()->exists()) {
             return false;
         }
+   
         return $authUser->can('Delete:Supplier');
     }
 
@@ -52,7 +53,7 @@ class SupplierPolicy
 
     public function forceDelete(AuthUser $authUser, Supplier $supplier): bool
     {
-        if ($supplier->items->count() > 0) {
+        if ($supplier->items()->exists()) {
             return false;
         }
         return $authUser->can('ForceDelete:Supplier');

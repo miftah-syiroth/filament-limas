@@ -34,7 +34,7 @@ class ManufacturePolicy
 
     public function delete(AuthUser $authUser, Manufacture $manufacture): bool
     {
-        if ($manufacture->models->count() > 0) {
+        if ($manufacture->models()->exists()) {
             return false;
         }
         return $authUser->can('Delete:Manufacture');
@@ -52,7 +52,7 @@ class ManufacturePolicy
 
     public function forceDelete(AuthUser $authUser, Manufacture $manufacture): bool
     {
-        if ($manufacture->models->count() > 0) {
+        if ($manufacture->models()->exists()) {
             return false;
         }
         return $authUser->can('ForceDelete:Manufacture');

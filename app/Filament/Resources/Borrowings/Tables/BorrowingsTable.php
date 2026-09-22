@@ -68,7 +68,6 @@ class BorrowingsTable
                 TextColumn::make('deleted_at')
                     ->label(__('borrowing.table.deleted_at'))
                     ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

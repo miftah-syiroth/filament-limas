@@ -12,6 +12,7 @@ use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,13 +31,15 @@ class CategoriesTable
                     ->badge(),
                 TextColumn::make('models_count')
                     ->label(__('category.table.models_count'))
-                    ->counts('models'),
+                    ->counts('models')
+                    ->alignCenter(),
                 TextColumn::make('created_at')
                     ->label(__('category.table.created_at'))
                     ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->filtersFormColumns(2)
             ->filters([
                 SelectFilter::make('type')
                     ->label(__('category.table.type'))
@@ -49,6 +52,8 @@ class CategoriesTable
                         }
                         return $query->where('type', $type);
                     }),
+                TrashedFilter::make()
+                    ->native(false),
             ])
             ->recordActions([
                 ViewAction::make()

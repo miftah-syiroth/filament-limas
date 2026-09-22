@@ -10,6 +10,7 @@ use Filament\Actions\ImportAction;
 use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -43,14 +44,21 @@ class ManufacturesTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('models_count')
                     ->label(__('manufacture.table.models_count'))
-                    ->counts('models'),
+                    ->counts('models')
+                    ->alignCenter(),
                 TextColumn::make('created_at')
                     ->label(__('manufacture.table.created_at'))
                     ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
-                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->label('Dihapus pada')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-
+            ->filters([
+                TrashedFilter::make()
+                    ->native(false),
+            ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
@@ -65,7 +73,7 @@ class ManufacturesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->authorizeIndividualRecords('delete')
-                        ->action(fn (Collection $records) => $records->each->delete()),
+                        ->action(fn(Collection $records) => $records->each->delete()),
                 ]),
             ]);
     }

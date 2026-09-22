@@ -34,7 +34,7 @@ class CategoryPolicy
 
     public function delete(AuthUser $authUser, Category $category): bool
     {
-        if ($category->models->count() > 0) {
+        if ($category->models()->exists()) {
             return false;
         }
         return $authUser->can('Delete:Category');
@@ -52,7 +52,7 @@ class CategoryPolicy
 
     public function forceDelete(AuthUser $authUser, Category $category): bool
     {
-        if ($category->models->count() > 0) {
+        if ($category->models()->exists()) {
             return false;
         }
         return $authUser->can('ForceDelete:Category');

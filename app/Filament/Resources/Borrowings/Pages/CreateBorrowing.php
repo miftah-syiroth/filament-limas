@@ -189,8 +189,10 @@ class CreateBorrowing extends CreateRecord implements HasActions, HasSchemas, Ha
                                     ->after('borrowed_at'),
                                 Select::make('to_location_id')
                                     ->label(__('borrowing.form.to_location'))
-                                    ->options(Location::pluck('name', 'id'))
-                                    ->searchable()
+                                    ->options(
+                                        Location::query()->pluck('name', 'id')
+                                    )
+                                    ->native(false)
                                     ->live()
                                     ->afterStateUpdated(function (Set $set): void {
                                         $set('to_department_id', null);

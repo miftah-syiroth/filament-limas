@@ -14,6 +14,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -63,7 +64,8 @@ class ModelsTable
                     ->label(__('model.table.audit_interval'))
                     ->numeric()
                     ->sortable()
-                    ->suffix(__('model.table.months_suffix')),
+                    ->suffix(__('model.table.months_suffix'))
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('min_amount')
                     ->label(__('model.table.min_amount'))
                     ->numeric()
@@ -79,10 +81,15 @@ class ModelsTable
                     ->label(__('model.table.items_quantity'))
                     ->numeric()
                     ->sortable()
-                    ->default(0),
+                    ->default(0)
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('items_count')
                     ->label(__('model.table.items_count'))
                     ->counts('items')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->label('Dihapus pada')
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -115,6 +122,8 @@ class ModelsTable
                     ->relationship('depreciation', 'name')
                     ->searchable()
                     ->preload(),
+                TrashedFilter::make()
+                    ->native(false),
             ])
             ->filtersFormColumns(3)
             ->recordActions([
