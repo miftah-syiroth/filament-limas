@@ -124,6 +124,7 @@ return [
         'no_room' => 'Tidak ada ruangan',
         'no_supplier' => 'Tidak ada pemasok',
         'deleted_at' => 'Dihapus',
+        'created_at' => 'Dibuat',
     ],
 
     'pages' => [

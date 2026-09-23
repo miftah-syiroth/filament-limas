@@ -17,13 +17,14 @@ class RoomsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('name', 'asc')
             ->columns([
                 TextColumn::make('name')
                     ->label(__('room.table.name'))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('location.name')
-                    ->label(__('room.table.location'))
-                    ->searchable(),
+                    ->label(__('room.table.location')),
                 TextColumn::make('capacity')
                     ->label(__('room.table.capacity'))
                     ->numeric()

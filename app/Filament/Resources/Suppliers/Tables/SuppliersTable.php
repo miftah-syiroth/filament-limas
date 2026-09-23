@@ -20,7 +20,8 @@ class SuppliersTable
             ->columns([
                 TextColumn::make('name')
                     ->label(__('supplier.table.name'))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('address')
                     ->label(__('supplier.table.address'))
                     ->limit(50),

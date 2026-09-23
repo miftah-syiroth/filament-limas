@@ -26,16 +26,16 @@ class ModelsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->query(fn (Builder $query): Builder => ModelsModel::query()
-                ->withSum('itemsInInventory as items_quantity', 'quantity')
-                ->orderBy('name'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->withSum('itemsInInventory as items_quantity', 'quantity'))
+            ->defaultSort('name', 'asc')
             ->columns([
                 SpatieMediaLibraryImageColumn::make('images')
                     ->label(__('model.table.images'))
                     ->limit(1),
                 TextColumn::make('name')
                     ->label(__('model.table.name'))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('manufacture.name')
                     ->label(__('model.table.manufacturer')),
                 TextColumn::make('model_number')
@@ -82,7 +82,8 @@ class ModelsTable
                     ->numeric()
                     ->sortable()
                     ->default(0)
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->alignCenter(),
                 TextColumn::make('items_count')
                     ->label(__('model.table.items_count'))
                     ->counts('items')

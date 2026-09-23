@@ -16,11 +16,12 @@ class LocationsTable
     public static function configure(Table $table): Table
     {
         return $table
-            // ->recordUrl(null)
+            ->defaultSort('name', 'asc')
             ->columns([
                 TextColumn::make('name')
                     ->label(__('location.table.name'))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('organization.name')
                     ->label(__('location.table.organization'))
                     ->searchable(),

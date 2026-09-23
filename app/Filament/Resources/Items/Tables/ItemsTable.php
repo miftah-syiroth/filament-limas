@@ -79,10 +79,14 @@ class ItemsTable
                     ->numeric()
                     ->alignCenter()
                     ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('created_at')
+                    ->label(__('items.table.created_at'))
+                    ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('items.table.deleted_at'))
                     ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

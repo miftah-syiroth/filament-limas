@@ -19,10 +19,12 @@ class ManufacturesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('name', 'asc')
             ->columns([
                 TextColumn::make('name')
                     ->label(__('manufacture.table.name'))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('url')
                     ->label(__('manufacture.table.url'))
                     ->searchable(),
@@ -45,7 +47,8 @@ class ManufacturesTable
                 TextColumn::make('models_count')
                     ->label(__('manufacture.table.models_count'))
                     ->counts('models')
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('manufacture.table.created_at'))
                     ->dateTime(format: 'j M Y H:i:s', timezone: 'Asia/Jakarta')
