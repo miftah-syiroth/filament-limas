@@ -27,6 +27,7 @@ return [
             'purchase_description' => 'Tanggal pembelian dan harga pembelian perlu diisi untuk menghitung nilai depresiasi.',
         ],
         'category' => 'Kategori',
+        'manufacture' => 'Pabrikan',
         'model' => 'Model',
         'location' => 'Lokasi',
         'department' => 'Departemen',

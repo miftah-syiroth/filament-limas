@@ -6,6 +6,7 @@ use App\Enums\CategoryType;
 use App\Enums\ItemStatus;
 use App\Filament\Resources\Items\Schemas\Concerns\InteractsWithItemCategory;
 use App\Models\Category;
+use App\Models\Manufacture;
 use App\Models\Model as ItemModel;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
@@ -19,6 +20,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class ItemCreateForm
 {
@@ -30,20 +32,26 @@ class ItemCreateForm
             ->components([
                 Section::make()
                     ->columnSpanFull()
-                    ->columns(2)
+                    ->columns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'md' => 3,
+                    ])
                     ->schema([
                         Select::make('category_id')
                             ->label(__('items.form.category'))
-                            ->options(function (): array {
-                                return Category::query()->get()
-                                    ->mapWithKeys(fn (Category $category) => [
+                            ->searchable()
+                            ->options(function(): Collection {
+                                return Category::query()
+                                    ->orderBy('name')
+                                    ->get()
+                                    ->mapWithKeys(fn(Category $category) => [
                                         $category->id => "{$category->name} - {$category->type->getLabel()}",
-                                    ])
-                                    ->all();
+                                    ]);
                             })
                             ->live()
                             ->afterStateUpdated(function (Set $set, $state): void {
-                                $set('model_id', null);
+                                // $set('model_id', null);
                                 $category = Category::find($state);
                                 if ($category?->type === CategoryType::Consumable) {
                                     $set('is_individual_tracking', false);
@@ -51,27 +59,44 @@ class ItemCreateForm
                                     $set('is_individual_tracking', true);
                                 }
                             })
-                            ->required()
-                            ->native(false),
+                            ->required(),
+                        Select::make('manufacture_id')
+                            ->label(__('items.form.manufacture'))
+                            ->searchable()
+                            ->options(function(): Collection {
+                                return Manufacture::query()
+                                    ->orderBy('name')
+                                    ->get()
+                                    ->mapWithKeys(fn(Manufacture $manufacture) => [
+                                        $manufacture->id => $manufacture->name,
+                                    ]);
+                            })
+                            ->live(),
                         Select::make('model_id')
                             ->label(__('items.form.model'))
                             ->relationship(
                                 name: 'model',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query, Get $get): Builder => $query
+                                modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query
+                                    ->orderBy('name')
                                     ->with('manufacture')
                                     ->when(
                                         $get('category_id'),
-                                        fn (Builder $q): Builder => $q->where('category_id', $get('category_id')),
-                                        fn (Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                        fn(Builder $q): Builder => $q->where('category_id', $get('category_id')),
+                                        // fn(Builder $q): Builder => $q->whereRaw('1 = 0'),
                                     )
+                                    ->when(
+                                        $get('manufacture_id'),
+                                        fn(Builder $q): Builder => $q->where('manufacture_id', $get('manufacture_id')),
+                                        // fn(Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                    ),
                             )
-                            ->getOptionLabelFromRecordUsing(fn (ItemModel $record): string => $record->manufacture
+                            ->getOptionLabelFromRecordUsing(fn(ItemModel $record): string => $record->manufacture
                                 ? "{$record->name} - {$record->manufacture->name}"
                                 : $record->name)
-                            ->disabled(fn (Get $get): bool => blank($get('category_id')))
-                            ->required()
-                            ->native(false),
+                            ->searchable()
+                            ->preload()
+                            ->required(),
                         Select::make('status')
                             ->label(__('items.form.status'))
                             ->options(ItemStatus::class)
@@ -82,10 +107,10 @@ class ItemCreateForm
                             ->required()
                             ->label(__('items.form.individual_tracking'))
                             ->inline(false)
-                            ->default(fn (Get $get) => self::isCategoryConsumable($get) ? false : true)
+                            ->default(fn(Get $get) => self::isCategoryConsumable($get) ? false : true)
                             ->live()
-                            ->afterStateUpdated(fn (Set $set, $state) => $state ? $set('quantity', 1) : null)
-                            ->disabled(fn (Get $get) => self::isCategoryConsumable($get))
+                            ->afterStateUpdated(fn(Set $set, $state) => $state ? $set('quantity', 1) : null)
+                            ->disabled(fn(Get $get) => self::isCategoryConsumable($get))
                             ->saved()
                             ->rules([
                                 function (Get $get) {
@@ -120,7 +145,12 @@ class ItemCreateForm
                             ->schema([
                                 Select::make('location_id')
                                     ->label(__('items.form.location'))
-                                    ->relationship('location', 'name')
+                                    ->relationship(
+                                        name: 'location',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query
+                                            ->orderBy('name')
+                                    )
                                     ->required()
                                     ->live()
                                     ->afterStateUpdated(function (Set $set): void {
@@ -133,11 +163,12 @@ class ItemCreateForm
                                     ->relationship(
                                         name: 'department',
                                         titleAttribute: 'name',
-                                        modifyQueryUsing: fn (Builder $query, Get $get): Builder => $query
+                                        modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query
+                                            ->orderBy('name')
                                             ->when(
                                                 $get('location_id'),
-                                                fn (Builder $q): Builder => $q->whereHas('locations', fn (Builder $q): Builder => $q->where('location_id', $get('location_id'))),
-                                                fn (Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                                fn(Builder $q): Builder => $q->whereHas('locations', fn(Builder $q): Builder => $q->where('location_id', $get('location_id'))),
+                                                // fn(Builder $q): Builder => $q->whereRaw('1 = 0'),
                                             )
                                     )
                                     ->searchable()
@@ -148,11 +179,12 @@ class ItemCreateForm
                                     ->relationship(
                                         name: 'room',
                                         titleAttribute: 'name',
-                                        modifyQueryUsing: fn (Builder $query, Get $get): Builder => $query
+                                        modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query
+                                            ->orderBy('name')
                                             ->when(
                                                 $get('location_id'),
-                                                fn (Builder $q): Builder => $q->where('location_id', $get('location_id')),
-                                                fn (Builder $q): Builder => $q->whereRaw('1 = 0'),
+                                                fn(Builder $q): Builder => $q->where('location_id', $get('location_id')),
+                                                // fn(Builder $q): Builder => $q->whereRaw('1 = 0'),
                                             )
                                     )
                                     ->searchable()
@@ -165,7 +197,11 @@ class ItemCreateForm
                                     ->required()
                                     ->saved(),
                             ])
-                            ->columns(2)
+                            ->columns([
+                                'default' => 1,
+                                'sm' => 2,
+                                'md' => 2,
+                            ])
                             ->defaultItems(1)
                             ->minItems(1)
                             ->required()
@@ -185,12 +221,13 @@ class ItemCreateForm
                         Select::make('supplier_id')
                             ->label(__('items.form.supplier'))
                             ->relationship('supplier', 'name')
+                            ->searchable()
+                            ->preload()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->label(__('supplier.form.name'))
                                     ->required(),
-                            ])
-                            ->native(false),
+                            ]),
                         DatePicker::make('purchase_date')
                             ->label(__('items.form.purchase_date')),
                         TextInput::make('purchase_price')

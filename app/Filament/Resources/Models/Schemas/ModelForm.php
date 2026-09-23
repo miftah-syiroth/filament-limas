@@ -69,6 +69,8 @@ class ModelForm
                                         name: 'category',
                                     )
                                     ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->name} - {$record->type->getLabel()}")
+                                    ->searchable()
+                                    ->preload()
                                     ->createOptionForm([
                                         TextInput::make('name')
                                             ->label(__('category.form.name'))

@@ -27,6 +27,7 @@ return [
             'purchase_description' => 'Purchase date and purchase price are required to calculate depreciation value.',
         ],
         'category' => 'Category',
+        'manufacture' => 'Manufacturer',
         'model' => 'Model',
         'location' => 'Location',
         'department' => 'Department',
