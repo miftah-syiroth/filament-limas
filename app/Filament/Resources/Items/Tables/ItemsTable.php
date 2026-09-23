@@ -66,11 +66,13 @@ class ItemsTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
                     ->label(__('items.table.status'))
-                    ->badge(),
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('quantity')
                     ->label(__('items.table.quantity'))
                     ->numeric()
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('borrowable')
                     ->label(__('items.table.borrowable_quantity'))
                     ->state(function (Model $record): int {
