@@ -13,9 +13,9 @@ class ItemBarcodeLabelGenerator
 {
     public const int DPI = 300;
 
-    public const float LABEL_WIDTH_MM = 90.0;
+    public const float LABEL_WIDTH_MM = 94.0;
 
-    public const float LABEL_HEIGHT_MM = 25.0;
+    public const float LABEL_HEIGHT_MM = 27.0;
 
     public const float A4_WIDTH_MM = 297.0;
 
@@ -23,10 +23,10 @@ class ItemBarcodeLabelGenerator
 
     public const int COLUMNS = 3;
 
-    /** 7 × 25mm labels + 2mm gaps fit on A4 landscape with ~11.5mm page margins. */
+    /** 7 × 27mm labels + 2mm gaps fit on A4 landscape with ~5mm page margins. */
     public const int ROWS = 7;
 
-    public const float INNER_PADDING_MM = 1.5;
+    public const float INNER_PADDING_MM = 1.0;
 
     public const float LABEL_GAP_MM = 2.0;
 
@@ -96,9 +96,9 @@ class ItemBarcodeLabelGenerator
         $col2X = $contentLeft + ($logoWidth > 0 ? $logoWidth + $logoGap : 0);
         $col2Width = max(1, $contentRight - $col2X);
 
-        $serialFontSize = 14.0;
-        $bodyFontSize = 12.0;
-        $lineGap = $this->mmToPx(0.3);
+        $serialFontSize = 16.0;
+        $bodyFontSize = 15.0;
+        $lineGap = $this->mmToPx(0.25);
         $serialLineHeight = (int) ceil($serialFontSize * 1.25);
         $bodyLineHeight = (int) ceil($bodyFontSize * 1.25);
 

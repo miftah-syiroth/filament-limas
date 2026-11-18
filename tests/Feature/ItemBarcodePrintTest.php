@@ -109,7 +109,7 @@ test('downloads a zip of png sheets when more than one page of items are selecte
     expect($response->headers->get('content-disposition'))->toContain('item-barcodes.zip');
 });
 
-test('renders a single barcode label at ninety by twenty five millimeters', function (): void {
+test('renders a single barcode label at ninety four by twenty seven millimeters', function (): void {
     [$item] = createBarcodePrintItem('LABEL001');
     $item->load(['model', 'location', 'room']);
 
@@ -120,8 +120,8 @@ test('renders a single barcode label at ninety by twenty five millimeters', func
     expect($size)->not->toBeFalse()
         ->and($size[0])->toBe($generator->labelWidthPx())
         ->and($size[1])->toBe($generator->labelHeightPx())
-        ->and($generator->labelWidthPx())->toBe(1063)
-        ->and($generator->labelHeightPx())->toBe(295);
+        ->and($generator->labelWidthPx())->toBe(1110)
+        ->and($generator->labelHeightPx())->toBe(319);
 });
 
 test('renders a barcode label when room is missing', function (): void {
