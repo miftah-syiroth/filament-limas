@@ -96,8 +96,8 @@ class ItemBarcodeLabelGenerator
         $col2X = $contentLeft + ($logoWidth > 0 ? $logoWidth + $logoGap : 0);
         $col2Width = max(1, $contentRight - $col2X);
 
-        $serialFontSize = 16.0;
-        $bodyFontSize = 15.0;
+        $serialFontSize = 19.0;
+        $bodyFontSize = 18.0;
         $lineGap = $this->mmToPx(0.25);
         $serialLineHeight = (int) ceil($serialFontSize * 1.25);
         $bodyLineHeight = (int) ceil($bodyFontSize * 1.25);
