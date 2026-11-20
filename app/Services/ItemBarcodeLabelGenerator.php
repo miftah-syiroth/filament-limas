@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Item;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Milon\Barcode\Facades\DNS1DFacade;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -85,22 +86,21 @@ class ItemBarcodeLabelGenerator
         $contentHeight = max(1, $contentBottom - $contentTop);
 
         $serial = (string) $item->serial_number;
-        $modelName = (string) ($item->model?->name ?? '');
-        $locationLine = $this->formatLocationRoom(
+        $serialLabel = Str::upper($serial);
+        $modelName = Str::upper((string) ($item->model?->name ?? ''));
+        $locationLine = Str::upper($this->formatLocationRoom(
             (string) ($item->location?->name ?? ''),
             (string) ($item->room?->name ?? ''),
-        );
+        ));
 
         $logoGap = $this->mmToPx(1.0);
         $logoWidth = $this->drawLogo($image, $contentLeft, $contentTop, $contentHeight);
         $col2X = $contentLeft + ($logoWidth > 0 ? $logoWidth + $logoGap : 0);
         $col2Width = max(1, $contentRight - $col2X);
 
-        $serialFontSize = 19.0;
-        $bodyFontSize = 18.0;
-        $lineGap = $this->mmToPx(0.25);
-        $serialLineHeight = (int) ceil($serialFontSize * 1.25);
-        $bodyLineHeight = (int) ceil($bodyFontSize * 1.25);
+        $labelFontSize = 24.0;
+        $lineGap = $this->mmToPx(0.2);
+        $labelLineHeight = (int) ceil($labelFontSize * 1.15);
 
         $textLinesBelowBarcode = 0;
         if ($modelName !== '') {
@@ -110,24 +110,24 @@ class ItemBarcodeLabelGenerator
             $textLinesBelowBarcode++;
         }
 
-        $reservedBelowBarcode = ($textLinesBelowBarcode * $bodyLineHeight)
+        $reservedBelowBarcode = ($textLinesBelowBarcode * $labelLineHeight)
             + ($textLinesBelowBarcode > 0 ? $textLinesBelowBarcode * $lineGap : 0);
-        $serialBlockHeight = $serialLineHeight + $lineGap;
+        $serialBlockHeight = $labelLineHeight + $lineGap;
         $barcodeAreaHeight = max(1, $contentHeight - $serialBlockHeight - $reservedBelowBarcode);
 
-        $cursorY = $contentTop + (int) ceil($serialFontSize);
-        $this->drawCenteredText($image, $serial, $serialFontSize, $black, $col2X, $cursorY, $col2Width, bold: true);
+        $cursorY = $contentTop + (int) ceil($labelFontSize);
+        $this->drawCenteredText($image, $serialLabel, $labelFontSize, $black, $col2X, $cursorY, $col2Width);
 
         $barcodeTop = $contentTop + $serialBlockHeight;
         $this->drawBarcode($image, $serial, $col2X, $barcodeTop, $col2Width, $barcodeAreaHeight);
 
-        $cursorY = $barcodeTop + $barcodeAreaHeight + $lineGap + (int) ceil($bodyFontSize);
+        $cursorY = $barcodeTop + $barcodeAreaHeight + $lineGap + (int) ceil($labelFontSize);
         if ($modelName !== '') {
-            $this->drawCenteredText($image, $modelName, $bodyFontSize, $black, $col2X, $cursorY, $col2Width, bold: false);
-            $cursorY += $bodyLineHeight + $lineGap;
+            $this->drawCenteredText($image, $modelName, $labelFontSize, $black, $col2X, $cursorY, $col2Width);
+            $cursorY += $labelLineHeight + $lineGap;
         }
         if ($locationLine !== '') {
-            $this->drawCenteredText($image, $locationLine, $bodyFontSize, $black, $col2X, $cursorY, $col2Width, bold: false);
+            $this->drawCenteredText($image, $locationLine, $labelFontSize, $black, $col2X, $cursorY, $col2Width);
         }
 
         ob_start();
@@ -353,13 +353,12 @@ class ItemBarcodeLabelGenerator
         int $x,
         int $baselineY,
         int $maxWidth,
-        bool $bold,
     ): void {
         if ($text === '') {
             return;
         }
 
-        $font = $this->fontPath($bold);
+        $font = $this->fontPath();
         $fitted = $this->fitText($text, $font, $fontSize, $maxWidth);
         $box = imagettfbbox($fontSize, 0, $font, $fitted);
         if ($box === false) {
@@ -396,13 +395,15 @@ class ItemBarcodeLabelGenerator
         return $ellipsis;
     }
 
-    private function fontPath(bool $bold): string
+    /**
+     * DejaVu Sans Bold: wide open apertures, strong stroke contrast — readable at distance.
+     */
+    private function fontPath(): string
     {
-        $file = $bold ? 'DejaVuSans-Bold.ttf' : 'DejaVuSans.ttf';
-        $path = base_path('vendor/dompdf/dompdf/lib/fonts/'.$file);
+        $path = base_path('vendor/dompdf/dompdf/lib/fonts/DejaVuSans-Bold.ttf');
 
         if (! is_file($path)) {
-            throw new \RuntimeException("Font file not found: {$file}");
+            throw new \RuntimeException('Font file not found: DejaVuSans-Bold.ttf');
         }
 
         return $path;
